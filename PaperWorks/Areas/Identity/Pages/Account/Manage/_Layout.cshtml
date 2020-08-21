@@ -1,0 +1,35 @@
+﻿@{
+    if (ViewData.TryGetValue("ParentLayout", out var parentLayout))
+    {
+        Layout = (string)parentLayout;
+    }
+    else
+    {
+        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
+    }
+}
+    <section id="identityLayout">
+        <h2 class="text-center">Manage your account</h2>
+        <h4 class="text-center mt-md-2 mt-lg-3">Change your account settings</h4>
+        <hr />
+
+        <div>
+
+            <div class="row">
+                <div class="col-md-3">
+                    <partial name="_ManageNav" />
+                </div>
+                <div class="col-md-9 bg-light">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </section>
+@section Scripts {
+    @RenderSection("Scripts", required: false)
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#identityLayout").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+        });
+    </script>
+}

@@ -4,7 +4,10 @@
     ViewData["Title"] = "Home page";
 }
 <section id="logo">
-    <div class="container text-center">
+    <div class="container text-center" data-aos="fade-in" data-aos-delay="300">
+        <h1 class="display-4">
+              Lets
+        </h1>
         <h1 class="display-4 m-2">
             Get your work done
         </h1>
@@ -34,7 +37,7 @@
                             Autem voluptates iure est blanditiis quasi ipsa beatae. Sequi,
                             culpa praesentium! Pariatur!
                         </p>
-                        <a href="#" class="btn btn-success btn-lg">Book Now</a>
+                        <a asp-page="./customerservice/Detail" class="btn btn-success btn-lg">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -50,7 +53,7 @@
                             Autem voluptates iure est blanditiis quasi ipsa beatae. Sequi,
                             culpa praesentium! Pariatur!
                         </p>
-                        <a href="#" class="btn btn-success btn-lg">Book Now</a>
+                        <a asp-page="./customerservice/Detail" class="btn btn-success btn-lg">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -64,23 +67,23 @@
                             Autem voluptates iure est blanditiis quasi ipsa beatae. Sequi,
                             culpa praesentium! Pariatur!
                         </p>
-                        <a href="#" class="btn btn-success btn-lg">Book Now</a>
+                        <a asp-page="./customerservice/Detail" class="btn btn-success btn-lg">Book Now</a>
                     </div>
                 </div>
             </div>
             <div class="carousel-item">
                 <img src="../img/pan1.jpg" class="d-block w-100" alt="...">
                 <<div class="container">
-              <div class="carousel-caption d-none d-sm-block mb-5">
-                <h1 class="display-3 text-dark">Get Pan Card</h1>
-                <p class="lead text-dark">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                  Autem voluptates iure est blanditiis quasi ipsa beatae. Sequi,
-                  culpa praesentium! Pariatur!
-                </p>
-                <a href="#" class="btn btn-success btn-lg">Book Now</a>
-              </div>
-            </div>
+                    <div class="carousel-caption d-none d-sm-block mb-5">
+                        <h1 class="display-3 text-dark">Get Pan Card</h1>
+                        <p class="lead text-dark">
+                            Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                            Autem voluptates iure est blanditiis quasi ipsa beatae. Sequi,
+                            culpa praesentium! Pariatur!
+                        </p>
+                        <a asp-page="./customerservice/Detail" class="btn btn-success btn-lg">Book Now</a>
+                    </div>
+                </div>
             </div>
             <div class="carousel-item">
                 <img src="../img/pass2.jpg" class="d-block w-100" alt="...">
@@ -92,7 +95,7 @@
                             Autem voluptates iure est blanditiis quasi ipsa beatae. Sequi,
                             culpa praesentium! Pariatur!
                         </p>
-                        <a href="#" class="btn btn-success btn-lg">Book Now</a>
+                        <a asp-page="./customerservice/Detail" class="btn btn-success btn-lg">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -106,7 +109,7 @@
                             Autem voluptates iure est blanditiis quasi ipsa beatae. Sequi,
                             culpa praesentium! Pariatur!
                         </p>
-                        <a href="#" class="btn btn-success btn-lg">Book Now</a>
+                        <a asp-page="./customerservice/Detail" class="btn btn-success btn-lg">Book Now</a>
                     </div>
                 </div>
             </div>
@@ -121,289 +124,660 @@
         </a>
     </div>
 </section>
+
+
+
 <section id="tabSelection" class="pt-5">
+    <div class="container" id="tabSelectionContainer">
+        <div class="d-flex justify-content-center" >
+            <ul class="nav nav-tabs nav-fill w-100" id="myTab" role="tablist" >
+                <li class="nav-item" data-aos="fade-right" data-aos-delay="300">
+                    <a class="nav-link active btn btn-light" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Individual Services</a>
+                </li>
+                <li class="nav-item" data-aos="fade-left" data-aos-delay="600">
+                    <a class="nav-link btn btn-light" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Corporate Services</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+
+<section id="tabLegalServiceListing" >
+    <div class="d-flex justify-content-center   tab-content bg-light">
+
+        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+            <div class="row m-3" id="legalServiceRow1">
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Property Possession Delay</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-home fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Possession Delay - NCLT</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="300">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-handshake-o fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Mutual Consent Divorce</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row  m-3" id="legalServiceRow2">
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="400">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-trademark fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Trademark Registration</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="500">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-money fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Cheque Bounce</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="600">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-legal fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Legal Notice</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="container" id="accordionLegal">
+                <a href="#" class="btn btn-link text-md-center" data-toggle="collapse" data-target="#restOfLegalServices" aria-expanded="false" aria-controls="collapseOne">
+                    Click to View More Services
+                </a>
+            </div>
+            <div class="collapse" id="restOfLegalServices" aria-labelledby="headingOne" data-parent="#accordionLegal">
+                <div class="row m-3" id="legalServiceRow2">
+                    <div class="col-sm-4">
+                        <div class="card border-0" >
+                            <div class="card-header bg-white border-0">
+                                <span class="fa fa-credit-card fa-lg" aria-hidden="true"></span>
+                                @*<h6 class="card-title">Property Possession Delay</h6>*@
+                                <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Unpaid Salary</span>
+                            </div>
+                            <div class="card-body">
+
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                            </div>
+                            <div class="card-footer bg-white border-top">
+                                <small class="text-muted"> Fixed Prices Everywhere</small>
+                                <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card border-0">
+                            <div class="card-header bg-white border-0">
+                                <span class="fa fa-lg fa-times" aria-hidden="true"></span>
+                                @*<h6 class="card-title">Property Possession Delay</h6>*@
+                                <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Wrongful Termination</span>
+                            </div>
+                            <div class="card-body">
+
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                            </div>
+                            <div class="card-footer bg-white border-top">
+                                <small class="text-muted"> Fixed Prices Everywhere</small>
+                                <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card border-0">
+                            <div class="card-header bg-white border-0">
+                                <span class="fa fa-lg fa-shopping-bag" aria-hidden="true"></span>
+                                @*<h6 class="card-title">Property Possession Delay</h6>*@
+                                <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Consumer Matter</span>
+                            </div>
+                            <div class="card-body">
+
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                            </div>
+                            <div class="card-footer bg-white border-top">
+                                <small class="text-muted"> Fixed Prices Everywhere</small>
+                                <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane fade show" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+            <div class="row m-3" id="govtServiceRow1">
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="100">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Marriage Certificate</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="200">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Court Marriage</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="300">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Arya Samaj Marriage</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row m-3" id="govtServiceRow2">
+                <div class="col-sm-4">
+                    <div class="card border-0">
+                        <div class="card-header bg-white border-0" data-aos="fade-up" data-aos-delay="400">
+                            <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Name Change</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0">
+                        <div class="card-header bg-white border-0" data-aos="fade-up" data-aos-delay="500">
+                            <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Birth Certificate</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="card border-0" data-aos="fade-up" data-aos-delay="600">
+                        <div class="card-header bg-white border-0">
+                            <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                            @*<h6 class="card-title">Property Possession Delay</h6>*@
+                            <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Adhaar Update</span>
+                        </div>
+                        <div class="card-body">
+
+                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                        </div>
+                        <div class="card-footer bg-white border-top">
+                            <small class="text-muted"> Fixed Prices Everywhere</small>
+                            <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+            <div class="container" id="accordionLegal">
+                <a href="#" class="btn btn-link text-md-center" data-toggle="collapse" data-target="#restOfLegalServices" aria-expanded="false" aria-controls="collapseOne">
+                    Click to View More Services
+                </a>
+            </div>
+            <div class="collapse" id="restOfLegalServices" aria-labelledby="headingOne" data-parent="#accordionLegal">
+                <div class="row m-3" id="legalServiceRow2">
+                    <div class="col-sm-4">
+                        <div class="card border-0">
+                            <div class="card-header bg-white border-0">
+                                <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                                @*<h6 class="card-title">Property Possession Delay</h6>*@
+                                <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Company Incorporation</span>
+                            </div>
+                            <div class="card-body">
+
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                            </div>
+                            <div class="card-footer bg-white border-top">
+                                <small class="text-muted"> Fixed Prices Everywhere</small>
+                                <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card border-0">
+                            <div class="card-header bg-white border-0">
+                                <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                                @*<h6 class="card-title">Property Possession Delay</h6>*@
+                                <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">GST Registration</span>
+                            </div>
+                            <div class="card-body">
+
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                            </div>
+                            <div class="card-footer bg-white border-top">
+                                <small class="text-muted"> Fixed Prices Everywhere</small>
+                                <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="card border-0">
+                            <div class="card-header bg-white border-0">
+                                <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
+                                @*<h6 class="card-title">Property Possession Delay</h6>*@
+                                <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">FSSAI License</span>
+                            </div>
+                            <div class="card-body">
+
+                                <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+
+                            </div>
+                            <div class="card-footer bg-white border-top">
+                                <small class="text-muted"> Fixed Prices Everywhere</small>
+                                <a asp-page="./customerservice/Detail" class="float-right">Book Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+@*<section id="services" class="services section-bg">
     <div class="container">
-        <div class="d-flex justify-content-center">
-            @*<div class="btn-group">
-                <button class="btn btn-primary" type="button">
-                    <span class="desktop-text">Legal</span>
-                </button>
-                <button class="btn btn-primary" type="button">
-                    <span class="desktop-text">Govt Services</span>
-                </button>
-            </div>*@
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                <label class="btn btn-light active">
-                    <input type="radio" name="options" id="option1" checked> Legal Services
-                </label>
-                <label class="btn btn-light">
-                    <input type="radio" name="options" id="option3"> Govt Services
-                </label>
+        <div class="section-title" data-aos="fade-up">
+            <h2>Services</h2>
+            <p>
+                Magnam dolores commodi suscipit. Necessitatibus eius consequatur
+                ex aliquid fuga eum quidem. Sit sint consectetur velit. Quisquam
+                quos quisquam cupiditate. Et nemo qui impedit suscipit alias ea.
+                Quia fugiat sit in iste officiis commodi quidem hic quas.
+            </p>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-4 col-md-6" data-aos="fade-up">
+                <div class="icon-box">
+                    <div class="icon"><i class="icofont-computer"></i></div>
+                    <h4 class="title"><a href="">Lorem Ipsum</a></h4>
+                    <p class="description">
+                        Voluptatum deleniti atque corrupti quos dolores et quas
+                        molestias excepturi sint occaecati cupiditate non provident
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6"
+                 data-aos="fade-up"
+                 data-aos-delay="100">
+                <div class="icon-box">
+                    <div class="icon"><i class="icofont-chart-bar-graph"></i></div>
+                    <h4 class="title"><a href="">Dolor Sitema</a></h4>
+                    <p class="description">
+                        Minim veniam, quis nostrud exercitation ullamco laboris nisi
+                        ut aliquip ex ea commodo consequat tarad limino ata
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6"
+                 data-aos="fade-up"
+                 data-aos-delay="200">
+                <div class="icon-box">
+                    <div class="icon"><i class="icofont-earth"></i></div>
+                    <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
+                    <p class="description">
+                        Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6"
+                 data-aos="fade-up"
+                 data-aos-delay="300">
+                <div class="icon-box">
+                    <div class="icon"><i class="icofont-image"></i></div>
+                    <h4 class="title"><a href="">Magni Dolores</a></h4>
+                    <p class="description">
+                        Excepteur sint occaecat cupidatat non proident, sunt in culpa
+                        qui officia deserunt mollit anim id est laborum
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6"
+                 data-aos="fade-up"
+                 data-aos-delay="400">
+                <div class="icon-box">
+                    <div class="icon"><i class="icofont-settings"></i></div>
+                    <h4 class="title"><a href="">Nemo Enim</a></h4>
+                    <p class="description">
+                        At vero eos et accusamus et iusto odio dignissimos ducimus qui
+                        blanditiis praesentium voluptatum deleniti atque
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6"
+                 data-aos="fade-up"
+                 data-aos-delay="500">
+                <div class="icon-box">
+                    <div class="icon"><i class="icofont-tasks-alt"></i></div>
+                    <h4 class="title"><a href="">Eiusmod Tempor</a></h4>
+                    <p class="description">
+                        Et harum quidem rerum facilis est et expedita distinctio. Nam
+                        libero tempore, cum soluta nobis est eligendi
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>*@
+<section id="whyus" class="py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 mb-4 text-center" data-aos="fade-right">
+                <i class="fas fa-file fa-3x mb-2"></i>
+                <h3>Govt Works Made Easy</h3>
+                <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione,
+                    eius.
+                </p>
+            </div>
+            <div class="col-md-4 mb-4 text-center" data-aos="fade-up">
+                <i class="fas fa-cloud fa-3x mb-2"></i>
+                <h3>Your data safe in Cloud</h3>
+                <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione,
+                    eius.
+                </p>
+            </div>
+            <div class="col-md-4 mb-4 text-center" data-aos="fade-left">
+                <i class="fas fa-cart-plus fa-3x mb-2"></i>
+                <h3>Cost Effective Options</h3>
+                <p>
+                    Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione,
+                    eius.
+                </p>
             </div>
         </div>
     </div>
 </section>
-
-<section id="tabSelectionServices">
-    <div class="container bg-light p-3">
-        <div class="row mt-3" >
-            <div class="col-sm-4">
-                <div class="card border-0">
-                    <div class="card-header bg-white border-0">
-                        <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
-                        @*<h6 class="card-title">Property Possession Delay</h6>*@
-                        <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Property Possession Delay</span>
-                    </div>
-                    <div class="card-body">
-                        
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        
-                    </div>
-                    <div class="card-footer bg-white border-top">
-                        <small class="text-muted"> Fixed Prices Everywhere</small>
-                        <a href="#" class="float-right">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card border-0">
-                    <div class="card-header bg-white border-0">
-                        <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
-                        @*<h6 class="card-title">Property Possession Delay</h6>*@
-                        <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Property Possession Delay</span>
-                    </div>
-                    <div class="card-body">
-                        
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                        
-                    </div>
-                    <div class="card-footer bg-white border-top">
-                        <small class="text-muted"> Fixed Prices Everywhere</small>
-                        <a href="#" class="float-right">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card border-0">
-                    <div class="card-header bg-white border-0">
-                        <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
-                        @*<h6 class="card-title">Property Possession Delay</h6>*@
-                        <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Property Possession Delay</span>
-                    </div>
-                    <div class="card-body">
-
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                    </div>
-                    <div class="card-footer bg-white border-top">
-                        <small class="text-muted"> Fixed Prices Everywhere</small>
-                        <a href="#" class="float-right">Book Now</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row  mt-3">
-            <div class="col-sm-4">
-                <div class="card border-0">
-                    <div class="card-header bg-white border-0">
-                        <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
-                        @*<h6 class="card-title">Property Possession Delay</h6>*@
-                        <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Property Possession Delay</span>
-                    </div>
-                    <div class="card-body">
-
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                    </div>
-                    <div class="card-footer bg-white border-top">
-                        <small class="text-muted"> Fixed Prices Everywhere</small>
-                        <a href="#" class="float-right">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card border-0">
-                    <div class="card-header bg-white border-0">
-                        <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
-                        @*<h6 class="card-title">Property Possession Delay</h6>*@
-                        <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Property Possession Delay</span>
-                    </div>
-                    <div class="card-body">
-
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                    </div>
-                    <div class="card-footer bg-white border-top">
-                        <small class="text-muted"> Fixed Prices Everywhere</small>
-                        <a href="#" class="float-right">Book Now</a>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-4">
-                <div class="card border-0">
-                    <div class="card-header bg-white border-0">
-                        <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
-                        @*<h6 class="card-title">Property Possession Delay</h6>*@
-                        <span aria-hidden="true" class="text-right card-title text- ml-1  lead  ">Property Possession Delay</span>
-                    </div>
-                    <div class="card-body">
-
-                        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-
-                    </div>
-                    <div class="card-footer bg-white border-top">
-                        <small class="text-muted"> Fixed Prices Everywhere</small>
-                        <a href="#" class="float-right">Book Now</a>
-                    </div>
+<section id="home-heading" class="p-5">
+    <div class="dark-overlay">
+        <div class="row">
+            <div class="col">
+                <div class="container pt-5">
+                    <h1>Are you ready to get started</h1>
+                    <p class="d-none d-md-block">
+                        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum,
+                        unde sequi? Modi recusandae quis consectetur eaque nesciunt
+                        aliquam? Et, aspernatur?
+                    </p>
                 </div>
             </div>
         </div>
     </div>
 </section>
-    <section id="home-icons" class="py-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 mb-4 text-center">
-                    <i class="fas fa-file fa-3x mb-2"></i>
-                    <h3>Govt Works Made Easy</h3>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione,
-                        eius.
-                    </p>
-                </div>
-                <div class="col-md-4 mb-4 text-center">
-                    <i class="fas fa-cloud fa-3x mb-2"></i>
-                    <h3>Your data safe in Cloud</h3>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione,
-                        eius.
-                    </p>
-                </div>
-                <div class="col-md-4 mb-4 text-center">
-                    <i class="fas fa-cart-plus fa-3x mb-2"></i>
-                    <h3>Cost Effective Options</h3>
-                    <p>
-                        Lorem ipsum, dolor sit amet consectetur adipisicing elit. Ratione,
-                        eius.
-                    </p>
-                </div>
+<section id="info" class="py-3">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 align-left">
+                <h3>Convenient Website and Apps</h3>
+                <p>
+                    Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                    Consectetur illum consequatur laborum rerum adipisci, nobis non
+                    molestiae corrupti, ab sint error officiis veritatis eligendi
+                    maxime nemo sapiente deleniti excepturi a.
+                </p>
+                <a href="#" class="btn btn-outline-danger btn-lg">Get Work Done From Home</a>
+            </div>
+            <div class="col-md-4">
+                <img src="img/laptop.png" alt="appicons" class="img-fluid" />
+            </div>
+            <div class="col-md-4">
+                <img src="../img/android.png"
+                     alt="appicons"
+                     class="img-fluid mt-5" />
             </div>
         </div>
-    </section>
-    <section id="home-heading" class="p-5">
-        <div class="dark-overlay">
-            <div class="row">
-                <div class="col">
-                    <div class="container pt-5">
-                        <h1>Are you ready to get started</h1>
-                        <p class="d-none d-md-block">
-                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Rerum,
-                            unde sequi? Modi recusandae quis consectetur eaque nesciunt
-                            aliquam? Et, aspernatur?
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    <section id="info" class="py-3">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4 align-left">
-                    <h3>Convenient Website and Apps</h3>
-                    <p>
-                        Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                        Consectetur illum consequatur laborum rerum adipisci, nobis non
-                        molestiae corrupti, ab sint error officiis veritatis eligendi
-                        maxime nemo sapiente deleniti excepturi a.
-                    </p>
-                    <a href="#" class="btn btn-outline-danger btn-lg">Get Work Done From Home</a>
-                </div>
-                <div class="col-md-4">
-                    <img src="img/laptop.png" alt="appicons" class="img-fluid" />
-                </div>
-                <div class="col-md-4">
-                    <img src="../img/android.png"
-                         alt="appicons"
-                         class="img-fluid mt-5" />
-                </div>
-            </div>
-        </div>
-    </section>
+    </div>
+</section>
 
-    <section id="galler" class="py-5">
-        <div class="container">
-            <h1 class="text-center">Photos</h1>
-            <p class="text-center">Check Out</p>
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <a href="https://source.unsplash.com/random/560x560"
-                       data-toggle="lightbox"
-                       data-gallery="img-gallery"
-                       data-height="560"
-                       data-width="560">
-                        <img src="https://source.unsplash.com/random/560x560"
-                             alt=""
-                             class="img-fluid" />
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://source.unsplash.com/random/561x561"
-                       data-toggle="lightbox"
-                       data-gallery="img-gallery"
-                       data-height="561"
-                       data-width="561">
-                        <img src="https://source.unsplash.com/random/561x561"
-                             alt=""
-                             class="img-fluid" />
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://source.unsplash.com/random/563x563"
-                       data-toggle="lightbox"
-                       data-gallery="img-gallery"
-                       data-height="563"
-                       data-width="563">
-                        <img src="https://source.unsplash.com/random/563x563"
-                             alt=""
-                             class="img-fluid" />
-                    </a>
-                </div>
+<!-- ======= Testimonials Section ======= -->
+<section id="testimoni" class="testimonials">
+    <div class="container" data-aos="fade-up">
+        <div class="owl-carousel testimonials-carousel">
+            <div class="testimonial-item">
+                <img src="../assets/img/testimonials/testimonials-1.jpg"
+                     class="testimonial-img"
+                     alt="" />
+                <h3>Saul Goodman</h3>
+                <h4>Ceo &amp; Founder</h4>
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                    Proin iaculis purus consequat sem cure digni ssim donec
+                    porttitora entum suscipit rhoncus. Accusantium quam, ultricies
+                    eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
             </div>
-            <div class="row mb-4">
-                <div class="col-md-4">
-                    <a href="https://source.unsplash.com/random/562x562"
-                       data-toggle="lightbox"
-                       data-gallery="img-gallery"
-                       data-height="562"
-                       data-width="562">
-                        <img src="https://source.unsplash.com/random/562x562"
-                             alt=""
-                             class="img-fluid" />
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://source.unsplash.com/random/565x565"
-                       data-toggle="lightbox"
-                       data-gallery="img-gallery"
-                       data-height="565"
-                       data-width="565">
-                        <img src="https://source.unsplash.com/random/565x565"
-                             alt=""
-                             class="img-fluid" />
-                    </a>
-                </div>
-                <div class="col-md-4">
-                    <a href="https://source.unsplash.com/random/566x566"
-                       data-toggle="lightbox"
-                       data-gallery="img-gallery"
-                       data-height="566"
-                       data-width="566">
-                        <img src="https://source.unsplash.com/random/566x566"
-                             alt=""
-                             class="img-fluid" />
-                    </a>
-                </div>
+
+            <div class="testimonial-item">
+                <img src="../assets/img/testimonials/testimonials-2.jpg"
+                     class="testimonial-img"
+                     alt="" />
+                <h3>Sara Wilsson</h3>
+                <h4>Designer</h4>
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                    Export tempor illum tamen malis malis eram quae irure esse
+                    labore quem cillum quid cillum eram malis quorum velit fore eram
+                    velit sunt aliqua noster fugiat irure amet legam anim culpa.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+            </div>
+
+            <div class="testimonial-item">
+                <img src="../assets/img/testimonials/testimonials-3.jpg"
+                     class="testimonial-img"
+                     alt="" />
+                <h3>Jena Karlis</h3>
+                <h4>Store Owner</h4>
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                    Enim nisi quem export duis labore cillum quae magna enim sint
+                    quorum nulla quem veniam duis minim tempor labore quem eram duis
+                    noster aute amet eram fore quis sint minim.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+            </div>
+
+            <div class="testimonial-item">
+                <img src="../assets/img/testimonials/testimonials-4.jpg"
+                     class="testimonial-img"
+                     alt="" />
+                <h3>Matt Brandon</h3>
+                <h4>Freelancer</h4>
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                    Fugiat enim eram quae cillum dolore dolor amet nulla culpa
+                    multos export minim fugiat minim velit minim dolor enim duis
+                    veniam ipsum anim magna sunt elit fore quem dolore labore illum
+                    veniam.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
+            </div>
+
+            <div class="testimonial-item">
+                <img src="../assets/img/testimonials/testimonials-5.jpg"
+                     class="testimonial-img"
+                     alt="" />
+                <h3>John Larson</h3>
+                <h4>Entrepreneur</h4>
+                <p>
+                    <i class="bx bxs-quote-alt-left quote-icon-left"></i>
+                    Quis quorum aliqua sint quem legam fore sunt eram irure aliqua
+                    veniam tempor noster veniam enim culpa labore duis sunt culpa
+                    nulla illum cillum fugiat legam esse veniam culpa fore nisi
+                    cillum quid.
+                    <i class="bx bxs-quote-alt-right quote-icon-right"></i>
+                </p>
             </div>
         </div>
-    </section>
+    </div>
+</section>
+
+@section Scripts{
+    <script type="text/javascript">
+        $("#tabSelectionContainer :input").change(function () {
+            console.log(this); // points to the clicked input button
+        });
+        function ChangeShip() {
+            if (!(document.getElementById('legalRadio')).checked) {
+                document.getElementById('tabLegalServiceListing').style.visibility = "hidden";
+                $(".tabLegalServiceListing").prop("disabled", true);
+            }
+            else {
+                document.getElementById('tabLegalServiceListing').style.visibility = "visible";
+                $(".tabLegalServiceListing").prop("disabled", false);
+            }
+            if (!(document.getElementById('govtRadio')).checked) {
+                document.getElementById('tabGovtServiceListing').style.visibility = "hidden";
+                $(".tabLegalServiceListing").prop("disabled", true);
+            }
+            else {
+                document.getElementById('tabGovtServiceListing').style.visibility = "visible";
+                $(".tabLegalServiceListing").prop("disabled", false);
+            }
+        }
+                        //function ChangeShip() {
+                        //    if ($(this).is(':checked')) {
+                        //        chShipBlock.show();
+                        //        chShipBlock.find('input').attr('required', true);
+                        //    } else {
+                        //        chShipBlock.hide();
+                        //        chShipBlock.find('input').attr('required', false);
+                        //    }
+                        //}
+    </script>
+}
+

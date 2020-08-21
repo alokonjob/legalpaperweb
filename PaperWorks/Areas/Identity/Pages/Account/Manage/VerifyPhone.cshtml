@@ -1,0 +1,47 @@
+﻿@page
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+@model PaperWorks.Areas.Identity.Pages.Account.VerifyPhoneModel
+@{
+}
+
+<h4>@ViewData["Title"]</h4>
+@if (SignInManager.IsSignedIn(User) && UserManager.IsPhoneNumberConfirmedAsync(UserManager.GetUserAsync(User).Result).Result)
+{
+    <div class="alert alert-success" role="alert">
+        You Phone @Model.PhoneNumber is already confirmed. Thank you"
+    </div>
+}
+else
+{
+    @if (string.IsNullOrEmpty(Model.PhoneNumber))
+    {
+        <div class="alert alert-danger" role="alert">
+            Please Save You Phone in your profile"
+        </div>
+    }
+    else
+    {
+<div class="alert alert-info" role="alert">
+    We will verify your phone number by sending a code to @Model.PhoneNumber.
+</div>
+        <div class="row">
+            <div class="col-md-8">
+                <form method="post">
+
+                    <div asp-validation-summary="All" class="text-danger"></div>
+                    <button type="submit" class="btn btn-primary align-self-center">Send verification code to @Model.PhoneNumber</button>
+                </form>
+            </div>
+        </div>
+    }
+}
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#loginSection").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+        });
+    </script>
+}

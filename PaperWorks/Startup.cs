@@ -12,6 +12,8 @@ using PaperWorks.Data;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Emailer;
+using SMSer;
 
 namespace PaperWorks
 {
@@ -30,9 +32,36 @@ namespace PaperWorks
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
+
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
             services.AddRazorPages();
+            services.AddAuthentication()
+        .AddGoogle(options =>
+        {
+            IConfigurationSection googleAuthNSection =
+                Configuration.GetSection("Google");
+            IConfigurationSection fbAuthNSection =
+                Configuration.GetSection("Facebook");
+
+            options.ClientId = googleAuthNSection["ClientId"];
+            options.ClientSecret = googleAuthNSection["ClientSecret"];
+        }).AddFacebook(facebookOptions =>
+        {
+            facebookOptions.AppId = Configuration["Facebook:AppId"];
+            facebookOptions.AppSecret = Configuration["Facebook:AppSecret"];
+        }).AddMicrosoftAccount(microsoftOptions =>
+        {
+            microsoftOptions.ClientId = Configuration["Microsoft:ClientId"];
+            microsoftOptions.ClientSecret = Configuration["Microsoft:ClientSecret"];
+        });
+
+            services.AddScoped<IEmailer, EmailerBoy>();
+
+            InitTwilio.Init(Configuration);
+            services.Configure<TwilioVerifySettings>(Configuration.GetSection("Keys:Twilio"));
+            services.AddSingleton<PhoneCountryService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
