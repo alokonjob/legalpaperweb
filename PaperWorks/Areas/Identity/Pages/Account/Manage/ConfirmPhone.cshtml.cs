@@ -15,9 +15,9 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
     public class ConfirmPhoneModel : PageModel
     {
         private readonly TwilioVerifySettings _settings;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
         public bool IsPhoneNumberAlreadyConfirmed = false;
-        public ConfirmPhoneModel(UserManager<IdentityUser> userManager, IOptions<TwilioVerifySettings> settings)
+        public ConfirmPhoneModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager, IOptions<TwilioVerifySettings> settings)
         {
             _userManager = userManager;
             _settings = settings.Value;

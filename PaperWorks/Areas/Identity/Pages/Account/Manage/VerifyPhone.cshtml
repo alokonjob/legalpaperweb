@@ -1,8 +1,9 @@
 ﻿@page
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> SignInManager
+@inject UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> UserManager
 @model PaperWorks.Areas.Identity.Pages.Account.VerifyPhoneModel
 @{
+    Layout = "_Layout.cshtml";
 }
 
 <h4>@ViewData["Title"]</h4>

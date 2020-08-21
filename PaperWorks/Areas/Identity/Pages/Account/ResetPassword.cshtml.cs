@@ -15,9 +15,9 @@ namespace PaperWorks.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
 
-        public ResetPasswordModel(UserManager<IdentityUser> userManager)
+        public ResetPasswordModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager)
         {
             _userManager = userManager;
         }

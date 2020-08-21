@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Emailer;
 using SMSer;
+using AspNetCore.Identity.Mongo;
 
 namespace PaperWorks
 {
@@ -33,8 +34,18 @@ namespace PaperWorks
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                .AddEntityFrameworkStores<ApplicationDbContext>();
+            //services.AddDefaultIdentity<AspNetCore.Identity.Mongo.Model.MongoUser>(options => options.SignIn.RequireConfirmedAccount = true);
+            services.AddIdentityMongoDbProvider<AspNetCore.Identity.Mongo.Model.MongoUser, AspNetCore.Identity.Mongo.Model.MongoRole>(identityOptions =>
+            {
+                identityOptions.Password.RequiredLength = 6;
+                identityOptions.Password.RequireLowercase = false;
+                identityOptions.Password.RequireUppercase = false;
+                identityOptions.Password.RequireNonAlphanumeric = false;
+                identityOptions.Password.RequireDigit = false;
+                
+            }, mongoIdentityOptions => {
+                mongoIdentityOptions.ConnectionString = "mongodb://localhost/MongoIdentityTestDb3";
+            });
 
             services.AddRazorPages();
             services.AddAuthentication()

@@ -20,23 +20,20 @@ namespace PaperWorks.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<IdentityUser> _signInManager;
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
         private readonly IEmailer emailer;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<IdentityUser> signInManager,
-            UserManager<IdentityUser> userManager,
-            ILogger<ExternalLoginModel> logger,
-            IEmailSender emailSender,IEmailer emailer
+            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager,
+            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
+            ILogger<ExternalLoginModel> logger,IEmailer emailer
             )
         {
             _signInManager = signInManager;
             _userManager = userManager;
             _logger = logger;
-            _emailSender = emailSender;
             this.emailer = emailer;
         }
 
@@ -109,7 +106,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                     };
                     if (ModelState.IsValid)
                     {
-                        var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                        var user = new AspNetCore.Identity.Mongo.Model.MongoUser { UserName = Input.Email, Email = Input.Email };
 
                         var userCreateResult = await _userManager.CreateAsync(user);
                         if (userCreateResult.Succeeded)
@@ -165,7 +162,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
+                var user = new AspNetCore.Identity.Mongo.Model.MongoUser { UserName = Input.Email, Email = Input.Email };
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)

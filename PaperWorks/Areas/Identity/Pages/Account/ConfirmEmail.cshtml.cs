@@ -14,9 +14,9 @@ namespace PaperWorks.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
 
-        public ConfirmEmailModel(UserManager<IdentityUser> userManager)
+        public ConfirmEmailModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager)
         {
             _userManager = userManager;
         }

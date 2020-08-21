@@ -11,12 +11,12 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
 
         public SetPasswordModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
+            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

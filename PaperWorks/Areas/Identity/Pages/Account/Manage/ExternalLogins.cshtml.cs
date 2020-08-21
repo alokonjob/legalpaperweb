@@ -11,12 +11,12 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     public class ExternalLoginsModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
 
         public ExternalLoginsModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager)
+            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
+            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -86,7 +86,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
                 return NotFound($"Unable to load user with ID 'user.Id'.");
             }
 
-            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id);
+            var info = await _signInManager.GetExternalLoginInfoAsync(user.Id.ToString());
             if (info == null)
             {
                 throw new InvalidOperationException($"Unexpected error occurred loading external login info for user with ID '{user.Id}'.");

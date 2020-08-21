@@ -15,12 +15,12 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
         public List<SelectListItem> AvailableCountries { get; }
         public IndexModel(
-            UserManager<IdentityUser> userManager,
-            SignInManager<IdentityUser> signInManager,
+            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
+            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager,
             PhoneCountryService countryService)
         {
             _userManager = userManager;
@@ -46,7 +46,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
             public string PhoneNumberCountryCode { get; set; }
         }
 
-        private async Task LoadAsync(IdentityUser user)
+        private async Task LoadAsync(AspNetCore.Identity.Mongo.Model.MongoUser user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

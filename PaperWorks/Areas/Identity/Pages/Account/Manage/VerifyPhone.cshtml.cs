@@ -14,9 +14,9 @@ namespace PaperWorks.Areas.Identity.Pages.Account
     public class VerifyPhoneModel : PageModel
     {
         private readonly TwilioVerifySettings _settings;
-        private readonly UserManager<IdentityUser> _userManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
 
-        public VerifyPhoneModel(IOptions<TwilioVerifySettings> settings, UserManager<IdentityUser> userManager)
+        public VerifyPhoneModel(IOptions<TwilioVerifySettings> settings, UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager)
         {
             _settings = settings.Value;
             _userManager = userManager;

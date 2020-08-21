@@ -14,10 +14,10 @@ namespace PaperWorks.Areas.Identity.Pages.Account
     [AllowAnonymous]
     public class ConfirmEmailChangeModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly SignInManager<IdentityUser> _signInManager;
+        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager)
+        public ConfirmEmailChangeModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager, SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
