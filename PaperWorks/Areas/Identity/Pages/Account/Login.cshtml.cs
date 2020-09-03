@@ -11,23 +11,25 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class LoginModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
-        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
+        private readonly UserManager<Clientele> _userManager;
+        private readonly SignInManager<Clientele> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
-        public LoginModel(SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager, 
+        public LoginModel(SignInManager<Clientele> signInManager, 
             ILogger<LoginModel> logger,
-            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager)
+            UserManager<Clientele> userManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+
         }
 
         [BindProperty]

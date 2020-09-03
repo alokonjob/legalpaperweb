@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly UserManager<Clientele> _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
         public DownloadPersonalDataModel(
-            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
+            UserManager<Clientele> userManager,
             ILogger<DownloadPersonalDataModel> logger)
         {
             _userManager = userManager;
@@ -36,7 +37,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
-            var personalDataProps = typeof(AspNetCore.Identity.Mongo.Model.MongoUser).GetProperties().Where(
+            var personalDataProps = typeof(Clientele).GetProperties().Where(
                             prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {

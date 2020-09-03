@@ -1,10 +1,24 @@
 ﻿@page
+@using AspNetCore.Identity.Mongo.Model
+@using  Users
+@inject SignInManager<Clientele> SignInManager
+@inject UserManager<Clientele> UserManager
 @model EmailModel
 @{
     ViewData["Title"] = "Manage Email";
     ViewData["ActivePage"] = ManageNavPages.Email;
     Layout = "_Layout.cshtml";
 }
+<h4>@ViewData["Title"]</h4>
+@if (SignInManager.IsSignedIn(User) == false)
+{
+    <div class="alert alert-danger" role="alert">
+        You need to Login First"
+    </div>
+}
+else
+{
+
     <section id="EmailSection">
         <h4>@ViewData["Title"]</h4>
         <partial name="_StatusMessage" model="Model.StatusMessage" />
@@ -39,6 +53,7 @@
             </div>
         </div>
     </section>
+}
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 

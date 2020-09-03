@@ -14,20 +14,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class RegisterModel : PageModel
     {
-        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly SignInManager<Clientele> _signInManager;
+        private readonly UserManager<Clientele> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailer _emailSender;
 
         public RegisterModel(
-            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
-            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager,
+            UserManager<Clientele> userManager,
+            SignInManager<Clientele> signInManager,
             ILogger<RegisterModel> logger,
             IEmailer emailSender)
         {
@@ -75,7 +76,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new AspNetCore.Identity.Mongo.Model.MongoUser { UserName = Input.Email, Email = Input.Email };
+                var user = new Clientele { UserName = Input.Email, Email = Input.Email,IsActive = true };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {

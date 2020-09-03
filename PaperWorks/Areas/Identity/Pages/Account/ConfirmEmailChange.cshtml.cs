@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ConfirmEmailChangeModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
-        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
+        private readonly UserManager<Clientele> _userManager;
+        private readonly SignInManager<Clientele> _signInManager;
 
-        public ConfirmEmailChangeModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager, SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager)
+        public ConfirmEmailChangeModel(UserManager<Clientele> userManager, SignInManager<Clientele> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

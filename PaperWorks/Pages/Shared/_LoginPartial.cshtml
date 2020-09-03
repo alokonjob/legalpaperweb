@@ -1,6 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Identity
-@inject SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> SignInManager
-@inject UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> UserManager
+@using  Users
+@inject SignInManager<Clientele> SignInManager
+@inject UserManager<Clientele> UserManager
 
 <ul class="navbar-nav ml-auto">
 @if (SignInManager.IsSignedIn(User))

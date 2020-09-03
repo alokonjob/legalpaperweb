@@ -6,17 +6,18 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     public class SetPasswordModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
-        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
+        private readonly UserManager<Clientele> _userManager;
+        private readonly SignInManager<Clientele> _signInManager;
 
         public SetPasswordModel(
-            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
-            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager)
+            UserManager<Clientele> userManager,
+            SignInManager<Clientele> signInManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;

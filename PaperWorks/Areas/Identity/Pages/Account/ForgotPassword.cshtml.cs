@@ -11,16 +11,17 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Emailer;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ForgotPasswordModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly UserManager<Clientele> _userManager;
         private readonly IEmailer _emailSender;
 
-        public ForgotPasswordModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager, IEmailer emailSender)
+        public ForgotPasswordModel(UserManager<Clientele> userManager, IEmailer emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;

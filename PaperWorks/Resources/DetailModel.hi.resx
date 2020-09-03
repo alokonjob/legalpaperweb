@@ -1,0 +1,223 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <!-- 
+    Microsoft ResX Schema 
+    
+    Version 2.0
+    
+    The primary goals of this format is to allow a simple XML format 
+    that is mostly human readable. The generation and parsing of the 
+    various data types are done through the TypeConverter classes 
+    associated with the data types.
+    
+    Example:
+    
+    ... ado.net/XML headers & schema ...
+    <resheader name="resmimetype">text/microsoft-resx</resheader>
+    <resheader name="version">2.0</resheader>
+    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
+    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+        <value>[base64 mime encoded serialized .NET Framework object]</value>
+    </data>
+    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
+        <comment>This is a comment</comment>
+    </data>
+                
+    There are any number of "resheader" rows that contain simple 
+    name/value pairs.
+    
+    Each data row contains a name, and value. The row also contains a 
+    type or mimetype. Type corresponds to a .NET class that support 
+    text/value conversion through the TypeConverter architecture. 
+    Classes that don't support this are serialized and stored with the 
+    mimetype set.
+    
+    The mimetype is used for serialized objects, and tells the 
+    ResXResourceReader how to depersist the object. This is currently not 
+    extensible. For a given mimetype the value must be set accordingly:
+    
+    Note - application/x-microsoft.net.object.binary.base64 is the format 
+    that the ResXResourceWriter will generate, however the reader can 
+    read any of the formats listed below.
+    
+    mimetype: application/x-microsoft.net.object.binary.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
+            : and then encoded with base64 encoding.
+    
+    mimetype: application/x-microsoft.net.object.soap.base64
+    value   : The object must be serialized with 
+            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+            : and then encoded with base64 encoding.
+
+    mimetype: application/x-microsoft.net.object.bytearray.base64
+    value   : The object must be serialized into a byte array 
+            : using a System.ComponentModel.TypeConverter
+            : and then encoded with base64 encoding.
+    -->
+  <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
+    <xsd:element name="root" msdata:IsDataSet="true">
+      <xsd:complexType>
+        <xsd:choice maxOccurs="unbounded">
+          <xsd:element name="metadata">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" />
+              </xsd:sequence>
+              <xsd:attribute name="name" use="required" type="xsd:string" />
+              <xsd:attribute name="type" type="xsd:string" />
+              <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="assembly">
+            <xsd:complexType>
+              <xsd:attribute name="alias" type="xsd:string" />
+              <xsd:attribute name="name" type="xsd:string" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="data">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+                <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
+              <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
+            </xsd:complexType>
+          </xsd:element>
+          <xsd:element name="resheader">
+            <xsd:complexType>
+              <xsd:sequence>
+                <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
+              </xsd:sequence>
+              <xsd:attribute name="name" type="xsd:string" use="required" />
+            </xsd:complexType>
+          </xsd:element>
+        </xsd:choice>
+      </xsd:complexType>
+    </xsd:element>
+  </xsd:schema>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <data name="marriagecertificatedocumentsText" xml:space="preserve">
+    <value>&lt;strong&gt;Here is the list&lt;/strong&gt;&lt;br&gt;
+                    Step 1: Approach the office of the Sub Divisional Magistrate, under whose locale the marriage occurred or where both the partners resided for somewhere around a half year before the marriage took place
+                    &lt;br&gt;
+                    Step 2: Appointment - In the case of the Hindu Marriage Act, the date of appointment received is usually within 15 days of the request and in the case of Special Marriage Act, it may take as long as upto 60 days
+                    &lt;br&gt;
+                    Step 3: Witness - Any individual who was present at the time of marriage of the couple can and will be the witness. Witnesses must have a legitimate PAN Card and a proof of residence
+                    &lt;br&gt;
+                    The procedure to register your marriage seems easy but the details and intricacies can be tricky as it requires one to understand the legal procedure and pay multiple visits to various government offices. If you want to register your marriage seamlessly, you can contact us. We will provide you with all the necessary help and assistance and make the process hassle free for you
+                    &lt;br&gt;&lt;br&gt;&lt;br&gt;
+                    &lt;strong&gt;Online Marriage Registration&lt;/strong&gt;
+                    &lt;br&gt;You can also register your marriage by applying for your marriage certificate online at your concerned state's registration website by following some very simple steps as following:
+
+                    &lt;br&gt;Step 1: Select your district and feed details of you, your spouse and details of marriage
+
+                    &lt;br&gt;Step 2: After submitting the registration form, you will receive acknowledgement receipt with application number and date of appointment with the concerned Sub-Divisional Magistrate
+
+                    &lt;br&gt;&lt;br&gt;&lt;strong&gt;
+                        Purpose of Marriage Certificate
+                    &lt;/strong&gt;
+                    A Marriage Certificate is a document that establishes the conjugal/married status of a couple. It is very significant and useful in giving legally married status to the couple as well as for allied purposes like acquiring a passport, opening a bank account, changing one's last name, and applying for a salary certificate, in addition to other things. A marriage certificate is basically a conclusive proof of marriage.</value>
+  </data>
+  <data name="marriagecertificatedocumentsTitle" xml:space="preserve">
+    <value>Documentation Required for Marriage Certificate</value>
+  </data>
+  <data name="marriagecertificatedocumentText" xml:space="preserve">
+    <value />
+  </data>
+  <data name="marriagecertificatedocumetTitle" xml:space="preserve">
+    <value />
+  </data>
+  <data name="marriagecertificateoverviewText" xml:space="preserve">
+    <value>&lt;p class="card-text text-muted"&gt;
+                    Marriage Certificate is a vital document and conclusive proof of your marriage that helps
+                &lt;/p&gt;
+
+                &lt;ol&gt;
+                    &lt;li&gt;&lt;p class="card-text text-muted"&gt;as evidence if you want to change name post marriage,&lt;/p&gt;&lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            on issues of legitimacy of a child,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            during divorce proceedings,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            claim property of spouse in case you are not a nominee,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            to claim life insurance in the event of a mishap
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            as part of a genealogical history, besides other purposes.
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;p class="card-text text-muted"&gt;
+                    Just like every marriage, marriage registration is also unique. The set of documents may vary based on your and your spouse’ religion, place of marriage and place of stay. Our team of experts, having handled more than 800 cases, have been successful in getting a marriage certificate  in all the cases and are well equipped to place in order your application for marriage registration within a day.
+                &lt;/p&gt;
+
+
+                &lt;p&gt;
+                    The two-layer verification process minimizes the chances of rejection and second visit.
+                &lt;/p&gt;</value>
+  </data>
+  <data name="marriagecertificateoverviewTitle" xml:space="preserve">
+    <value>Marriage Registration Overview</value>
+  </data>
+  <data name="marriagecertificateprocessText" xml:space="preserve">
+    <value>&lt;strong&gt;Marriage Registration Procedure&lt;/strong&gt;&lt;br&gt;
+                    Step 1: Approach the office of the Sub Divisional Magistrate, under whose locale the marriage occurred or where both the partners resided for somewhere around a half year before the marriage took place
+                    &lt;br&gt;
+                    Step 2: Appointment - In the case of the Hindu Marriage Act, the date of appointment received is usually within 15 days of the request and in the case of Special Marriage Act, it may take as long as upto 60 days
+                    &lt;br&gt;
+                    Step 3: Witness - Any individual who was present at the time of marriage of the couple can and will be the witness. Witnesses must have a legitimate PAN Card and a proof of residence
+                    &lt;br&gt;
+                    The procedure to register your marriage seems easy but the details and intricacies can be tricky as it requires one to understand the legal procedure and pay multiple visits to various government offices. If you want to register your marriage seamlessly, you can contact us. We will provide you with all the necessary help and assistance and make the process hassle free for you
+                    &lt;br&gt;&lt;br&gt;&lt;br&gt;
+                    &lt;strong&gt;Online Marriage Registration&lt;/strong&gt;
+                    &lt;br&gt;You can also register your marriage by applying for your marriage certificate online at your concerned state's registration website by following some very simple steps as following:
+
+                    &lt;br&gt;Step 1: Select your district and feed details of you, your spouse and details of marriage
+
+                    &lt;br&gt;Step 2: After submitting the registration form, you will receive acknowledgement receipt with application number and date of appointment with the concerned Sub-Divisional Magistrate
+
+                    &lt;br&gt;&lt;br&gt;&lt;strong&gt;
+                        Purpose of Marriage Certificate&lt;/strong&gt;
+                        A Marriage Certificate is a document that establishes the conjugal/married status of a couple. It is very significant and useful in giving legally married status to the couple as well as for allied purposes like acquiring a passport, opening a bank account, changing one's last name, and applying for a salary certificate, in addition to other things. A marriage certificate is basically a conclusive proof of marriage.</value>
+  </data>
+  <data name="marriagecertificateprocessTitle" xml:space="preserve">
+    <value>Marriage Registration Procedure</value>
+  </data>
+  <data name="marriagecertificateServiceName" xml:space="preserve">
+    <value>विवाह प्रमाण पत्र</value>
+  </data>
+</root>

@@ -9,15 +9,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ResetPasswordModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly UserManager<Clientele> _userManager;
 
-        public ResetPasswordModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager)
+        public ResetPasswordModel(UserManager<Clientele> userManager)
         {
             _userManager = userManager;
         }

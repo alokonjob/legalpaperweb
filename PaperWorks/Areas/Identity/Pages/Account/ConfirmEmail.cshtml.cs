@@ -8,15 +8,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ConfirmEmailModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly UserManager<Clientele> _userManager;
 
-        public ConfirmEmailModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager)
+        public ConfirmEmailModel(UserManager<Clientele> userManager)
         {
             _userManager = userManager;
         }

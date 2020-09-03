@@ -18,6 +18,7 @@
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.6" />
+    <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.6" />
@@ -27,6 +28,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
+    <PackageReference Include="Razorpay" Version="3.0.0" />
+    <PackageReference Include="shortid" Version="3.0.0" />
   </ItemGroup>
 
 
@@ -36,8 +39,24 @@
 
 
   <ItemGroup>
+    <ProjectReference Include="..\Address\Address.csproj" />
     <ProjectReference Include="..\Emailer\Emailer.csproj" />
+    <ProjectReference Include="..\Fundamentals\Fundamentals.csproj" />
+    <ProjectReference Include="..\OrderAndPayments\OrderAndPayments.csproj" />
+    <ProjectReference Include="..\Phone\Phone.csproj" />
     <ProjectReference Include="..\SMSer\SMSer.csproj" />
+    <ProjectReference Include="..\Tax\Tax.csproj" />
+    <ProjectReference Include="..\User\User.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\DetailModel.hi.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\DetailModel.en.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+    </EmbeddedResource>
   </ItemGroup>
 
 </Project>

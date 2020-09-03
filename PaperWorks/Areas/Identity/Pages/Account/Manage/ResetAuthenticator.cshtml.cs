@@ -6,18 +6,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
-        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
+        UserManager<Clientele> _userManager;
+        private readonly SignInManager<Clientele> _signInManager;
         ILogger<ResetAuthenticatorModel> _logger;
 
         public ResetAuthenticatorModel(
-            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
-            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager,
+            UserManager<Clientele> userManager,
+            SignInManager<Clientele> signInManager,
             ILogger<ResetAuthenticatorModel> logger)
         {
             _userManager = userManager;

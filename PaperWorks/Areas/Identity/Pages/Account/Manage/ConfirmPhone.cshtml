@@ -1,6 +1,7 @@
 ﻿@page
-@inject SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> SignInManager
-@inject UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> UserManager
+@using Users
+@inject SignInManager<Clientele> SignInManager
+@inject UserManager<Clientele> UserManager
 @model PaperWorks.Areas.Identity.Pages.Account.Manage.ConfirmPhoneModel
 @{
     ViewData["Title"] = "Confirm Phone number";

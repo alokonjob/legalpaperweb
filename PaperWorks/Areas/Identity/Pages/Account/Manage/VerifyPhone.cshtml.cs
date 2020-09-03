@@ -4,21 +4,23 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using SMSer;
 using Twilio.Rest.Verify.V2.Service;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
     [Authorize]
     public class VerifyPhoneModel : PageModel
     {
-        private readonly TwilioVerifySettings _settings;
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly IConfiguration configuration;
+        private readonly UserManager<Clientele> _userManager;
 
-        public VerifyPhoneModel(IOptions<TwilioVerifySettings> settings, UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager)
+        public VerifyPhoneModel(IConfiguration configuration, UserManager<Clientele> userManager)
         {
-            _settings = settings.Value;
+            this.configuration = configuration;
             _userManager = userManager;
         }
 
@@ -39,8 +41,8 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                 var verification = await VerificationResource.CreateAsync(
                     to: PhoneNumber,
                     channel: "sms",
-                    pathServiceSid: _settings.VerificationServiceSID
-                );
+                    pathServiceSid: configuration["TwilioVerificationServiceSID"]
+                ) ;
 
                 if (verification.Status == "pending")
                 {

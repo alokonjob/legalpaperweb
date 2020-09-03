@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Address;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -10,18 +11,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using SMSer;
 using Twilio.Exceptions;
 using Twilio.Rest.Lookups.V1;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     public partial class IndexModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
-        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
+        private readonly UserManager<Clientele> _userManager;
+        private readonly SignInManager<Clientele> _signInManager;
         public List<SelectListItem> AvailableCountries { get; }
         public IndexModel(
-            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
-            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager,
-            PhoneCountryService countryService)
+            UserManager<Clientele> userManager,
+            SignInManager<Clientele> signInManager,
+            CountryService countryService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -46,7 +48,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
             public string PhoneNumberCountryCode { get; set; }
         }
 
-        private async Task LoadAsync(AspNetCore.Identity.Mongo.Model.MongoUser user)
+        private async Task LoadAsync(Clientele user)
         {
             var userName = await _userManager.GetUserNameAsync(user);
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);

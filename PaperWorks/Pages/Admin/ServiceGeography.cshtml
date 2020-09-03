@@ -1,0 +1,101 @@
+﻿@page
+@model PaperWorks.ServiceGeographyModel
+@{
+    ViewData["Title"] = "ServiceGeography";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<section id="serviceGeography" class="container">
+    <h4>Services and Location</h4>
+</section>
+<section id="servicegeoMaster">
+    <div class="container">
+        <div class="row">
+
+            <form id="enableServiceInGeography" method="post" class="form-inline">
+                <div class="form-group mr-2">
+                    <label asp-for="InputEnableService.ServiceDetail.Name" class="mr-2"></label>
+                    <select asp-for="InputEnableService.ServiceDetail.Name" asp-items="Model.ServiceSelection" class="form-control mr-2"></select>
+                    <span asp-validation-for="InputEnableService.ServiceDetail.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mr-2">
+                    <label asp-for="InputEnableService.Location.City" class="mr-2"></label>
+                    <select asp-for="InputEnableService.Location.City" asp-items="Model.GeoSelection" class="form-control mr-2"></select>
+                    <span asp-validation-for="InputEnableService.Location.City" class="text-danger"></span>
+                </div>
+
+                <button id="AddServiecButton" type="submit" asp-page-handler="EnableService" class="btn btn-primary">Enable Serice In Area</button>
+
+            </form>
+        </div>
+        <div class="row mt-3">
+
+            <form id="service" method="post" class="form-inline">
+                <div class="form-group mr-2">
+                    <label asp-for="InputService.Name" class="mr-2"></label>
+                    <input asp-for="InputService.Name" class="form-control mr-2" />
+                    <span asp-validation-for="InputService.Name" class="text-danger"></span>
+                </div>
+                <div class="form-group mr-2">
+                    <label asp-for="InputService.Type" class="mr-2"></label>
+                    <select asp-for="InputService.Type" asp-items="Model.ServiceTypes" class="form-control mr-2"></select>
+                    <span asp-validation-for="InputService.Type" class="text-danger"></span>
+                </div>
+
+                <button id="AddServiecButton" type="submit" asp-page-handler="AddMasterService" class="btn btn-primary">Add New Service</button>
+
+            </form>
+        </div>
+        <div class="row mt-3">
+            <form id="gepgraphy" method="post" class="form-inline">
+                <div class="form-group mr-2">
+                    <label asp-for="InputGeography.City" class="mr-2"></label>
+                    <input asp-for="InputGeography.City" class="form-control mr-2" />
+                    <span asp-validation-for="InputGeography.City" class="text-danger"></span>
+                </div>
+                <div class="form-group mr-2">
+                    <label asp-for="InputGeography.State" class="mr-2"></label>
+                    <select asp-for="InputGeography.State" asp-items="Model.AvailableStates" class="form-control mr-2" value="Delhi"></select>
+                    <span asp-validation-for="InputGeography.State" class="text-danger"></span>
+                </div>
+
+
+                <button id="AddGeoButton" type="submit" asp-page-handler="AddMasterGeographyService" class="btn btn-primary">Add New Geography</button>
+
+            </form>
+
+        </div>
+
+
+    </div>
+</section>
+
+<section id="serviceListing">
+    <table class="table mt-3">
+        <tr>
+            <td class="lead"><strong>Serivce Name</strong></td>
+            <td class="lead"><strong>Serice Category</strong></td>
+            <td class="lead"><strong>Service Active</strong></td>
+        </tr>
+        @foreach (var service in Model.AllServices)
+        {
+
+            <tr>
+                <td>@service?.Name</td>
+                <td>@service?.Type</td>
+                <td>@service?.IsActive</td>
+            </tr>
+        }
+    </table>
+
+</section>
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#serviceGeography").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+        });
+    </script>
+}
+

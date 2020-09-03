@@ -16,7 +16,7 @@ namespace Emailer
         }
         public async Task SendEmailAsync(string toEmail, string subject, string htmlMessage)
         {
-            var apiKey = Configuration["Keys:SendGrid:ApiKey"];
+            var apiKey = Configuration["SendGridApiKey"];
             var client = new SendGridClient(apiKey);
             var msg = new SendGridMessage()
             {

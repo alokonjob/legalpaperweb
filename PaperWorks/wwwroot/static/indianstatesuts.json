@@ -1,0 +1,185 @@
+[
+  {
+    "Text": "Andaman And Nicobar",
+    "Group.Name": "UT",
+    "Value": "Andaman And Nicobar"
+  },
+  {
+    "Text": "Andhra Pradesh",
+    "Group.Name": "State",
+    "Value": "Andhra Pradesh"
+  },
+  {
+    "Text": "Arunachal Pradesh",
+    "Group.Name": "State",
+    "Value": "Arunachal Pradesh"
+  },
+  {
+    "Text": "Assam",
+    "Group.Name": "State",
+    "Value": "Assam"
+  },
+  {
+    "Text": "Bihar",
+    "Group.Name": "State",
+    "Value": "Bihar"
+  },
+  {
+    "Text": "Chandigarh",
+    "Group.Name": "UT",
+    "Value": "Chandigarh"
+  },
+  {
+    "Text": "Chhattisgarh",
+    "Group.Name": "State",
+    "Value": "Chhattisgarh"
+  },
+
+  {
+    "Text": "Dadar and Nagar Haveli",
+    "Group.Name": "UT",
+    "Value": "Dadar and Nagar Haveli"
+  },
+
+  {
+    "Text": "Daman and Diu",
+    "Group.Name": "UT",
+    "Value": "Daman and Diu"
+  },
+
+  {
+    "Text": "Delhi",
+    "Group.Name": "UT",
+    "Value": "Delhi"
+  },
+  {
+    "Text": "Goa",
+    "Group.Name": "State",
+    "Value": "Goa"
+  },
+  {
+    "Text": "Gujarat",
+    "Group.Name": "State",
+    "Value": "Gujarat"
+  },
+  {
+    "Text": "Haryana",
+    "Group.Name": "State",
+    "Value": "Haryana"
+  },
+  {
+    "Text": "Himachal Pradesh",
+    "Group.Name": "State",
+    "Value": "Himachal Pradesh"
+  },
+  {
+    "Text": "Jammu and Kashmir",
+    "Group.Name": "State",
+    "Value": "Jammu and Kashmir"
+  },
+  {
+    "Text": "Jharkhand",
+    "Group.Name": "State",
+    "Value": "Jharkhand"
+  },
+  {
+    "Text": "Karnataka",
+    "Group.Name": "State",
+    "Value": "Karnataka"
+  },
+  {
+    "Text": "Kerala",
+    "Group.Name": "State",
+    "Value": "Kerala"
+  },
+  {
+    "Text": "Lakshadweep",
+    "Group.Name": "UT",
+    "Value": "Lakshadweep"
+  },
+  {
+    "Text": "Madhya Pradesh",
+    "Group.Name": "State",
+    "Value": "Madhya Pradesh"
+  },
+  {
+    "Text": "Maharashtra",
+    "Group.Name": "State",
+    "Value": "Maharashtra"
+  },
+  {
+    "Text": "Manipur",
+    "Group.Name": "State",
+    "Value": "Manipur"
+  },
+  {
+    "Text": "Meghalaya",
+    "Group.Name": "State",
+    "Value": "Meghalaya"
+  },
+  {
+    "Text": "Mizoram",
+    "Group.Name": "State",
+    "Value": "Mizoram"
+  },
+  {
+    "Text": "Nagaland",
+    "Group.Name": "State",
+    "Value": "Nagaland"
+  },
+  {
+    "Text": "Odisha",
+    "Group.Name": "State",
+    "Value": "Odisha"
+  },
+  {
+    "Text": "Puducherry",
+    "Group.Name": "UT",
+    "Value": "Puducherry"
+  },
+  {
+    "Text": "Punjab",
+    "Group.Name": "State",
+    "Value": "Punjab"
+  },
+  {
+    "Text": "Rajasthan",
+    "Group.Name": "State",
+    "Value": "Rajasthan"
+  },
+  {
+    "Text": "Sikkim",
+    "Group.Name": "State",
+    "Value": "Sikkim"
+  },
+  {
+    "Text": "Tamil Nadu",
+    "Group.Name": "State",
+    "Value": "Tamil Nadu"
+  },
+  {
+    "Text": "Telangana",
+    "Group.Name": "State",
+    "Value": "Telangana"
+  },
+  {
+    "Text": "Tripura",
+    "Group.Name": "State",
+    "Value": "Tripura"
+  },
+  {
+    "Text": "Uttar Pradesh",
+    "Group.Name": "State",
+    "Value": "Uttar Pradesh"
+  },
+  {
+    "Text": "Uttarakhand",
+    "Group.Name": "State",
+    "Value": "Uttarakhand"
+  },
+  {
+    "Text": "West Bengal",
+    "Group.Name": "State",
+    "Value": "West Bengal"
+  }
+]

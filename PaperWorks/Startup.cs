@@ -15,7 +15,21 @@ using Microsoft.Extensions.Hosting;
 using Emailer;
 using SMSer;
 using AspNetCore.Identity.Mongo;
-
+using Address;
+using Users;
+using User;
+using MongoDB.Bson.Serialization.Conventions;
+using Fundamentals;
+using Fundamentals.Managers;
+using Fundamentals.Repository;
+using Microsoft.AspNetCore.Localization;
+using System.Globalization;
+using Microsoft.Extensions.Options;
+using Tax;
+using Phone;
+using OrderAndPayments;
+using Fundamentals.DbContext;
+using Microsoft.Extensions.Configuration;
 namespace PaperWorks
 {
     public class Startup
@@ -30,49 +44,97 @@ namespace PaperWorks
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+            //services.AddDbContext<ApplicationDbContext>(options =>
+            //    options.UseSqlServer(
+            //        Configuration.GetConnectionString("DefaultConnection")));
 
-            //services.AddDefaultIdentity<AspNetCore.Identity.Mongo.Model.MongoUser>(options => options.SignIn.RequireConfirmedAccount = true);
-            services.AddIdentityMongoDbProvider<AspNetCore.Identity.Mongo.Model.MongoUser, AspNetCore.Identity.Mongo.Model.MongoRole>(identityOptions =>
+            var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
+            ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
+            //services.AddDefaultIdentity<Clientele>(options => options.SignIn.RequireConfirmedAccount = true);
+            services.AddIdentityMongoDbProvider<Clientele, AspNetCore.Identity.Mongo.Model.MongoRole>(identityOptions =>
             {
                 identityOptions.Password.RequiredLength = 6;
-                identityOptions.Password.RequireLowercase = false;
-                identityOptions.Password.RequireUppercase = false;
-                identityOptions.Password.RequireNonAlphanumeric = false;
-                identityOptions.Password.RequireDigit = false;
-                
-            }, mongoIdentityOptions => {
-                mongoIdentityOptions.ConnectionString = "mongodb://localhost/MongoIdentityTestDb3";
-            });
+                identityOptions.Password.RequireLowercase = true;
+                identityOptions.Password.RequireUppercase = true;
+                identityOptions.Password.RequireNonAlphanumeric = true;
+                identityOptions.Password.RequireDigit = true;
 
+            }, mongoIdentityOptions =>
+            {
+                mongoIdentityOptions.ConnectionString =Configuration["MongoConnection"];
+            });
+            //https://docs.microsoft.com/en-us/azure/key-vault/general/vs-key-vault-add-connected-service#:~:text=Go%20to%20the%20Azure%20portal,from%20the%20All%20account%20section.
+            //https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal
             services.AddRazorPages();
+            var GoogleId = Configuration["GooglClientId"];
             services.AddAuthentication()
+
         .AddGoogle(options =>
         {
-            IConfigurationSection googleAuthNSection =
-                Configuration.GetSection("Google");
-            IConfigurationSection fbAuthNSection =
-                Configuration.GetSection("Facebook");
+            //IConfigurationSection googleAuthNSection =
+            //    Configuration.GetSection("Google");
+            //IConfigurationSection fbAuthNSection =
+            //    Configuration.GetSection("Facebook");
 
-            options.ClientId = googleAuthNSection["ClientId"];
-            options.ClientSecret = googleAuthNSection["ClientSecret"];
-        }).AddFacebook(facebookOptions =>
+            options.ClientId = Configuration["GooglClientId"]; ;
+            options.ClientSecret = Configuration["GoogleClientSecret"];
+        })
+        .AddFacebook(facebookOptions =>
         {
-            facebookOptions.AppId = Configuration["Facebook:AppId"];
-            facebookOptions.AppSecret = Configuration["Facebook:AppSecret"];
-        }).AddMicrosoftAccount(microsoftOptions =>
+            facebookOptions.AppId = Configuration["FacebookAppId"];
+            facebookOptions.AppSecret = Configuration["FacecbookAppSecret"];
+        })
+        .AddMicrosoftAccount(microsoftOptions =>
         {
-            microsoftOptions.ClientId = Configuration["Microsoft:ClientId"];
-            microsoftOptions.ClientSecret = Configuration["Microsoft:ClientSecret"];
+            microsoftOptions.ClientId = Configuration["MicrosoftClientId"];
+            microsoftOptions.ClientSecret = Configuration["MicrosoftClientSecret"];
         });
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedCultures = new[]
+                 {
+                    new CultureInfo("en"),
+                    new CultureInfo("de"),
+                    new CultureInfo("fr"),
+                    new CultureInfo("es"),
+                    new CultureInfo("ru"),
+                    new CultureInfo("ja"),
+                    new CultureInfo("ar"),
+                    new CultureInfo("hi"),
+                    new CultureInfo("en-GB")
+                  };
+                options.DefaultRequestCulture = new RequestCulture("hi");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedCultures;
+            });
+            services.AddSession();
+            services.AddMemoryCache();
+            services.AddMvc().AddViewLocalization();
+            services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.AddScoped<IEmailer, EmailerBoy>();
 
             InitTwilio.Init(Configuration);
-            services.Configure<TwilioVerifySettings>(Configuration.GetSection("Keys:Twilio"));
-            services.AddSingleton<PhoneCountryService>();
+            
+            services.AddSingleton<CountryService>();
+            services.AddSingleton<StateStaticService>();
+            services.AddScoped<IClienteleRepository, ClienteleRepository>();
+
+            services.AddScoped<IClienteleServices, ClienteleServices>();
+            services.AddScoped<IServiceManagement, ServiceManager>();
+            services.AddScoped<IServiceRepository, ServiceRepository>();
+            services.AddScoped<IGeographyManagement, GeographyManagement>();
+            services.AddScoped<IGeographyRepository, GeographyRepository>();
+            services.AddScoped<IEnabledServices, EnabledServicesManager>();
+            services.AddScoped<IServiceEnableRepository, ServiceEnableRepository>();
+            services.AddScoped<ITaxService, TaxService>();
+            services.AddScoped<IPhoneService, PhoneService>();
+            services.AddScoped<IPaymentService, PaymentService>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            services.AddScoped<IMongoDbContext, MongoDbContext>();
+
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -92,9 +154,12 @@ namespace PaperWorks
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
+            app.UseSession();//For storing session values
             app.UseRouting();
-
+            //https://docs.microsoft.com/en-us/troubleshoot/aspnet/set-current-culture
+            //https://www.mikesdotnetting.com/article/345/localisation-in-asp-net-core-razor-pages-cultures
+            var localizationOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>().Value;
+            app.UseRequestLocalization(localizationOptions);
             app.UseAuthentication();
             app.UseAuthorization();
 
@@ -102,6 +167,7 @@ namespace PaperWorks
             {
                 endpoints.MapRazorPages();
             });
+            app.UseCookiePolicy();
         }
     }
 }

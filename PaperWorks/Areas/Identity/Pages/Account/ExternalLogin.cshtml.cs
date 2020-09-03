@@ -14,20 +14,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ExternalLoginModel : PageModel
     {
-        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly SignInManager<Clientele> _signInManager;
+        private readonly UserManager<Clientele> _userManager;
         private readonly IEmailer emailer;
         private readonly ILogger<ExternalLoginModel> _logger;
 
         public ExternalLoginModel(
-            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager,
-            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
+            SignInManager<Clientele> signInManager,
+            UserManager<Clientele> userManager,
             ILogger<ExternalLoginModel> logger,IEmailer emailer
             )
         {
@@ -106,7 +107,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                     };
                     if (ModelState.IsValid)
                     {
-                        var user = new AspNetCore.Identity.Mongo.Model.MongoUser { UserName = Input.Email, Email = Input.Email };
+                        var user = new Clientele { UserName = Input.Email, Email = Input.Email,IsActive=true };
 
                         var userCreateResult = await _userManager.CreateAsync(user);
                         if (userCreateResult.Succeeded)
@@ -162,7 +163,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account
 
             if (ModelState.IsValid)
             {
-                var user = new AspNetCore.Identity.Mongo.Model.MongoUser { UserName = Input.Email, Email = Input.Email };
+                var user = new Clientele { UserName = Input.Email, Email = Input.Email,IsActive = true };
 
                 var result = await _userManager.CreateAsync(user);
                 if (result.Succeeded)

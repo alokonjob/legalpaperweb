@@ -5,18 +5,19 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     public class DeletePersonalDataModel : PageModel
     {
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
-        private readonly SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> _signInManager;
+        private readonly UserManager<Clientele> _userManager;
+        private readonly SignInManager<Clientele> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
 
         public DeletePersonalDataModel(
-            UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager,
-            SignInManager<AspNetCore.Identity.Mongo.Model.MongoUser> signInManager,
+            UserManager<Clientele> userManager,
+            SignInManager<Clientele> signInManager,
             ILogger<DeletePersonalDataModel> logger)
         {
             _userManager = userManager;

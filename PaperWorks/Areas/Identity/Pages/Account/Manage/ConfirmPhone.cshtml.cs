@@ -5,22 +5,24 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using SMSer;
 using Twilio.Rest.Verify.V2.Service;
+using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 {
     [Authorize]
     public class ConfirmPhoneModel : PageModel
     {
-        private readonly TwilioVerifySettings _settings;
-        private readonly UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> _userManager;
+        private readonly UserManager<Clientele> _userManager;
+        private readonly IConfiguration configuration;
         public bool IsPhoneNumberAlreadyConfirmed = false;
-        public ConfirmPhoneModel(UserManager<AspNetCore.Identity.Mongo.Model.MongoUser> userManager, IOptions<TwilioVerifySettings> settings)
+        public ConfirmPhoneModel(UserManager<Clientele> userManager, IConfiguration Configuration)
         {
             _userManager = userManager;
-            _settings = settings.Value;
+            configuration = Configuration;
         }
 
         public string PhoneNumber { get; set; }
@@ -49,7 +51,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
                 var verification = await VerificationCheckResource.CreateAsync(
                     to: PhoneNumber,
                     code: VerificationCode,
-                    pathServiceSid: _settings.VerificationServiceSID
+                    pathServiceSid: configuration["TwilioVerificationServiceSID"]
                 );
                 if (verification.Status == "approved")
                 {

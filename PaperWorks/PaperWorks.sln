@@ -5,9 +5,21 @@ VisualStudioVersion = 16.0.29609.76
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PaperWorks", "PaperWorks.csproj", "{7E22734E-1413-49B7-93EA-DA4B8BAF687E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emailer", "..\Emailer\Emailer.csproj", "{497A6A12-78F5-4AF4-A9EE-7092DFA8E500}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Emailer", "..\Emailer\Emailer.csproj", "{497A6A12-78F5-4AF4-A9EE-7092DFA8E500}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SMSer", "..\SMSer\SMSer.csproj", "{478CAC2C-8F93-43CD-A679-F8A4D4D8FB34}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SMSer", "..\SMSer\SMSer.csproj", "{478CAC2C-8F93-43CD-A679-F8A4D4D8FB34}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Address", "..\Address\Address.csproj", "{E5F18C79-E725-43A9-A546-3AB7DE38E9BA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "User", "..\User\User.csproj", "{8C3BD44F-E314-48F6-A3B0-A233EEBD4272}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Fundamentals", "..\Fundamentals\Fundamentals.csproj", "{327F2B3D-1164-41C1-98BB-29FEB5248212}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OrderAndPayments", "..\OrderAndPayments\OrderAndPayments.csproj", "{403524E3-96E8-4BE4-B078-BC986EB5DE53}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tax", "..\Tax\Tax.csproj", "{6F080329-DAC7-4FA1-B6F5-70624C65882D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Phone", "..\Phone\Phone.csproj", "{1193BB6A-9E2E-4C23-9604-B688E7844A79}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,6 +39,30 @@ Global
 		{478CAC2C-8F93-43CD-A679-F8A4D4D8FB34}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{478CAC2C-8F93-43CD-A679-F8A4D4D8FB34}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{478CAC2C-8F93-43CD-A679-F8A4D4D8FB34}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5F18C79-E725-43A9-A546-3AB7DE38E9BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5F18C79-E725-43A9-A546-3AB7DE38E9BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5F18C79-E725-43A9-A546-3AB7DE38E9BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5F18C79-E725-43A9-A546-3AB7DE38E9BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C3BD44F-E314-48F6-A3B0-A233EEBD4272}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C3BD44F-E314-48F6-A3B0-A233EEBD4272}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C3BD44F-E314-48F6-A3B0-A233EEBD4272}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C3BD44F-E314-48F6-A3B0-A233EEBD4272}.Release|Any CPU.Build.0 = Release|Any CPU
+		{327F2B3D-1164-41C1-98BB-29FEB5248212}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{327F2B3D-1164-41C1-98BB-29FEB5248212}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{327F2B3D-1164-41C1-98BB-29FEB5248212}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{327F2B3D-1164-41C1-98BB-29FEB5248212}.Release|Any CPU.Build.0 = Release|Any CPU
+		{403524E3-96E8-4BE4-B078-BC986EB5DE53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{403524E3-96E8-4BE4-B078-BC986EB5DE53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{403524E3-96E8-4BE4-B078-BC986EB5DE53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{403524E3-96E8-4BE4-B078-BC986EB5DE53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F080329-DAC7-4FA1-B6F5-70624C65882D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F080329-DAC7-4FA1-B6F5-70624C65882D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F080329-DAC7-4FA1-B6F5-70624C65882D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F080329-DAC7-4FA1-B6F5-70624C65882D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1193BB6A-9E2E-4C23-9604-B688E7844A79}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1193BB6A-9E2E-4C23-9604-B688E7844A79}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1193BB6A-9E2E-4C23-9604-B688E7844A79}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1193BB6A-9E2E-4C23-9604-B688E7844A79}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

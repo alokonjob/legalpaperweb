@@ -24,6 +24,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
         public static string PersonalData => "PersonalData";
 
         public static string TwoFactorAuthentication => "TwoFactorAuthentication";
+        public static string Address => "Address";
 
         public static string IndexNavClass(ViewContext viewContext) => PageNavClass(viewContext, Index);
 
@@ -41,6 +42,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
         public static string PersonalDataNavClass(ViewContext viewContext) => PageNavClass(viewContext, PersonalData);
 
         public static string TwoFactorAuthenticationNavClass(ViewContext viewContext) => PageNavClass(viewContext, TwoFactorAuthentication);
+        public static string AddressNavClass(ViewContext viewContext) => PageNavClass(viewContext, Address);
 
         private static string PageNavClass(ViewContext viewContext, string page)
         {

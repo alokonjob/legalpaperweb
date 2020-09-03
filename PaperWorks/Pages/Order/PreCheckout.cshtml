@@ -1,0 +1,151 @@
+﻿
+@page
+@using  Users
+@using Razorpay.Api;
+@inject SignInManager<Clientele> SignInManager
+@inject UserManager<Clientele> UserManager
+@inject IStringLocalizer<DetailModel> localizer
+@model PaperWorks.PreCheckout
+@{
+    ViewData["Title"] = "Pre Checkout";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+<section id="checkoutsection">
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Confirm Order Details</h4>
+</section>
+
+
+<form method="POST" data-ajax="true" data-ajax-method="post" id="checkoutForm">
+    <div class="row ">
+        <div class="col-md-6">
+            <div class="card bg-light border-0 p-3 m-5">
+                <div class="card-body mt-3">
+                    <h4 class="card-title">Order Details</h4>
+                    <h6 class="card-subtitle text-muted">We will create your sign in for free</h6>
+                    <div class="form-group">
+                        <label asp-for="Input.Name"></label>
+                        @if (string.IsNullOrEmpty(Model.Input.Name))
+                        {
+                            <input asp-for="Input.Name" class="form-control" />
+                        }
+                        else
+                        {
+                            <input asp-for="Input.Name" class="form-control" disabled />
+                        }
+                        <span asp-validation-for="Input.Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Input.Email"></label>
+                        @if (string.IsNullOrEmpty(Model.Input.Email))
+                        {
+                            <input asp-for="Input.Email" class="form-control" />
+                        }
+                        else
+                        { 
+                            <input asp-for="Input.Email" class="form-control" disabled="disabled" />
+                        
+                        }
+                        <span asp-validation-for="Input.Email" class="text-danger"></span>
+                    </div>
+
+                    @*<div class="form-group">
+                            <label asp-for="Input.ConfirmPassword"></label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>*@
+                <div class="form-group">
+                    <label asp-for="Input.PhoneNumberCountryCode"></label>
+                    <select asp-for="Input.PhoneNumberCountryCode" asp-items="Model.AvailableCountries" class="form-control" value="India"></select>
+                    <span asp-validation-for="Input.PhoneNumberCountryCode" class="text-danger"></span>
+
+
+                    <label asp-for="Input.PhoneNumber"></label>
+                    @if (string.IsNullOrEmpty(Model.Input.PhoneNumber))
+                    {
+                        <input asp-for="Input.PhoneNumber" class="form-control" />
+                    }
+                    else
+                    {
+                        <input asp-for="Input.PhoneNumber" class="form-control" disabled/>
+                    }
+                    <span asp-validation-for="Input.PhoneNumber" class="text-danger" disabled></span>
+
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card bg-light border-0 p-3 m-5 disabled">
+                <div class="card-header">
+                    <h4 class="text-center">
+                        @localizer[Model.CurrentOrderService.ServiceDetail.DetailedDisplayInfo.DisplayName]
+                    </h4>
+                </div>
+                <div class="card-body mt-3">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="text-left d-inline text-muted">Payment Structure</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-right text-muted">Rs @Model.CurrentOrderService.CostToCustomer</p>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="text-left d-inline text-muted">Taxes</p>
+                        </div>
+                        <div class="col-md-6">
+                            <p class="text-right text-muted">Rs @Model.TaxAmount</p>
+                        </div>
+
+                    </div>
+                    <div>
+                        <label>Promo Code</label>
+                        <input class="form-control" />
+
+                    </div>
+                    <div class="card-footer text-muted mt-3">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <p class="text-left d-inline text-muted"><strong>Final Amount</strong></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p class="text-right text-muted"><strong>Rs @Model.FinalAmount</strong></p>
+                            </div>
+
+                        </div>
+                        <div class="row justify-content-center bg-success">
+
+                        </div>
+                        <div class="row">
+                            <button id="preCheckout" type="submit" class="btn btn-success btn-block">Create Account and  Pay</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</form>
+
+
+
+
+
+
+@section Scripts{
+
+
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#checkoutsection").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+        }
+    </script>
+}
+
+

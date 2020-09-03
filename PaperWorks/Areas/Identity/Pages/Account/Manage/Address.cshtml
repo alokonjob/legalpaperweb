@@ -1,0 +1,67 @@
+﻿@page
+@model PaperWorks.Areas.Identity.Pages.Account.Manage.AddressModel
+@{
+    ViewData["Title"] = "Address";
+    ViewData["ActivePage"] = ManageNavPages.Address;
+    Layout = "_Layout.cshtml";
+}
+
+<h4>@ViewData["Title"]</h4>
+<section id="address">
+    <div class="row">
+        <div class="col">
+            <form id="address-form" method="post">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AddressOfUser.HouseNo"></label>
+                            <input asp-for="AddressOfUser.HouseNo" class="form-control" />
+                            <span asp-validation-for="AddressOfUser.HouseNo" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AddressOfUser.Locality"></label>
+                            <input asp-for="AddressOfUser.Locality" class="form-control" />
+                            <span asp-validation-for="AddressOfUser.Locality" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AddressOfUser.LandMark"></label>
+                            <input asp-for="AddressOfUser.LandMark" class="form-control" />
+                            <span asp-validation-for="AddressOfUser.LandMark" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AddressOfUser.City"></label>
+                            <input asp-for="AddressOfUser.City" class="form-control" />
+                            <span asp-validation-for="AddressOfUser.City" class="text-danger"></span>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label asp-for="AddressOfUser.Pin"></label>
+                            <input asp-for="AddressOfUser.Pin" class="form-control" />
+                            <span asp-validation-for="AddressOfUser.Pin" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AddressOfUser.State"></label>
+                            <select asp-for="AddressOfUser.State" asp-items="Model.AvailableStates" class="form-control" value="Delhi"></select>
+                            <span asp-validation-for="AddressOfUser.State" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="AddressOfUser.Country"></label>
+                            <select asp-for="AddressOfUser.Country" asp-items="Model.AvailableCountries" class="form-control" value="IN"></select>
+                            <span asp-validation-for="AddressOfUser.Country" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+               
+                <button id="save-address-button" type="submit" asp-page-handler="SaveAddress" class="btn btn-primary">Save Address</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
