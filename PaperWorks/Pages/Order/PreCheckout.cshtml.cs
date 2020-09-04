@@ -38,6 +38,13 @@ namespace PaperWorks
         public string TaxAmount { get; set; }
         public string FinalAmount { get; set; }
         public EnabledServices CurrentOrderService = null;
+
+        /// <summary>
+        /// This variable will be useful when we try to create a new user from this page and it fails.
+        /// It will help in not disabling the UI elements, 
+        /// which are otherwise disabled when input fields are non-empty on page load
+        /// </summary>
+        public bool UserCreationFailed { get; set; }
         public PreCheckout(IEnabledServices enabledServicesManager, ITaxService taxService, UserManager<Clientele> userManager,
             SignInManager<Clientele> signInManager,
             CountryService countryService, IEmailer emailSender,IPhoneService phoneService)
@@ -107,6 +114,7 @@ namespace PaperWorks
 
         public IActionResult OnPostAsync()
         {
+            var dbId = HttpContext.Session.GetString("DataBaseId");
             //If User is not already signed in then create a login
             if (signInManager.IsSignedIn(User) == false)
             {
@@ -132,6 +140,14 @@ namespace PaperWorks
                         user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true};
                     }
                     var password = PasswordGenerator.GenerateRandomPassword();
+                    var existingUserByPhone = userManager.Users.Where(item => item.PhoneNumber == user.PhoneNumber).FirstOrDefault();
+                    if (existingUserByPhone != null)
+                    {
+                        ModelState.AddModelError(string.Empty, $"Phone Number {user.PhoneNumber} Is Already Taken");
+                        CurrentOrderService = enabledServicesManager.GetEnabledServiceById(dbId);
+                        UserCreationFailed = true;
+                        return Page();
+                    }
                     var result = userManager.CreateAsync(user, password).Result;
                     if (result.Succeeded)
                     {
@@ -165,10 +181,11 @@ namespace PaperWorks
                     foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError(string.Empty, error.Description);
+                        CurrentOrderService = enabledServicesManager.GetEnabledServiceById(dbId);
+                        UserCreationFailed = true;
                     }
                 }
                 else {
-                    var dbId = HttpContext.Session.GetString("DataBaseId");
                     if (!string.IsNullOrEmpty(dbId))
                     {
                         CurrentOrderService = enabledServicesManager.GetEnabledServiceById(dbId);
@@ -182,6 +199,7 @@ namespace PaperWorks
             }
             else if (signInManager.IsSignedIn(User))
             {
+                UserCreationFailed = false;//it is a hack , think of another graceful solution man
                 var user = userManager.GetUserAsync(User).Result;
                 bool requiresUpdate = false;
                 if (string.IsNullOrEmpty(user.FullName))

@@ -13,7 +13,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Emailer;
-using SMSer;
+
 using AspNetCore.Identity.Mongo;
 using Address;
 using Users;
@@ -29,7 +29,13 @@ using Tax;
 using Phone;
 using OrderAndPayments;
 using Fundamentals.DbContext;
-using Microsoft.Extensions.Configuration;
+using Azure.Identity;
+using Azure.Security.KeyVault.Secrets;
+using Azure.Core;
+using Asgard;
+using Messaging;
+using Twilio;
+
 namespace PaperWorks
 {
     public class Startup
@@ -61,12 +67,11 @@ namespace PaperWorks
 
             }, mongoIdentityOptions =>
             {
-                mongoIdentityOptions.ConnectionString =Configuration["MongoConnection"];
+                mongoIdentityOptions.ConnectionString = "mongodb+srv://alok:Host123456@mflix.cxpea.azure.mongodb.net/onjob2?authSource=admin&replicaSet=atlas-x3ev7x-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true";
             });
             //https://docs.microsoft.com/en-us/azure/key-vault/general/vs-key-vault-add-connected-service#:~:text=Go%20to%20the%20Azure%20portal,from%20the%20All%20account%20section.
-            //https://docs.microsoft.com/en-us/azure/key-vault/secrets/quick-create-portal
             services.AddRazorPages();
-            var GoogleId = Configuration["GooglClientId"];
+            IHeimdall gateKeeper = new Heimdall();
             services.AddAuthentication()
 
         .AddGoogle(options =>
@@ -76,18 +81,18 @@ namespace PaperWorks
             //IConfigurationSection fbAuthNSection =
             //    Configuration.GetSection("Facebook");
 
-            options.ClientId = Configuration["GooglClientId"]; ;
-            options.ClientSecret = Configuration["GoogleClientSecret"];
+            options.ClientId = gateKeeper.GetSecretValue("GooglClientId");// Configuration["GooglClientId"]; ;
+            options.ClientSecret = gateKeeper.GetSecretValue("GoogleClientSecret");// Configuration["GoogleClientSecret"];
         })
         .AddFacebook(facebookOptions =>
         {
-            facebookOptions.AppId = Configuration["FacebookAppId"];
-            facebookOptions.AppSecret = Configuration["FacecbookAppSecret"];
+            facebookOptions.AppId = gateKeeper.GetSecretValue("FacebookAppId");
+            facebookOptions.AppSecret = gateKeeper.GetSecretValue("FacecbookAppSecret");// Configuration["FacecbookAppSecret"];
         })
         .AddMicrosoftAccount(microsoftOptions =>
         {
-            microsoftOptions.ClientId = Configuration["MicrosoftClientId"];
-            microsoftOptions.ClientSecret = Configuration["MicrosoftClientSecret"];
+            microsoftOptions.ClientId = gateKeeper.GetSecretValue("MicrosoftClientId");// Configuration["MicrosoftClientId"];
+            microsoftOptions.ClientSecret = gateKeeper.GetSecretValue("MicrosoftClientSecret");// Configuration["MicrosoftClientSecret"];
         });
             services.Configure<RequestLocalizationOptions>(options =>
             {
@@ -113,9 +118,12 @@ namespace PaperWorks
             services.AddLocalization(options => options.ResourcesPath = "Resources");
 
             services.AddScoped<IEmailer, EmailerBoy>();
-
-            InitTwilio.Init(Configuration);
-            
+            services.AddScoped<IMessaging, MessagingService>();
+            services.AddScoped<IHeimdall, Heimdall>();
+            MessagingService.Init(gateKeeper);
+            //var one = gateKeeper.GetSecretValue("TwilioAccountSID");
+            //var two = gateKeeper.GetSecretValue("TwilioAuthToken");
+            //TwilioClient.Init(one, two);
             services.AddSingleton<CountryService>();
             services.AddSingleton<StateStaticService>();
             services.AddScoped<IClienteleRepository, ClienteleRepository>();

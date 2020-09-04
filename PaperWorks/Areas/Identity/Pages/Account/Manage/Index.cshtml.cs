@@ -8,9 +8,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using SMSer;
+using Phone;
+
 using Twilio.Exceptions;
-using Twilio.Rest.Lookups.V1;
+
 using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage
@@ -19,14 +20,17 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Clientele> _userManager;
         private readonly SignInManager<Clientele> _signInManager;
+        private readonly IPhoneService _phoneService;
+
         public List<SelectListItem> AvailableCountries { get; }
         public IndexModel(
             UserManager<Clientele> userManager,
             SignInManager<Clientele> signInManager,
-            CountryService countryService)
+            CountryService countryService,IPhoneService phoneService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _phoneService = phoneService;
             AvailableCountries = countryService.GetCountries();
             AvailableCountries.Where(x => x.Value == "IN").FirstOrDefault().Selected = true;
         }
@@ -92,22 +96,18 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
             {
                 try
                 {
-                    var numberDetails = await PhoneNumberResource.FetchAsync(
-            pathPhoneNumber: new Twilio.Types.PhoneNumber(Input.PhoneNumber),
-            countryCode: Input.PhoneNumberCountryCode,
-            type: new List<string> { "carrier" });
+                    var  phoneDetails = await _phoneService.GetPhoneNumberDetails(Input.PhoneNumber, Input.PhoneNumberCountryCode);
+
 
                     // only allow user to set phone number if capable of receiving SMS
-                    if (numberDetails?.Carrier != null
-                        && numberDetails.Carrier.TryGetValue("type", out var phoneNumberType)
-                        && phoneNumberType == "landline")
+                    if (phoneDetails.IsSMSCapable == false)
                     {
                         ModelState.AddModelError($"{nameof(Input)}.{nameof(Input.PhoneNumber)}",
-                            $"The number you entered does not appear to be capable of receiving SMS ({phoneNumberType}). Please enter a different value and try again");
+                            $"The number you entered does not appear to be capable of receiving SMS ({phoneDetails.Type}). Please enter a different value and try again");
                         return Page();
                     }
 
-                    var numberToSave = numberDetails.PhoneNumber.ToString();
+                    var numberToSave = phoneDetails.DialNumber.ToString();
                     var setPhoneResult = await _userManager.SetPhoneNumberAsync(user, numberToSave);
                     if (!setPhoneResult.Succeeded)
                     {

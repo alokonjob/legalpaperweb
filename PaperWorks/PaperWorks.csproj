@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>aspnet-PaperWorks-4640BBD7-F866-4364-9F9B-A623800723F5</UserSecretsId>
+    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,6 +16,8 @@
 
   <ItemGroup>
     <PackageReference Include="AspNetCore.Identity.Mongo" Version="6.7.1" />
+    <PackageReference Include="Azure.Identity" Version="1.2.2" />
+    <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.6" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.6" />
@@ -27,6 +30,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.1.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Razorpay" Version="3.0.0" />
     <PackageReference Include="shortid" Version="3.0.0" />
@@ -40,13 +44,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Address\Address.csproj" />
-    <ProjectReference Include="..\Emailer\Emailer.csproj" />
+    <ProjectReference Include="..\Email\Email.csproj" />
     <ProjectReference Include="..\Fundamentals\Fundamentals.csproj" />
+    <ProjectReference Include="..\Messaging\Messaging.csproj" />
     <ProjectReference Include="..\OrderAndPayments\OrderAndPayments.csproj" />
     <ProjectReference Include="..\Phone\Phone.csproj" />
-    <ProjectReference Include="..\SMSer\SMSer.csproj" />
     <ProjectReference Include="..\Tax\Tax.csproj" />
     <ProjectReference Include="..\User\User.csproj" />
+    <ProjectReference Include="..\Vault\Vault.csproj" />
   </ItemGroup>
 
 

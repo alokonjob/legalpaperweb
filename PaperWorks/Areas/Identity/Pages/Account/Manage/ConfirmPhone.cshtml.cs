@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using SMSer;
-using Twilio.Rest.Verify.V2.Service;
+using Phone;
+
+//using Twilio.Rest.Verify.V2.Service;
 using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage
@@ -18,11 +19,13 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<Clientele> _userManager;
         private readonly IConfiguration configuration;
+        private readonly IPhoneService phoneService;
         public bool IsPhoneNumberAlreadyConfirmed = false;
-        public ConfirmPhoneModel(UserManager<Clientele> userManager, IConfiguration Configuration)
+        public ConfirmPhoneModel(UserManager<Clientele> userManager, IConfiguration Configuration,IPhoneService phoneService)
         {
             _userManager = userManager;
             configuration = Configuration;
+            this.phoneService = phoneService;
         }
 
         public string PhoneNumber { get; set; }
@@ -48,12 +51,9 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 
             try
             {
-                var verification = await VerificationCheckResource.CreateAsync(
-                    to: PhoneNumber,
-                    code: VerificationCode,
-                    pathServiceSid: configuration["TwilioVerificationServiceSID"]
-                );
-                if (verification.Status == "approved")
+                var phoneDetails = await phoneService.IsPhoneVerifiedAsync(PhoneNumber, VerificationCode);
+                
+                if (phoneDetails.IsVerified)
                 {
                     var identityUser = await _userManager.GetUserAsync(User);
                     identityUser.PhoneNumberConfirmed = true;
@@ -70,7 +70,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
                 }
                 else
                 {
-                    ModelState.AddModelError("", $"There was an error confirming the verification code: {verification.Status}");
+                    ModelState.AddModelError("", $"There was an error confirming the verification code: {VerificationCode}");
                 }
             }
             catch (Exception)

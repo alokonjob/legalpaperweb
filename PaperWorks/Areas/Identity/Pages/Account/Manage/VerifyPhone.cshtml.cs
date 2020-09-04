@@ -6,7 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using SMSer;
+using Phone;
+
 using Twilio.Rest.Verify.V2.Service;
 using Users;
 
@@ -17,11 +18,13 @@ namespace PaperWorks.Areas.Identity.Pages.Account
     {
         private readonly IConfiguration configuration;
         private readonly UserManager<Clientele> _userManager;
+        private readonly IPhoneService _phoneService;
 
-        public VerifyPhoneModel(IConfiguration configuration, UserManager<Clientele> userManager)
+        public VerifyPhoneModel(IConfiguration configuration, UserManager<Clientele> userManager, IPhoneService phoneService)
         {
             this.configuration = configuration;
             _userManager = userManager;
+            _phoneService = phoneService;
         }
 
         public string PhoneNumber { get; set; }
@@ -44,12 +47,13 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                     pathServiceSid: configuration["TwilioVerificationServiceSID"]
                 ) ;
 
-                if (verification.Status == "pending")
+                var phoneDetails = await _phoneService.PhoneVerificationStatus(PhoneNumber);
+                if (phoneDetails.VerificationStatusText == "pending")
                 {
                     return RedirectToPage("ConfirmPhone");
                 }
 
-                ModelState.AddModelError("", $"There was an error sending the verification code: {verification.Status}");
+                ModelState.AddModelError("", $"There was an error sending the verification code: {phoneDetails.VerificationStatusText}");
             }
             catch (Exception error)
             {
