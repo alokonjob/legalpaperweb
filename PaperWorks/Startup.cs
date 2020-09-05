@@ -53,7 +53,7 @@ namespace PaperWorks
             //services.AddDbContext<ApplicationDbContext>(options =>
             //    options.UseSqlServer(
             //        Configuration.GetConnectionString("DefaultConnection")));
-
+            IHeimdall gateKeeper = new Heimdall(Configuration);
             var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
             ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
             //services.AddDefaultIdentity<Clientele>(options => options.SignIn.RequireConfirmedAccount = true);
@@ -67,33 +67,29 @@ namespace PaperWorks
 
             }, mongoIdentityOptions =>
             {
-                mongoIdentityOptions.ConnectionString = "mongodb+srv://alok:Host123456@mflix.cxpea.azure.mongodb.net/onjob2?authSource=admin&replicaSet=atlas-x3ev7x-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true";
+                mongoIdentityOptions.ConnectionString = gateKeeper.GetSecretValue("MongoConnection");
             });
             //https://docs.microsoft.com/en-us/azure/key-vault/general/vs-key-vault-add-connected-service#:~:text=Go%20to%20the%20Azure%20portal,from%20the%20All%20account%20section.
             services.AddRazorPages();
-            IHeimdall gateKeeper = new Heimdall();
+            
             services.AddAuthentication()
+                .AddGoogle(options =>
+                {
+                    options.ClientId = gateKeeper.GetSecretValue("GooglClientId");// Configuration["GooglClientId"]; ;
+                    options.ClientSecret = gateKeeper.GetSecretValue("GoogleClientSecret");// Configuration["GoogleClientSecret"];
+                })
+                .AddFacebook(facebookOptions =>
+                {
+                    facebookOptions.AppId = gateKeeper.GetSecretValue("FacebookAppId");
+                    facebookOptions.AppSecret = gateKeeper.GetSecretValue("FacecbookAppSecret");// Configuration["FacecbookAppSecret"];
+                })
+                .AddMicrosoftAccount(microsoftOptions =>
+                {
+                    microsoftOptions.ClientId = gateKeeper.GetSecretValue("MicrosoftClientId");// Configuration["MicrosoftClientId"];
+                    microsoftOptions.ClientSecret = gateKeeper.GetSecretValue("MicrosoftClientSecret");// Configuration["MicrosoftClientSecret"];
+                });
 
-        .AddGoogle(options =>
-        {
-            //IConfigurationSection googleAuthNSection =
-            //    Configuration.GetSection("Google");
-            //IConfigurationSection fbAuthNSection =
-            //    Configuration.GetSection("Facebook");
 
-            options.ClientId = gateKeeper.GetSecretValue("GooglClientId");// Configuration["GooglClientId"]; ;
-            options.ClientSecret = gateKeeper.GetSecretValue("GoogleClientSecret");// Configuration["GoogleClientSecret"];
-        })
-        .AddFacebook(facebookOptions =>
-        {
-            facebookOptions.AppId = gateKeeper.GetSecretValue("FacebookAppId");
-            facebookOptions.AppSecret = gateKeeper.GetSecretValue("FacecbookAppSecret");// Configuration["FacecbookAppSecret"];
-        })
-        .AddMicrosoftAccount(microsoftOptions =>
-        {
-            microsoftOptions.ClientId = gateKeeper.GetSecretValue("MicrosoftClientId");// Configuration["MicrosoftClientId"];
-            microsoftOptions.ClientSecret = gateKeeper.GetSecretValue("MicrosoftClientSecret");// Configuration["MicrosoftClientSecret"];
-        });
             services.Configure<RequestLocalizationOptions>(options =>
             {
                 var supportedCultures = new[]
@@ -108,7 +104,7 @@ namespace PaperWorks
                     new CultureInfo("hi"),
                     new CultureInfo("en-GB")
                   };
-                options.DefaultRequestCulture = new RequestCulture("hi");
+                options.DefaultRequestCulture = new RequestCulture("en");
                 options.SupportedCultures = supportedCultures;
                 options.SupportedUICultures = supportedCultures;
             });
@@ -143,6 +139,7 @@ namespace PaperWorks
 
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+            //services.AddApplicationInsightsTelemetry();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

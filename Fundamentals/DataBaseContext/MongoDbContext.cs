@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Conventions;
+﻿using Asgard;
+using MongoDB.Bson.Serialization.Conventions;
 using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,16 @@ namespace Fundamentals.DbContext
 {
     public class MongoDbContext : IMongoDbContext
     {
+        private readonly IHeimdall heimdall;
 
+        public MongoDbContext(IHeimdall heimdall)
+        {
+            this.heimdall = heimdall;
+        }
         public IMongoClient GetMongoClient()
         {
-            IMongoClient client = new MongoClient("mongodb+srv://alok:Host123456@mflix.cxpea.azure.mongodb.net/onjob2?authSource=admin&replicaSet=atlas-x3ev7x-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true");
+            var mongoConnection = heimdall.GetSecretValue("MongoConnection");
+            IMongoClient client = new MongoClient(mongoConnection);
             var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
             ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
             return client;
@@ -20,7 +27,7 @@ namespace Fundamentals.DbContext
         public IMongoCollection<T> GetCollection<T>(IMongoClient client, string collectionName)
         {
 
-            return client.GetDatabase("onjob2").GetCollection<T>(collectionName);
+            return client.GetDatabase(heimdall.GetSecretValue("MongoDbName")).GetCollection<T>(collectionName);
         }
     }
 }

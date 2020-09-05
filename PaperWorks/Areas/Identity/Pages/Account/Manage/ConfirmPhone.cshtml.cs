@@ -8,8 +8,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Phone;
-
-//using Twilio.Rest.Verify.V2.Service;
 using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account.Manage

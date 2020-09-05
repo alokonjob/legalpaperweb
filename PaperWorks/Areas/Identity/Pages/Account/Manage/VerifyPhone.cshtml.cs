@@ -1,5 +1,6 @@
 using System;
 using System.Threading.Tasks;
+using Asgard;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,11 +17,11 @@ namespace PaperWorks.Areas.Identity.Pages.Account
     [Authorize]
     public class VerifyPhoneModel : PageModel
     {
-        private readonly IConfiguration configuration;
+        private readonly IHeimdall configuration;
         private readonly UserManager<Clientele> _userManager;
         private readonly IPhoneService _phoneService;
 
-        public VerifyPhoneModel(IConfiguration configuration, UserManager<Clientele> userManager, IPhoneService phoneService)
+        public VerifyPhoneModel(IHeimdall configuration, UserManager<Clientele> userManager, IPhoneService phoneService)
         {
             this.configuration = configuration;
             _userManager = userManager;
@@ -41,12 +42,6 @@ namespace PaperWorks.Areas.Identity.Pages.Account
 
             try
             {
-                var verification = await VerificationResource.CreateAsync(
-                    to: PhoneNumber,
-                    channel: "sms",
-                    pathServiceSid: configuration["TwilioVerificationServiceSID"]
-                ) ;
-
                 var phoneDetails = await _phoneService.PhoneVerificationStatus(PhoneNumber);
                 if (phoneDetails.VerificationStatusText == "pending")
                 {
