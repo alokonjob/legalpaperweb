@@ -25,6 +25,16 @@ namespace OrderAndPayments
             await _orderCollection.InsertOneAsync(order);
             return order;
         }
-
+        public async Task<ClienteleOrder> AddCaseToOrder(ObjectId orderId, ObjectId CaseId)
+        {
+            var filter = Builders<ClienteleOrder>.Filter.Eq(t => t.ClientOrderId, orderId);
+            var updatedDoc = await _orderCollection.FindOneAndUpdateAsync<ClienteleOrder>(
+               filter,
+               Builders<ClienteleOrder>.Update.Set(
+                   t => t.CaseId,
+                   CaseId)
+               );
+            return updatedDoc;
+        }
     }
 }

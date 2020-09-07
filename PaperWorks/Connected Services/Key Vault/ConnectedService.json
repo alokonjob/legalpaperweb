@@ -7,7 +7,7 @@
   "ExtendedData": {
     "PublishEnvironmentProperties": {
       "KeyVaultName": [
-        "paperworks-0-kv"
+        "onjob-jv-dev-01"
       ]
     }
   }

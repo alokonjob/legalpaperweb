@@ -19,5 +19,10 @@ namespace OrderAndPayments
         {
             return await orderRepository.Add(order);
         }
+
+        public async Task<ClienteleOrder> AddCaseToOrder(ObjectId order,ObjectId caseId)
+        {
+            return await orderRepository.AddCaseToOrder(order, caseId);
+        }
     }
 }

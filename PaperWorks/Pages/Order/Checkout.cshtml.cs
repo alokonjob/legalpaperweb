@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Address;
+using CaseManagementSpace;
 using Emailer;
 using Fundamentals.Managers;
 using Fundamentals.Unit;
@@ -38,6 +39,7 @@ namespace PaperWorks
         private readonly IPhoneService phoneService;
         private readonly IPaymentService paymentService;
         private readonly IOrderService orderService;
+        private readonly ICaseManagement caseManagement;
 
         public List<SelectListItem> AvailableCountries { get; }
         public string TaxAmount { get; set; }
@@ -49,7 +51,7 @@ namespace PaperWorks
 
         public CheckoutModel(IEnabledServices enabledServicesManager, ITaxService taxService, UserManager<Clientele> userManager,
             SignInManager<Clientele> signInManager,
-            CountryService countryService, IEmailer emailSender,IPhoneService phoneService,IPaymentService paymentService,IOrderService orderService)
+            CountryService countryService, IEmailer emailSender,IPhoneService phoneService,IPaymentService paymentService,IOrderService orderService,ICaseManagement caseManagement)
         {
             this.enabledServicesManager = enabledServicesManager;
             this.taxService = taxService;
@@ -60,6 +62,7 @@ namespace PaperWorks
             this.phoneService = phoneService;
             this.paymentService = paymentService;
             this.orderService = orderService;
+            this.caseManagement = caseManagement;
             AvailableCountries = countryService.GetCountries();
             AvailableCountries.Where(x => x.Value == "IN").FirstOrDefault().Selected = true;
             Input = new InputModel();
@@ -116,6 +119,8 @@ namespace PaperWorks
             }
         }
 
+        //TODO : Add Log and Make Truly Asunc
+        //Researh needed because in async Post Calls Redirection was giving problems
         public IActionResult OnPostAsync()
         {
             //If User is not already signed in then create a login
@@ -152,6 +157,7 @@ namespace PaperWorks
                 //verify payment
                 paymentService.VerifyPayment(paymentDone.GateWayDetails);
 
+                //create an order
                 ClienteleOrder order = new ClienteleOrder();
                 order.ClientelePaymentId = payId;
                 order.CustomerRequirementDetail = CurrentOrderService;
@@ -160,13 +166,34 @@ namespace PaperWorks
                 {
                     UseNumbers = true
                 };
-                
+                var userDetails = userManager.GetUserAsync(User).Result;
+
                 order.Receipt = ShortId.Generate(options);
+                order.ClientId = userDetails.Id;
                 var finalOrder = orderService.SaveOrder(order).Result;
 
+                //Update Payment Status
                 var payInfoAtRazor = new Razorpay.Api.Payment((string)paymentId).Fetch(paymentId);
                 paymentService.UpdatePayment(payId, finalOrder.ClientOrderId, "captured");
                 CustomerOrderId = finalOrder.Receipt;
+
+                //generate a case //should we also have a case id in order so that we can filter out order without cases if any
+                Case clientCase = new Case();
+                clientCase.Order = new AbridgedOrder()
+                {
+                    ServiceName = finalOrder.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName,
+                    City = finalOrder.CustomerRequirementDetail.Location.City,
+                    CustomerEmail = userDetails.Email,
+                    CustomerPhone = userDetails.PhoneNumber,
+                    ConsultantEmail = userDetails.Email,
+                    ConsultantPhone = userDetails.PhoneNumber,
+                    CostToCustomer = finalOrder.CustomerRequirementDetail.CostToCustomer.ToString()
+
+                };
+                var caseId = caseManagement.GenerateCase(clientCase).Result;
+
+                var updatedOrder = orderService.AddCaseToOrder(order.ClientOrderId,caseId).Result;
+
             }
             //If user is already signed in but no phone. Ask to Enter Phone.
             //If User is already signed in and there phone/email verification and email verifi

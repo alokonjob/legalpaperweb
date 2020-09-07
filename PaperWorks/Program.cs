@@ -23,7 +23,7 @@ namespace PaperWorks
         //this one saved my life bcoz i was not able to connect with any other approach from
         //Azure App Service and i had tried IAM approach and approach in heimdall module
 
-        //https://cloudskills.io/blog/aspnet-core-azure-key-vault
+        //IMP https://cloudskills.io/blog/aspnet-core-azure-key-vault
         public static IHostBuilder CreateHostBuilder(string[] args) =>
         Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((ctx, builder) =>

@@ -45,7 +45,55 @@
 
 
   <ItemGroup>
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.bootstrap.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.bootstrap.min.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.bootstrap4.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.bootstrap4.min.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.foundation.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.foundation.min.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.jqueryui.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.jqueryui.min.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.semanticui.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\dataTables.semanticui.min.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\jquery.dataTables.js" />
+    <None Include="wwwroot\dataTabless\DataTables-1.10.21\js\jquery.dataTables.min.js" />
+    <None Include="wwwroot\dataTabless\datatables.js" />
+    <None Include="wwwroot\dataTabless\datatables.min.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\dataTables.fixedColumns.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\dataTables.fixedColumns.min.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.bootstrap.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.bootstrap.min.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.bootstrap4.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.bootstrap4.min.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.dataTables.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.foundation.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.foundation.min.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.jqueryui.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.jqueryui.min.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.semanicui.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.semanticui.js" />
+    <None Include="wwwroot\dataTabless\FixedColumns-3.3.1\js\fixedColumns.semanticui.min.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\dataTables.searchPanes.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\dataTables.searchPanes.min.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.bootstrap.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.bootstrap.min.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.bootstrap4.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.bootstrap4.min.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.dataTables.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.dataTables.min.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.foundation.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.foundation.min.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.jqueryui.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.jqueryui.min.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.semanicui.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.semanticui.js" />
+    <None Include="wwwroot\dataTabless\SearchPanes-1.1.1\js\searchPanes.semanticui.min.js" />
+  </ItemGroup>
+
+
+  <ItemGroup>
     <ProjectReference Include="..\Address\Address.csproj" />
+    <ProjectReference Include="..\CaseManagement\CaseManagement.csproj" />
     <ProjectReference Include="..\Email\Email.csproj" />
     <ProjectReference Include="..\Fundamentals\Fundamentals.csproj" />
     <ProjectReference Include="..\Messaging\Messaging.csproj" />

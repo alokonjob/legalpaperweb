@@ -35,6 +35,7 @@ using Azure.Core;
 using Asgard;
 using Messaging;
 using Twilio;
+using CaseManagementSpace;
 
 namespace PaperWorks
 {
@@ -139,6 +140,9 @@ namespace PaperWorks
 
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
+
+            services.AddScoped<ICaseManagement, CaseManagement>();
+            services.AddScoped<ICaseRepository, CaseRepository>();
             //services.AddApplicationInsightsTelemetry();
         }
 
