@@ -23,5 +23,15 @@ namespace CaseManagementSpace
         {
             return await caseRepository.GetAll();
         }
+
+        public async Task<Case> GetCaseById(string caseId)
+        {
+            return await caseRepository.GetCaseById(caseId);
+        }
+
+        public async Task<Case> UpdateConsultant(Case caseToUpdate)
+        {
+            return await caseRepository.UpdateConsultant(caseToUpdate);
+        }
     }
 }

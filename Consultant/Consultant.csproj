@@ -2,13 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
-    <Platforms>AnyCPU;x64</Platforms>
   </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="MongoDB.Bson" Version="2.11.2" />
-    <PackageReference Include="Razorpay" Version="3.0.0" />
-  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Fundamentals\Fundamentals.csproj" />

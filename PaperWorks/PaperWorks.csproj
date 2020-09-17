@@ -16,23 +16,23 @@
 
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.Identity.Mongo" Version="6.7.1" />
-    <PackageReference Include="Azure.Identity" Version="1.2.2" />
+    <PackageReference Include="AspNetCore.Identity.Mongo" Version="6.7.2" />
+    <PackageReference Include="Azure.Identity" Version="1.2.3" />
     <PackageReference Include="Azure.Security.KeyVault.Secrets" Version="4.1.0" />
-    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.12.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.6" />
+    <PackageReference Include="Microsoft.ApplicationInsights.AspNetCore" Version="2.14.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Facebook" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.MicrosoftAccount" Version="3.1.8" />
     <PackageReference Include="Microsoft.AspNetCore.AzureKeyVault.HostingStartup" Version="2.0.4" />
-    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.6" />
-    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.6" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.6">
+    <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="3.1.8" />
+    <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.8" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.8">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging.AzureAppServices" Version="3.1.8" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="Razorpay" Version="3.0.0" />
     <PackageReference Include="shortid" Version="3.0.0" />
@@ -94,6 +94,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Address\Address.csproj" />
     <ProjectReference Include="..\CaseManagement\CaseManagement.csproj" />
+    <ProjectReference Include="..\Consultant\Consultant.csproj" />
     <ProjectReference Include="..\Email\Email.csproj" />
     <ProjectReference Include="..\Fundamentals\Fundamentals.csproj" />
     <ProjectReference Include="..\Messaging\Messaging.csproj" />

@@ -21,7 +21,8 @@ namespace OrderAndPayments
 
 
     public class AbridgedOrder
-    { 
+    {
+        public ObjectId OrderId { get; set; }
         public string ServiceName { get; set; }
         public string City { get; set; }
         public string CustomerEmail { get; set; }

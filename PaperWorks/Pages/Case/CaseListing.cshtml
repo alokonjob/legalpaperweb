@@ -89,7 +89,7 @@
                 @Html.DisplayFor(model => customerCase.CreatedDate)
             </td>
             <td>
-                <a asp-page="/Order/PreCheckout" class="btn btn-success btn-block">Details</a>
+                <a asp-page="/Case/CaseDetail" class="btn btn-success btn-block" asp-route-caseId="@customerCase.CaseId">Details</a>
             </td>
 
         </tr>
@@ -112,16 +112,9 @@
     <script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/dataTabless/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    @*<script src="~/dataTabless/Responsive-2.2.5/js/dataTables.responsive.min.js"></script>*@
     <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
     <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>
     
-@*<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/dataTabless/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/dataTabless/Responsive-2.2.5/js/dataTables.responsive.min.js"></script>
-    <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
-    <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>*@
     <script>
         $(document).ready(function () {
             $('#caseList').DataTable({

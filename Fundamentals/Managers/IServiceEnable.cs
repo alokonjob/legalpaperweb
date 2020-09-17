@@ -14,6 +14,7 @@ namespace Fundamentals.Managers
         Result EnableServiceInLocation(EnabledServices service);
         EnabledServices GetEnabledService(string serviceName, string city);
         EnabledServices GetEnabledServiceById(string Id);
+        List<EnabledServices> GetEnabledServicesInCity(string city);
     }
 
     public class EnabledServicesManager : IEnabledServices
@@ -41,11 +42,21 @@ namespace Fundamentals.Managers
                 service.ServiceDetail = fullService;
                 service.Location = geography;
                 service.CostToCustomer = 17000;
+                service.CostToConsultant = 10000;
+                service.Steps = new List<ServiceStep>()
+                {
+                    new ServiceStep(){ Name="Customer Dcouments",Description="Get required documents from Customer",Status=""},
+                    new ServiceStep(){ Name="Application in Govt Office",Description="Apply in govt office",Status=""},
+                    new ServiceStep(){ Name="Go to Registrar Office",Description="Signing ceremony",Status=""},
+                    new ServiceStep(){ Name="Reecive Marriage Certificate",Description="Receive from Office",Status=""},
+                    new ServiceStep(){ Name="Provide to Customer",Description="Provide to Customer",Status=""},
+                };
                 serviceEnableRepo.Add(service);
+
             }
             catch (Exception error)
             {
-                return new Result(ResultValue.ErrorAndFatal, ErrorCode.RepositoryError, "Error While Enabling Service");
+                    return new Result(ResultValue.ErrorAndFatal, ErrorCode.RepositoryError, "Error While Enabling Service");
             }
             return new Result(ResultValue.Success, ErrorCode.None, "Successfully Saved");
         }
@@ -58,8 +69,13 @@ namespace Fundamentals.Managers
 
         public EnabledServices GetEnabledServiceById(string Id)
         {
-            var enabledService = serviceEnableRepo.GetEnabledServiceById(ObjectId.Parse(Id));
+            var enabledService = serviceEnableRepo.GetEnabledServiceById(Id);
             return enabledService;
+        }
+
+        public List<EnabledServices> GetEnabledServicesInCity(string city)
+        {
+            return serviceEnableRepo.GetEnabledServicesInCity(city);
         }
     }
 
@@ -67,7 +83,8 @@ namespace Fundamentals.Managers
     {
         void Add(EnabledServices service);
         EnabledServices GetEnabledService(string serviceName, string city);
-        EnabledServices GetEnabledServiceById(Object Id);
+        EnabledServices GetEnabledServiceById(string Id);
+        List<EnabledServices> GetEnabledServicesInCity(string city);
     }
 
     public class ServiceEnableRepository : IServiceEnableRepository
@@ -96,10 +113,16 @@ namespace Fundamentals.Managers
             x.Location.City == city).FirstOrDefault();
         }
 
-        public EnabledServices GetEnabledServiceById(Object Id)
+        public EnabledServices GetEnabledServiceById(string Id)
         {
-            return _enabledServicesCollection.Find<EnabledServices>(x =>
-            x.EnableId == Id).FirstOrDefault();
+            return _enabledServicesCollection.Find<EnabledServices>(x =>x.EnableId == Id).FirstOrDefault();
+        }
+
+        public List<EnabledServices> GetEnabledServicesInCity(string city)
+        {
+            var filter = Builders<EnabledServices>.Filter.Eq(t => t.Location.City, city);
+            var allServicesInCity = _enabledServicesCollection.Find(filter).ToList();
+            return allServicesInCity;
         }
     }
 }

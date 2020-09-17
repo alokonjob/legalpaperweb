@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using Address;
 using AspNetCore.Identity.Mongo.Model;
+using FundamentalAddress;
+
 namespace Users
 {
     public class Clientele : MongoUser

@@ -7,5 +7,6 @@ namespace OrderAndPayments
     {
         Task<ClienteleOrder> Add(ClienteleOrder order);
         Task<ClienteleOrder> AddCaseToOrder(ObjectId orderId, ObjectId CaseId);
+        Task<ClienteleOrder> GetOrderByCaseId(string orderId);
     }
 }

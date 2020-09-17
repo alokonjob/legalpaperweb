@@ -8,5 +8,7 @@ namespace CaseManagementSpace
     {
         Task<ObjectId> GenerateCase(Case customerCase);
         Task<List<Case>> GetAllCases();
+        Task<Case> GetCaseById(string caseId);
+        Task<Case> UpdateConsultant(Case caseToUpdate);
     }
 }

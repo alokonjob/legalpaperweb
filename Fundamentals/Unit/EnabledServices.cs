@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson.Serialization.Attributes;
+﻿using MongoDB.Bson;
+using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 using System.Collections.Generic;
@@ -11,18 +12,20 @@ namespace Fundamentals.Unit
     /// </summary>
     public class EnabledServices
     {
-        [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
-        public Object EnableId { get; set; }
+        [BsonId(IdGenerator = typeof(StringObjectIdGenerator))]
+        public string EnableId { get; set; }
         public Service ServiceDetail { get; set; }
         public Geography Location { get; set; }
         public List<ServiceStep> Steps { get; set; }
         public bool IsActive { get; set; }
         public int CostToCustomer { get; set; }
+        public int CostToConsultant { get; set; }
     }
 
     public class ServiceStep
     { 
         public string Name { get; set; }
         public string Description { get; set; }
+        public string Status { get; set; }
     }
 }

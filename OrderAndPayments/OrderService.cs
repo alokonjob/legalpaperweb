@@ -24,5 +24,10 @@ namespace OrderAndPayments
         {
             return await orderRepository.AddCaseToOrder(order, caseId);
         }
+
+        public async Task<ClienteleOrder> GetOrderByCaseId(string orderId)
+        {
+            return await orderRepository.GetOrderByCaseId(orderId);
+        }
     }
 }

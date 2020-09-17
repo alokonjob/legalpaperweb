@@ -1,0 +1,70 @@
+﻿@model List<EnabledServiceSelection>
+
+@if (Model.Count() == 0)
+{
+    <div>
+        <h4 class="lead text-center">This Selection has no Services</h4>
+    </div>
+}
+else
+{ 
+<table class="table table-striped table-bordered " id="serviceListingTable" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model[0].enabledService.ServiceDetail.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].enabledService.CostToConsultant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].enabledService.CostToCustomer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].FeeType)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].IsEnabled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model[0].enabledService.EnableId)
+            </th>
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @for (var i = 0 ; i < Model.Count(); i++)
+        {
+        <tr>
+            <td>
+                @Html.DisplayFor(model => model[i].enabledService.ServiceDetail.Name)
+            </td>
+            <td>
+                <input asp-for="@Model[i].enabledService.CostToConsultant" class="form-control" value="@Model[i].enabledService.CostToConsultant" />
+                @*@Html.TextBoxFor(model=>model[i].enabledService.CostToConsultant)*@
+                @*// @Html.DisplayFor(model => customerCaseUpdate.enabledService.CostToCustomer)*@
+            </td>
+            <td>
+                <input asp-for="@Model[i].enabledService.CostToCustomer" class="form-control" value="@Model[i].enabledService.CostToCustomer" />
+                @*@Html.DisplayFor(model => model[i].enabledService.CostToCustomer)*@
+            </td>
+            <td>
+                <input asp-for="@Model[i].FeeType" class="form-control" value="@Model[i].FeeType" />
+                @*@Html.DisplayFor(model => model[i].FeeType)*@
+            </td>
+            <td>
+                <input type="checkbox" id="isEnabled" class="form-control" asp-for="@Model[i].IsEnabled" />
+                @*@Html.CheckBoxFor(model => model[i].IsEnabled)*@
+                @*@Html.DisplayFor(model => customerCaseUpdate.IsEnabled)*@
+            </td>
+            <td>
+                <input  id="isEnabled" class="form-control" asp-for="@Model[i].enabledService.EnableId" />
+                @*@Html.DisplayFor(model => model[i].ServiceId)*@
+            </td>
+        </tr>
+
+        }
+    </tbody>
+</table>
+}

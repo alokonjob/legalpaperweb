@@ -6,12 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AspNetCore.Identity.Mongo" Version="6.7.1" />
+    <PackageReference Include="AspNetCore.Identity.Mongo" Version="6.7.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Address\Address.csproj" />
+    <ProjectReference Include="..\Email\Email.csproj" />
     <ProjectReference Include="..\Fundamentals\Fundamentals.csproj" />
+    <ProjectReference Include="..\Phone\Phone.csproj" />
   </ItemGroup>
 
 </Project>

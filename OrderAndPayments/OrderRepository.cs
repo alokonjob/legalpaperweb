@@ -36,5 +36,13 @@ namespace OrderAndPayments
                );
             return updatedDoc;
         }
+
+        public async Task<ClienteleOrder> GetOrderByCaseId(string orderId)
+        {
+            ObjectId orderObjectId = ObjectId.Parse(orderId);
+            var filter = Builders<ClienteleOrder>.Filter.Eq(t => t.CaseId, orderObjectId);
+            var fullOrder = await _orderCollection.FindAsync<ClienteleOrder>(filter);
+            return fullOrder.FirstOrDefault();
+        }
     }
 }

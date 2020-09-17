@@ -179,14 +179,16 @@ namespace PaperWorks
 
                 //generate a case //should we also have a case id in order so that we can filter out order without cases if any
                 Case clientCase = new Case();
+                clientCase.CaseManagerId = userDetails.Id;
                 clientCase.Order = new AbridgedOrder()
                 {
-                    ServiceName = finalOrder.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName,
+                    OrderId = order.ClientOrderId,
+                    ServiceName = finalOrder.CustomerRequirementDetail.ServiceDetail.Name,
                     City = finalOrder.CustomerRequirementDetail.Location.City,
                     CustomerEmail = userDetails.Email,
                     CustomerPhone = userDetails.PhoneNumber,
-                    ConsultantEmail = userDetails.Email,
-                    ConsultantPhone = userDetails.PhoneNumber,
+                    //ConsultantEmail = userDetails.Email,
+                    //ConsultantPhone = userDetails.PhoneNumber,
                     CostToCustomer = finalOrder.CustomerRequirementDetail.CostToCustomer.ToString()
 
                 };

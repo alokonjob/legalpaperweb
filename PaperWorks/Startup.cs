@@ -36,6 +36,8 @@ using Asgard;
 using Messaging;
 using Twilio;
 using CaseManagementSpace;
+using CaseManagement;
+using Consultant;
 
 namespace PaperWorks
 {
@@ -57,6 +59,7 @@ namespace PaperWorks
             IHeimdall gateKeeper = new Heimdall(Configuration);
             var camelCaseConvention = new ConventionPack { new CamelCaseElementNameConvention() };
             ConventionRegistry.Register("CamelCase", camelCaseConvention, type => true);
+            //services.AddControllers();  
             //services.AddDefaultIdentity<Clientele>(options => options.SignIn.RequireConfirmedAccount = true);
             services.AddIdentityMongoDbProvider<Clientele, AspNetCore.Identity.Mongo.Model.MongoRole>(identityOptions =>
             {
@@ -141,8 +144,13 @@ namespace PaperWorks
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IOrderRepository, OrderRepository>();
 
-            services.AddScoped<ICaseManagement, CaseManagement>();
+            services.AddScoped<ICaseManagement, CaseManagementSpace.CaseManagement>();
             services.AddScoped<ICaseRepository, CaseRepository>();
+            services.AddScoped<ICaseUpdateService, CaseUpdateService>();
+            services.AddScoped<ICaseUpdateRepository, CaseUpdateRepository>();
+            services.AddScoped<IConsultantCareerManagement, ConsultantCareerManagement>();
+            services.AddScoped<IConsultantCareerRepository, ConsultantCareerRepository>();
+
             //services.AddApplicationInsightsTelemetry();
         }
 
@@ -175,6 +183,7 @@ namespace PaperWorks
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+                //endpoints.MapControllers();
             });
             app.UseCookiePolicy();
         }

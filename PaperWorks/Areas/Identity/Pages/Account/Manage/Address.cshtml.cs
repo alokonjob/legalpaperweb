@@ -25,7 +25,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account.Manage
 
 
         [BindProperty(SupportsGet =true)]
-        public Address.UserAddress AddressOfUser { get; set; }
+        public FundamentalAddress.UserAddress AddressOfUser { get; set; }
         public AddressModel(SignInManager<Clientele> signInManager, UserManager<Clientele> userManager, StateStaticService fetchIndianStates, CountryService fetchCountry, IClienteleServices userServices)
         {
             this.signInManager = signInManager;

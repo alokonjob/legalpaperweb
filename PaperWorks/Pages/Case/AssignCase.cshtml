@@ -1,0 +1,95 @@
+﻿@page
+@model PaperWorks.AssignCaseModel
+@{
+    ViewData["Title"] = "AssignCase";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>AssignCase</h1>
+
+
+<form method="POST">
+    <div class="row m-3" id="consultants">
+        @for (int i = 0; i < Model.FullConsultantDetails.Count(); i++)
+        {
+            <div class="col-sm-3">
+
+                <div class="card  border-0 p-2 bg-danger text-white mb-1">
+                    <div class="card-header">
+                        <div class="row form-group">
+                            <div class="col-md-10">
+                                <h4 class="lead text-left"><strong>@Model.FullConsultantDetails[i].UserDetails.FullName</strong></h4>
+                            </div>
+                            <div class="col-md-2">
+                                <input type="radio" asp-for="SeletedEmail" id="radioStff" class="form-control" value="@Model.FullConsultantDetails[i].UserDetails.Email" data-toggle="modal" data-target="#exampleModal">
+                                <input type="hidden" asp-for="CaseId">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row form-group">
+                            <div class="col-md-2 col-lg-3">
+                                <span class="fa fa-rupee-sign fa-2x" aria-hidden="true"></span>
+                            </div>
+                            <div class="col-md-10 col-lg-9">
+                                @Model.FullConsultantDetails[i].ConsultantDetails.CurrentService.Fee
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-2 col-lg-3 ">
+                                <span class="fa fa-envelope-open-text fa-2x" aria-hidden="true"></span>
+                            </div>
+                            <div class="col-md-10 col-lg-9">
+                                @Model.FullConsultantDetails[i].UserDetails.Email
+                            </div>
+                        </div>
+                        <div class="row form-group">
+                            <div class="col-md-2 col-lg-3">
+                                <span class="fa fa-phone-volume fa-2x" aria-hidden="true"></span>
+                            </div>
+                            <div class="col-md-10 col-lg-9 ">
+                                @Model.FullConsultantDetails[i].UserDetails.PhoneNumber
+                            </div>
+                        </div>
+                    </div>
+                        <div class="card-footer">
+                            <span class="fa fa-star" aria-hidden="true"></span>
+                            <span aria-hidden="true" class="text-right ml-3 lead">@Model.FullConsultantDetails[i].ConsultantDetails.RatingsValue/5</span>
+                            <span class="fas fa-award fa-lg ml-3" aria-hidden="true"></span>
+                            <span aria-hidden="true" class="text-right ml-3 lead">@Model.FullConsultantDetails[i].ConsultantDetails.TotalCases Cases</span>
+                        </div>
+                    </div>
+            </div>
+
+        }
+
+
+        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Reason For Assignment</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+
+                    <div class="modal-body form-group">
+                        <textarea class="form-control" rows="3" asp-for="@Model.ReasonOfAssignment" placeholder="e.g. agreed On Low cost, Good rating"></textarea>
+                        @*<input class="form-control" type="hidden" id="Email" name="Email" value="@Model.FullConsultantDetails[i].UserDetails.Email" />
+                            <input class="form-control" type="hidden" id="Name" name="Name" value="@Model.FullConsultantDetails[i].UserDetails.FullName" />
+                            <input class="form-control" type="hidden" id="Phone" name="Phone" value="@Model.FullConsultantDetails[i].UserDetails.PhoneNumber" />*@
+                    </div>
+                    <div class="modal-footer form-group">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save changes</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+

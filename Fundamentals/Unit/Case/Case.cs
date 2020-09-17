@@ -31,24 +31,11 @@ namespace CaseManagementSpace
         public ObjectId CurrentConsultantId { get; set; }
         public List<ObjectId> PreviousConsultantId { get; set; }
         public DateTime CreatedDate { get; set; }
-        public DateTime ExpectedCaseCloseDate { get; set; }
-        public DateTime UpdatedDate { get; set; }
-        public List<CaseUpdate> CaseUpdates { get; set; }
-
+        public DateTime? ExpectedCaseCloseDate { get; set; }
+        public DateTime? UpdatedDate { get; set; }
+        //public List<CaseUpdate> CaseUpdates { get; set; }
         public CaseStatus CurrentStatus { get; set; }
-
         public CaseEscalationStatus EscalationStatus {get;set;}
-
-    }
-
-
-    public class CaseUpdate
-    {
-        public ObjectId CaseId { get; set; }
-        public List<int> AttachmentIds { get; set; }
-        public string Comment { get; set; }
-        public ObjectId UpdatedBy { get; set; }
-        public DateTime UpdatedDate { get; set; }
 
     }
 }

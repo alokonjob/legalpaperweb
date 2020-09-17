@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Text;
 
-namespace Address
+namespace FundamentalAddress
 {
     public class UserAddress
     {
         [Required(ErrorMessage = "House Number is required")]
-        [Display(Name = "Flat, House no., Building, Company, Apartment")]
+        [Display(Name = "Flat, House/Shop no., Apartment")]
         public string HouseNo { get; set; }
         [Required(ErrorMessage = "Locality is required")]
         [Display(Name = "Area, Colony, Street, Sector, Village")]

@@ -1,0 +1,50 @@
+﻿@using  CaseManagementSpace
+@model List<CaseUpdate>
+@if (Model.Count() == 0)
+{
+    <div>
+        <h4 class="lead">No Updates Yet.Start Working on this Case</h4>
+    </div>
+}
+else
+{
+
+    <table class="table table-striped table-bordered " id="caseUpdateTable" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].Comment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].UpdatedBy.FullName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model[0].UpdatedDate)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var customerCaseUpdate in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => customerCaseUpdate.Comment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => customerCaseUpdate.UpdatedBy.FullName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => customerCaseUpdate.UserFriendlyUpdateDate)
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}
+
+@section Scripts{
+
+}
