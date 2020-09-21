@@ -146,7 +146,7 @@ namespace PaperWorks
                         ConsultantId = user.Id,
                         Ratings = new List<double>() { 4 },
                         TotalCases = 0,
-                        ServicesOffered = AllEnabledService.Where(x => x.IsEnabled = true).Select(x => new ServicesOfConsultant() { EnabledServiceId = x.enabledService.EnableId, Fee = x.enabledService.CostToConsultant, FeeType = x.FeeType, IsEnabled = true }).ToList()
+                        ServicesOffered = AllEnabledService.Where(x => x.IsEnabled == true).Select(x => new ServicesOfConsultant() { EnabledServiceId = x.enabledService.EnableId, Fee = x.enabledService.CostToConsultant, FeeType = x.FeeType, IsEnabled = true }).ToList()
                     };
                     var consultant = consultantCareerManager.IntroduceConsultantCareer(consultantCareer).Result;
                     Input.ConsultantDocuments.ConsultantId = Input.ConsultantTaxDetails.ConsultantId =  consultant.ConsultantId;

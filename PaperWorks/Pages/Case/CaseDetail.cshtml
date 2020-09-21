@@ -43,7 +43,7 @@
             <div class="card-body mt-3">
                 @if (string.IsNullOrEmpty(@Model.CurrentCase.Order.ConsultantEmail))
                 {
-                    <a asp-page="/Case/AssignCase" class="btn btn-success btn-block" asp-route-caseId="@Model.CurrentCase.CaseId">Details</a>
+                    <a asp-page="/Case/AssignCase" class="btn btn-primary btn-block" asp-route-caseId="@Model.CurrentCase.CaseId">Assign Consultant</a>
                 }
                 else
                 {
