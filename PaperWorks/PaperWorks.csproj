@@ -100,8 +100,10 @@
     <ProjectReference Include="..\Messaging\Messaging.csproj" />
     <ProjectReference Include="..\OrderAndPayments\OrderAndPayments.csproj" />
     <ProjectReference Include="..\Phone\Phone.csproj" />
+    <ProjectReference Include="..\Storage\Storage.csproj" />
     <ProjectReference Include="..\Tax\Tax.csproj" />
     <ProjectReference Include="..\User\User.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
     <ProjectReference Include="..\Vault\Vault.csproj" />
   </ItemGroup>
 

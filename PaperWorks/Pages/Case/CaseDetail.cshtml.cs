@@ -1,14 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using CaseManagement;
 using CaseManagementSpace;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MongoDB.Bson;
 using OrderAndPayments;
+using SampleApp.Utilities;
+
+using Store;
 using Users;
 
 namespace PaperWorks
@@ -28,8 +34,16 @@ namespace PaperWorks
         [BindProperty]
         public ClienteleOrder CurrentOrder { get; set; }
         public List<CaseUpdate> AllUpdates { get; set; }
+
+        public List<string> AllFileNames { get; set; }
         [BindProperty]
         public string Comment { get; set; }
+
+        [BindProperty]
+        public BufferedMultipleFileUploadDb FileUpload { get; set; }
+        private readonly string[] _permittedExtensions = { ".txt",".png",".pdf",".jpg",".jpeg" };
+        private readonly long _fileSizeLimit = 2097152;
+
         public CaseDetailModel(ICaseManagement caseManagementService , IOrderService orderService,ICaseUpdateService caseUpdateService, UserManager<Clientele> userManager,
             SignInManager<Clientele> signInManager)
         {
@@ -39,12 +53,16 @@ namespace PaperWorks
             this.userManager = userManager;
             this.signInManager = signInManager;
         }
-        public void OnGet(string caseId)
+        public async Task<IActionResult> OnGetAsync(string caseId)
         {
             CurrentCase = caseManagementService.GetCaseById(caseId).Result;
             CurrentOrder = orderService.GetOrderByCaseId(caseId).Result;
             AllUpdates = caseUpdateService.GetAllUpdates(caseId).Result;
             if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+
+            Storage store = new Storage();
+            AllFileNames = await store.List(caseId);
+            return Page();
         }
 
 
@@ -64,5 +82,84 @@ namespace PaperWorks
             if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
             return Partial("_CaseUpdates", AllUpdates);
         }
+
+        public async Task<PartialViewResult> OnPostUploadAsync()
+        {
+            foreach (var formFile in FileUpload.FormFiles)
+            {
+                var formFileContent =
+                    await FileHelpers.ProcessFormFile<BufferedMultipleFileUploadDb>(
+                        formFile, ModelState, _permittedExtensions,
+                        _fileSizeLimit);
+
+                // **WARNING!**
+                // In the following example, the file is saved without
+                // scanning the file's contents. In most production
+                // scenarios, an anti-virus/anti-malware scanner API
+                // is used on the file before making the file available
+                // for download or for use by other systems. 
+                // For more information, see the topic that accompanies 
+                // this sample.
+            }
+            // Process uploaded files
+            // Don't rely on or trust the FileName property without validation.
+            Storage store = new Storage();
+            await store.Upload(CaseId, FileUpload.FormFiles);
+
+            //CurrentCase = caseManagementService.GetCaseById(CaseId).Result;
+            //CurrentOrder = orderService.GetOrderByCaseId(CaseId).Result;
+            //AllUpdates = caseUpdateService.GetAllUpdates(CaseId).Result;
+            //if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+
+            var names = await store.List(CaseId);
+            return Partial("_UploadedFileList", names);
+        }
+
+        public async Task<IActionResult> OnGetDownloadAsync(string FileName)
+        {
+            CurrentCase = caseManagementService.GetCaseById(CaseId).Result;
+            CurrentOrder = orderService.GetOrderByCaseId(CaseId).Result;
+            AllUpdates = caseUpdateService.GetAllUpdates(CaseId).Result;
+            if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+            
+            Storage store = new Storage();
+            var blobDto = await store.Download(CaseId, FileName);
+            FileStreamResult fileStreamResult = new FileStreamResult(blobDto.Content, blobDto.ContentType);
+            fileStreamResult.FileDownloadName = FileName;
+
+            AllFileNames = await store.List(CaseId);
+
+            return fileStreamResult;
+        }
+
+        public async Task<IActionResult> OnGetFile(string FileName)
+        {
+            CurrentCase = caseManagementService.GetCaseById(CaseId).Result;
+            CurrentOrder = orderService.GetOrderByCaseId(CaseId).Result;
+            AllUpdates = caseUpdateService.GetAllUpdates(CaseId).Result;
+            if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+
+            Storage store = new Storage();
+            var blobDto = await store.Download(CaseId, FileName);
+            FileStreamResult fileStreamResult = new FileStreamResult(blobDto.Content, blobDto.ContentType);
+            fileStreamResult.FileDownloadName = FileName;
+
+            AllFileNames = await store.List(CaseId);
+
+            return fileStreamResult;
+        }
+
+
+    }
+
+    public class BufferedMultipleFileUploadDb
+    {
+        [Required]
+        [Display(Name = "File")]
+        public List<IFormFile> FormFiles { get; set; }
+
+        [Display(Name = "Note")]
+        [StringLength(50, MinimumLength = 0)]
+        public string Note { get; set; }
     }
 }

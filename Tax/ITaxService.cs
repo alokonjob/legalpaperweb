@@ -14,7 +14,7 @@ namespace Tax
         public double GetTaxAmount(string area, string serviceName, double serviceAmount)
         {
             //Currently No Logic but 18% of serviceAmount;
-            return 0.18 * serviceAmount;
+            return Math.Round( 0.18 * serviceAmount,0);
         }
     }
 }
