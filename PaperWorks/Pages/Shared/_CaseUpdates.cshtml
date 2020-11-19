@@ -2,9 +2,16 @@
 @model List<CaseUpdate>
 @if (Model.Count() == 0)
 {
-    <div>
-        <h4 class="lead">No Updates Yet.Start Working on this Case</h4>
-    </div>
+
+    <section class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h4 class="lead text-danger">No Updates Yet.Start Working on this Case</h4>
+                </div>
+            </div>
+        </div>
+    </section>
 }
 else
 {

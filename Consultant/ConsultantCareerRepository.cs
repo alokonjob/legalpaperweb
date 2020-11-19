@@ -42,8 +42,15 @@ namespace Consultant
         public async Task<List<ConsultantCareer>>   GetConsultantsForService(string enabledServiceId)
         {
             var cc = await _consultantCareerCollection.Find(x => x.ServicesOffered.Any(x => x.EnabledServiceId == enabledServiceId)).ToListAsync();
-            var newcc = cc.Where(x=> x.ServicesOffered.Select(y => y.IsCurrent = (y.EnabledServiceId == enabledServiceId)).FirstOrDefault()).Select(z=> z.RatingsValue = Math.Round(z.Ratings.Sum()/z.Ratings.Count(),1)).ToList();
-
+            //var newcc = cc.Where(x=> x.ServicesOffered.Select(y => y.IsCurrent = (y.EnabledServiceId == enabledServiceId)).FirstOrDefault()).Select(z=> z.RatingsValue = Math.Round(z.Ratings.Sum()/z.Ratings.Count(),1)).ToList();
+            foreach (var career in cc)
+            {
+                foreach (var service in career.ServicesOffered)
+                {
+                    service.IsCurrent = service.EnabledServiceId == enabledServiceId;
+                }
+                career.RatingsValue = Math.Round(career.Ratings.Sum() / career.Ratings.Count(), 1);
+            }
             return cc;
                 // ---- OR -----------
                 /*var filter = Builders<ConsultantCareer>.Filter.ElemMatch(x => x.ServicesOffered, y => y.EnabledServiceId == enabledServiceId);

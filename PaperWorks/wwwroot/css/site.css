@@ -466,3 +466,85 @@ select.list-dt {
 }
 /*multistepform*/
 
+/*stepwise progressbar*/
+#progressbarssz {
+    margin-bottom: 30px;
+    overflow: hidden;
+    color: lightgrey
+}
+
+    #progressbarssz .active {
+        color: #673AB7
+    }
+
+    #progressbarssz li {
+        list-style-type: none;
+        font-size: 10px;
+        width: 25%;
+        float: left;
+        position: relative;
+        font-weight: 300
+    }
+
+    #progressbar #accountsz:before {
+        font-family: FontAwesome;
+        content: "\f13e"
+    }
+
+    #progressbar #personalsz:before {
+        font-family: FontAwesome;
+        content: "\f007"
+    }
+
+    #progressbar #paymentsz:before {
+        font-family: FontAwesome;
+        content: "\f030"
+    }
+
+    #progressbar #confirmsz:before {
+        font-family: FontAwesome;
+        content: "\f00c"
+    }
+
+    #progressbarssz li:before {
+        width: 30px;
+        height: 30px;
+        line-height: 23px;
+        display: block;
+        font-size: 20px;
+        color: #ffffff;
+        background: lightgray;
+        border-radius: 30%;
+        margin: 0 auto 10px auto;
+        padding: 2px
+    }
+
+    #progressbarssz li:after {
+        content: '';
+        width: 100%;
+        height: 2px;
+        background: lightgray;
+        position: absolute;
+        left: 0;
+        top: 25px;
+        z-index: -1
+    }
+
+    #progressbarssz li.active:before,
+    #progressbarssz li.active:after {
+        background: #673AB7
+    }
+
+.progress {
+    height: 20px
+}
+
+.progress-bar {
+    background-color: #673AB7
+}
+
+/*.fit-image {
+    width: 100%;
+    object-fit: cover
+}*/
+

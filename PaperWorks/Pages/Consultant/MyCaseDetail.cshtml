@@ -1,0 +1,164 @@
+﻿@page "{caseId}"
+
+@using Microsoft.Extensions.Localization;
+@inject IStringLocalizer<DetailModel> localizer
+
+@model PaperWorks.MyCaseDetailModel
+@{
+    ViewData["Title"] = "CaseDetail";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<section id="caseDetailSection">
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Case Detail of  @localizer[Model.CurrentOrder.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName]</h4>
+</section>
+
+
+<div class="row ">
+    <div class="col-md-6">
+        <div class="card  border-0 p-2 m-1 bg-primary text-white mb-3">
+            <div class="card-header">
+                <h5 class="lead text-center"><strong>Customer Order Details</strong></h5>
+            </div>
+            <div class="card-body mt-3">
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="card-subtitle lead m-1">Customer Email</h6>
+                        <h6 class="card-subtitle lead m-1">Customer Phone</h6>
+                        <h6 class="card-subtitle lead m-1">Order Date</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="card-subtitle lead m-1">@Model.CurrentCase.Order.CustomerEmail</h6>
+                        <h6 class="card-subtitle lead m-1">@Model.CurrentCase.Order.CustomerPhone</h6>
+                        <h6 class="card-subtitle lead m-1">@Model.CurrentOrder.OrderPlacedOn.ToLongDateString()</h6>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card  border-0 p-2 m-1 bg-danger text-white mb-3">
+            <div class="card-header">
+                <h5 class="lead text-center"><strong>CaseConsultant Details</strong></h5>
+            </div>
+            <div class="card-body mt-3">
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="card-subtitle lead m-1">Consultant Email</h6>
+                            <h6 class="card-subtitle lead m-1">Consultant Phone</h6>
+                            <h6 class="card-subtitle lead m-1">Expected Close Date</h6>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="card-subtitle lead m-1">@Model.CurrentCase.Order.ConsultantEmail</h6>
+                            <h6 class="card-subtitle lead m-1">@Model.CurrentCase.Order.ConsultantPhone</h6>
+                            <h6 class="card-subtitle lead m-1">@Model.CurrentCase.ExpectedCaseCloseDate?.ToLongDateString()</h6>
+                        </div>
+                    </div>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<div class="row ">
+    <div class="col-md-6">
+        <div class="card  border-0 p-2 m-1 bg-warning mb-3">
+            <div class="card-header">
+                <h5 class="lead text-center"><strong>Post An Update</strong></h5>
+            </div>
+            <div class="card-body">
+                <form method="post" asp-page-handler="addupdate" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
+                    <div class="form-group">
+                        <textarea class="form-control w-100" asp-for="@Model.Comment">
+
+                    </textarea>
+                        <input type="hidden" asp-for="@Model.CaseId" />
+                    </div>
+                    <button class="form-control btn btn-success" type="submit">Post Update</button>
+
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card  border-0 p-2 m-1 bg-info text-white mb-3">
+            <div class="card-header">
+                <h5 class="lead text-center"><strong>User Documents</strong></h5>
+            </div>
+            <div class="card-body mt-3">
+                <div class="row">
+                    <form enctype="multipart/form-data" asp-page-handler="Upload" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="fileUploadcompleted">
+                        <dl>
+                            <dt>
+                                <label asp-for="FileUpload.FormFiles"></label>
+                            </dt>
+                            <dd>
+                                <input asp-for="FileUpload.FormFiles" type="file">
+                                <span asp-validation-for="FileUpload.FormFiles"></span>
+                            </dd>
+                        </dl>
+                        <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<section id="caseDetailSection">
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">My Updates</h4>
+</section>
+<div class="caseUpdateList mt-2">
+    <partial name="_CaseUpdates" model="Model.AllUpdates" />
+</div>
+
+<section id="caseDetailSection">
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Uploaded Files</h4>
+</section>
+
+<div class="fileUpldates mt-2">
+    <partial name="_UploadedFileList" model="Model.AllFileNames" />
+</div>
+
+@section Scripts{
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#caseDetailSection").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+        });
+    </script>
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script>
+        completed = function (xhr) {
+            $(".caseUpdateList").empty();
+            $(".caseUpdateList").append(`${xhr.responseText}`);
+            //alert(`Wow ${xhr.responseText}, you are brave!`);
+        };
+        fileUploadcompleted = function (xhr) {
+            $(".fileUpldates").empty();
+            $(".fileUpldates").append(`${xhr.responseText}`);
+            //alert(`Wow ${xhr.responseText}, you are brave!`);
+        };
+
+    </script>
+    <script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/dataTabless/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#caseUpdateTable').DataTable();
+        });
+    </script>
+}
+

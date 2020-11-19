@@ -51,7 +51,7 @@
                             <p class="text-left d-inline text-muted">Payment Structure</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="text-right text-muted">Rs @Model.CurrentOrderService.CostToCustomer</p>
+                            <p class="text-right text-muted">Rs @Model.CurrentOrderService.CostToCustomer.ToString("#,##0.00")</p>
                         </div>
 
                     </div>
@@ -112,11 +112,11 @@
     <script>
         var options = {
                 "key": "rzp_test_ju6u0OTTuolb5J", // Enter the Key ID generated from the Dashboard
-                "amount": "@Model.FinalAmount", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+                "amount": "@Model.FinalAmountForRazor", // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
                 "currency": "INR",
                 "name": "On Job ",
                 "description": "@localizer[Model.CurrentOrderService.ServiceDetail.DetailedDisplayInfo.DisplayName]",
-                "image": "https://example.com/your_logo",
+                "image": "https://bn1304files.storage.live.com/y4mhZq8GNKVeSltB_JQgIwDWI22JUqfTLrgmjUk6OXM4vhBeFGmn0e4VwmIA8coTHIEgDZhWSxy7siq6zvCeQpECdUaxKnP8L62jZkld_Ni19wRIN9ZOLixbIgCSrHaCj11u38ABfVVja6jJPkp_oQYj9soMWuojjW9EcD6wwsS-NIp6NFHHWF5tTqgfGDt-S0_?width=183&height=200&cropmode=none",
                 "order_id": "@Model.orderId", //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
                 "handler": function (response) {
                     //alert(response.razorpay_payment_id);

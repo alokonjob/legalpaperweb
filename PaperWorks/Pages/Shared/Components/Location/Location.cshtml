@@ -1,0 +1,16 @@
+﻿@using Fundamentals.Unit
+@model FullUIGeo
+
+
+
+    <div class="dropdown ">
+        <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+           @Model.SavedGeo
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            @foreach (var location in Model.allGeographies)
+            {
+            <a class="dropdown-item" asp-page="/Index" asp-route-city="@location.City.ToLower()">@location.City.ToUpper()</a>
+            }
+        </div>
+    </div>

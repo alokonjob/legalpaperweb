@@ -1,0 +1,58 @@
+﻿@using CaseManagement
+@model PayToConsultant
+@if (Model != null && Model.PaymentReleaseInformation != null && Model.PaymentReleaseInformation.Any())
+{
+    <table class="table table-striped table-bordered " id="payUpdatesTable" style="width:100%">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentReleaseInformation[0].Payment)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentReleaseInformation[0].PaymentComments)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentReleaseInformation[0].PaymentIdentifier)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PaymentReleaseInformation[0].ReleaseOn)
+                </th>
+
+            </tr>
+        </thead>
+        <tbody>
+
+            @foreach (var payUpdate in Model.PaymentReleaseInformation)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(model => payUpdate.Payment)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => payUpdate.PaymentComments)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => payUpdate.PaymentIdentifier)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => payUpdate.ReleaseOn)
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+}
+else
+{
+<section class="text-center">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <h4 class="lead text-danger">No Payments Made So Far</h4>
+            </div>
+        </div>
+    </div>
+</section>
+    
+}

@@ -1,0 +1,35 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Text;
+
+namespace User
+{
+    public static class UserRoleClaimsExtensions
+    {
+        public static bool IsFinanceUser(this ClaimsPrincipal User)
+        {
+            return User.HasClaim("access", "finance");
+        }
+
+        public static bool IsConsultant(this ClaimsPrincipal User)
+        {
+            return User.IsInRole("Consultant"); 
+        }
+
+        public static bool IsCaseManager(this ClaimsPrincipal User)
+        {
+            return User.IsInRole("CaseManager") && User.HasClaim("access", "caselist") && User.HasClaim("access", "caseupdate");
+        }
+
+        public static bool IsWebAdmin(this ClaimsPrincipal User)
+        {
+            return User.IsInRole("Staff") &&  User.HasClaim("access", "webadmin");
+        }
+        public static bool IsFounder(this ClaimsPrincipal User)
+        {
+            return User.IsInRole("Founder") && User.HasClaim("access", "founder");
+        }
+
+    }
+}

@@ -31,5 +31,12 @@ namespace CaseManagement
             var updates = await _caseUpdateCollection.FindAsync<CaseUpdate>(filter);
             return await updates.ToListAsync();
         }
+
+        public async Task<List<CaseUpdate>> GetMyUpdates(string caseId, string Email)
+        {
+            var filter = Builders<CaseUpdate>.Filter.Eq(x => x.CaseId, ObjectId.Parse(caseId));
+            var updates = await _caseUpdateCollection.FindAsync<CaseUpdate>(x => x.CaseId == ObjectId.Parse(caseId) && x.UpdatedBy.Email == Email);
+            return await updates.ToListAsync();
+        }
     }
 }

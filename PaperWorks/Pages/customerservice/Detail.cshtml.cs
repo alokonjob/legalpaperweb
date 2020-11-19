@@ -19,11 +19,13 @@ namespace PaperWorks
             this.enableServiceManager = enableServiceManager;
         }
 
-        public void OnGet(string servicename, string city)
+        public void OnGet(string servicename)
         {
 
             //https://www.mikesdotnetting.com/article/346/using-resource-files-in-razor-pages-localisation
             //https://www.c-sharpcorner.com/blogs/securing-the-url-parameterother-sensitive-data-using-net-core-dataprotectortokenprovider
+            string city = string.IsNullOrEmpty(Request.Cookies["location"]) ? "delhi" : Request.Cookies["location"].ToLower();
+
             CurrentDisplayService = enableServiceManager.GetEnabledService(servicename, city);
             var serviceEnableId = CurrentDisplayService?.EnableId.ToString();
             HttpContext.Session.SetString("DataBaseId", serviceEnableId);

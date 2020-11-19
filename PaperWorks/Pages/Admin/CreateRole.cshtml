@@ -1,0 +1,18 @@
+﻿@page
+@model PaperWorks.CreateRoleModel
+@{
+    ViewData["Title"] = "CreateRole";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+    <section id="caseListSection">
+        <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Create Role</h4>
+    </section>
+    <div class="row">
+        <form class="form-inline mt-0 d-block 2" method="post" data-ajax="true" data-ajax-method="post" asp-page-handler="deleteuser">
+            <input class="form-control" type="text" asp-for="@Model.RoleName"/>
+            <button type="submit" class="btn btn-primary ml-2">Create Role</button>
+        </form>
+    </div>
+    
+

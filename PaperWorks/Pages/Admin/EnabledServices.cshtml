@@ -1,0 +1,73 @@
+﻿@page "{city}"
+@model PaperWorks.EnabledServicesModel
+@{
+    ViewData["Title"] = "EnabledServices";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<section id="enabledServices" class="container">
+    <h4 class="display-4 m-3 text-muted text-center">Enabled Services</h4>
+</section>
+
+
+<table class="table table-striped table-bordered dt-responsive nowrap" id="caseList" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => Model.AllEnabledServices[0].ServiceDetail.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => Model.AllEnabledServices[0].ServiceDetail.Type)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => Model.AllEnabledServices[0].Location.City)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => Model.AllEnabledServices[0].CostToCustomer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => Model.AllEnabledServices[0].CostToConsultant)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => Model.AllEnabledServices[0].IsActive)
+            </th>
+            <th>
+                Edit
+            </th>
+
+
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var service in Model.AllEnabledServices)
+        {
+
+        <tr>
+            <td>@service.ServiceDetail.Name</td>
+            <td>@service.ServiceDetail.Type</td>
+            <td>@service.Location.City</td>
+            <td>@service.CostToCustomer</td>
+            <td>@service.CostToConsultant</td>
+            <td>@service.IsActive</td>
+            <td>
+                <a asp-page="/Admin/EditEnabledService" class="btn btn-success btn-block" asp-route-es="@service.EnableId">Details</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
+
+
+
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#enabledServices").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+        });
+    </script>
+}
+

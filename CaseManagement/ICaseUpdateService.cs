@@ -8,5 +8,7 @@ namespace CaseManagementSpace
     {
         Task<CaseUpdate> AddUpdate(CaseUpdate caseupdate);
         Task<List<CaseUpdate>> GetAllUpdates(string caseId);
+
+        Task<List<CaseUpdate>> GetMyUpdates(string caseId, string Email);
     }
 }

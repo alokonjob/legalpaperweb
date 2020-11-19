@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using Address;
@@ -10,6 +11,7 @@ using FundamentalAddress;
 using Fundamentals;
 using Fundamentals.Managers;
 using Fundamentals.Unit;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -27,6 +29,7 @@ namespace PaperWorks
         public string FeeType { get; set; }
         public bool IsEnabled { get; set; }
     }
+    [Authorize(Policy = "AddEditPeople")]
     public class OnboardingModel : PageModel
     {
         private readonly IClienteleServices clientServices;
@@ -113,15 +116,19 @@ namespace PaperWorks
             return Partial("_ServicesListing", AllEnabledService);
         }
 
-        public void OnPostAddConsultant()
+        public async Task<IActionResult> OnPostAddConsultant()
         {
             try
             {
+                var allTasks = new List<Task>();
                 string returnUrl = Url.Content("~/");
                 var password = PasswordGenerator.GenerateRandomPassword();
-                var result = clientServices.CreateLogin(Input.Name, Input.Email, Input.PhoneNumberCountryCode, Input.PhoneNumber, Input.AddressOfUser, password).Result;
+                var Role = "Consultant";
+                Claim consultantClaim = new Claim("access", "consultant");
+                var result = await clientServices.CreateLogin(Input.Name, Input.Email, Input.PhoneNumberCountryCode, Input.PhoneNumber, Input.AddressOfUser, password, Role, consultantClaim);
                 if (result.ResultValue == ResultValue.Success)
                 {
+                    
                     var user = (Clientele)result.SomeGuy;
 
                     #region sendAccontConfirmationEmail
@@ -134,10 +141,11 @@ namespace PaperWorks
                         values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    clientServices.SendAccountConfirmEmailOnLoginCreation(Input.Email, callbackUrl);
+                    allTasks.Add(clientServices.SendAccountConfirmEmailOnLoginCreation(Input.Email, callbackUrl));
                     #endregion
                     #region SendPasswordEmail
-                    clientServices.SendNewPassword(Input.Email, password);
+                    var sendPasswordMail = clientServices.SendNewPassword(Input.Email, password);
+                    allTasks.Add(sendPasswordMail);
                     #endregion
 
                     #region CreateConsultantCareer
@@ -150,12 +158,13 @@ namespace PaperWorks
                     };
                     var consultant = consultantCareerManager.IntroduceConsultantCareer(consultantCareer).Result;
                     Input.ConsultantDocuments.ConsultantId = Input.ConsultantTaxDetails.ConsultantId =  consultant.ConsultantId;
-                    consultantCareerManager.AddConsultantDocuments(Input.ConsultantDocuments);
+                    allTasks.Add( consultantCareerManager.AddConsultantDocuments(Input.ConsultantDocuments));
                     //we are saving PAN redundantly 
                     Input.ConsultantTaxDetails.PanCard = Input.ConsultantDocuments.PanCard;
-                    consultantCareerManager.AddConsultantTaxDetails(Input.ConsultantTaxDetails);
+                    allTasks.Add( consultantCareerManager.AddConsultantTaxDetails(Input.ConsultantTaxDetails));
                     #endregion
-
+                    Task.WaitAll(allTasks.ToArray());
+                    return RedirectToPage("/Consultant/ConsultantManagement",new { userEmail  = Input.Email });
                 }
                 else
                 {
@@ -163,13 +172,15 @@ namespace PaperWorks
                     {
                         ModelState.AddModelError(string.Empty, error);
                     }
+                    
                 }
-
+                
             }
             catch (Exception error)
             {
                 Console.WriteLine(error.Message);
             }
+            return Page();
         }
     }
 }

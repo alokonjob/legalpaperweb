@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using MongoDB.Bson;
+using Newtonsoft.Json.Linq;
 using Razorpay.Api;
 namespace OrderAndPayments
 {
@@ -33,6 +34,35 @@ namespace OrderAndPayments
         public async Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId orderId, string status)
         {
             return await PaymentRepository.UpdatePayment(paymentId, orderId, status);
+        }
+
+        public async Task<ClientelePayment> GetPaymentByOrderId(string OrderId)
+        {
+            return await PaymentRepository.GetPaymentByOrderId(OrderId);
+        }
+
+        public async Task<List<ClientelePayment>> GetPaymentByOrderId(List<ObjectId> orderIds)
+        {
+            return await PaymentRepository.GetPaymentByOrderId(orderIds);
+        }
+
+        public string GetPaymentStatusFromPaymentGateWay(ClientelePayment clientsPayment)
+        {
+            string paymentId = clientsPayment.GateWayDetails.PaymentGateWay_PayId;
+            Payment payInfoAtRazor = new Razorpay.Api.Payment((string)paymentId).Fetch(paymentId);
+            string paymentStatus = string.Empty;
+            foreach (var child in payInfoAtRazor.Attributes)
+            {
+                if (child.Type == JTokenType.Property)
+                {
+                    var property = child as Newtonsoft.Json.Linq.JProperty;
+                    if (property.Name == "status")
+                    {
+                        return property.Value.ToString();
+                    }
+                }
+            }
+            return string.Empty;
         }
     }
 }

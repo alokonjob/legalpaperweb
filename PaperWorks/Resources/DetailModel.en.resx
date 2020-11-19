@@ -117,6 +117,216 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="birthcertificatedocumentsText" xml:space="preserve">
+    <value>&lt;strong&gt;For Birth Registration and Certificates:&lt;/strong&gt; To apply for a Birth Certificate, you must first register the birth.
+The birth must be registered with the concerned local authorities within 21 days of its occurrence, by
+filling up the form prescribed by the Registrar. Birth Certificate is then issued after verification with the
+actual records of the concerned hospital.&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;For Death Registration and Certificates:&lt;/strong&gt; The application form in which you are required to apply is
+generally available with the area’s local body authorities, or with the Registrar who maintains the
+Register of Deaths. You might also need to submit proof of birth of the deceased, an affidavit specifying
+the date and time of death, a copy of the ration card, and the required fee in the form of court fee stamps.</value>
+  </data>
+  <data name="birthcertificatedocumentsTitle" xml:space="preserve">
+    <value>Documentation Required for Birth Certificate</value>
+  </data>
+  <data name="birthcertificateoverviewText" xml:space="preserve">
+    <value>&lt;p class="card-text text-muted"&gt;
+      Post-independence, the Registration of Births and Death Act (RBD Act) was
+      enacted in 1969 to promote uniformity and comparability in the
+      registration of Births and Deaths across the country and compilation of
+      vital statistics based thereon. With the enactment of the Act,
+      registration of births, deaths and still births has become mandatory in
+      India. The Registrar General, India (RGI) at the Central Government level
+      coordinates and unifies the activities of registration throughout the
+      country. However, implementation of the statute is vested with the State
+      Governments. The registration of births and deaths in the country is done
+      by the functionaries appointed by the State Governments.
+    
+    &lt;br /&gt;
+    
+      In India, it is mandatory under the law (as per the Registration of Births
+      &amp;amp; Deaths Act, 1969) to register every birth/death with the concerned
+      State/UT Government within 21 days of its occurrence. The
+      Government accordingly has provided for a well-defined system for
+      registration of birth/death, with the Registrar General, India, at the
+      center and the Chief Registrars in States, running through district
+      registrars to the village and town registrars at the periphery. 
+   
+    &lt;br /&gt;
+
+    
+      The responsibilities for reporting the events have been prescribed
+      separately for domiciliary events as well as Institutional events, the
+      details of which are given below:
+      &lt;ul&gt; &lt;br /&gt;&lt;li class="card-text text-muted"&gt;(I) In respect of birth or death
+      occurred in a house, it is the duty of the Head of the house/household or
+      nearest relative of the head present in the house or in the absence of any
+      such person, the oldest male person present therin during the said period
+      is responsible to report the event to the concerned Registrar/ sub
+      Registrar. These events can also be reported through the prescribed
+      Notifiers such as Anaganwadi Workers, ANM’s, ASHA’s and others. &lt;/li&gt;&lt;br /&gt;
+      &lt;li class="card-text text-muted"&gt;(II)
+      In respect of birth or death occurred in a hospital, health center,
+      Maternity or nursing home or other such institutions, the medical officer
+      In-charge or any person authorized by him in this behalf is responsible
+      for reporting
+    &lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/p&gt;
+    &lt;br /&gt;
+    &lt;p class="card-text text-muted"&gt;
+    A Birth Certificate is the most important identity document that makes it
+    possible for anyone in possession of it to benefit from a gamut of services
+    offered by the Indian Government to its citizens. It becomes necessary to
+    obtain a Birth Certificate because it serves to establish the date and fact
+    of one’s birth for a whole range of purposes, like acquiring the right to
+    vote, admission to schools and to the Government Service, claiming the right
+    to marry at the legally permissible age, settlement of inheritance and
+    property rights, and obtaining Government-issued identity documents like a
+    driving license or passport. &lt;br/&gt; &lt;br/&gt;
+    Similarly, A Death Certificate is a document
+    issued by the Government to the nearest relatives of the deceased, stating
+    the date, fact, and cause of death. It is essential to register death to
+    prove the time and date of death, to establish the fact of death for
+    relieving the individual from social, legal and official obligations, to
+    enable settlement of property inheritance, and to authorize the family to
+    collect insurance and other benefits.
+  &lt;/p&gt;</value>
+  </data>
+  <data name="birthcertificateoverviewTitle" xml:space="preserve">
+    <value>Birth Certificate Overview</value>
+  </data>
+  <data name="birthcertificateprocessText" xml:space="preserve">
+    <value>1. Registration with the Registrars / Sub Registrars for Rural and Urban areas. To apply for a
+  Birth/Death Certificate, it has to be registered with the concerned local authorities within 21 days of
+  its occurrence, by filling up the form prescribed by the Registrar/Sub Registrars.  &lt;br&gt;&lt;br&gt;
+  
+       &lt;strong&gt;(I) Rural Areas-&lt;/strong&gt; The following have been appointed as Registrar of Births and Deaths :  &lt;br&gt;
+             &lt;strong&gt;(i)&lt;/strong&gt;  Panchayat Secretaries/Karmi/Gram Sevak in 15 States and 3 UTs. (Andhra Pradesh, Bihar,
+  Chhattisgarh, Goa, Gujarat, Himachal Pradesh, Jharkhand, Kerala, Madhya Pradesh, Maharashtra,
+  Rajasthan, Tripura, Uttar Pradesh, Uttarakhand, West Bengal, Daman &amp;amp; Diu, D &amp;amp; N Haveli and
+  Puducherry.)  &lt;br&gt;&lt;br&gt;
+                &lt;strong&gt;((ii)&lt;/strong&gt;  Medical Officer In-charge or equivalent in 7 States and 3 UTs– (Assam, Haryana,
+  Meghalaya, Orissa, and Punjab, Sikkim, Manipur (Partly), A &amp;amp; N Island, Delhi and Lakshadweep)  &lt;br&gt;&lt;br&gt;
+                &lt;strong&gt;((iii)&lt;/strong&gt;  Village Accountants / Village Administrative Officers in 2 States - Karnataka and Tamil
+  Nadu.  &lt;br&gt;
+                &lt;strong&gt;(iv)&lt;/strong&gt;  SHO/Police Officials in Jammu &amp;amp; Kashmir and Chandigarh UT (Rural).  &lt;br&gt;&lt;br&gt;
+                &lt;strong&gt;((v) &lt;/strong&gt; School Teachers in Mizoram and Nagaland. Circle Officer/Village Level Workers in
+  Arunachal Pradesh.  &lt;br&gt;&lt;br&gt;
+        &lt;strong&gt;II) Urban Areas: &lt;/strong&gt;( The Municipal Health Officer, Health officer or Equivalent Officers are appointed
+  as Registrar of births and deaths.
+  &lt;br&gt;&lt;br&gt;
+  2. After registering the event, an extract / certificate of the respective birth or death event is issued to
+the informant. If event of a birth or death is reported for registration to the prescribed authority
+within the normal period of 21days, no fee would be charged.</value>
+  </data>
+  <data name="birthcertificateprocessTitle" xml:space="preserve">
+    <value>Birth Certificate Procedure</value>
+  </data>
+  <data name="birthcertificateServiceName" xml:space="preserve">
+    <value>Birth Certificate</value>
+  </data>
+  <data name="drivinglicensedocumentsText" xml:space="preserve">
+    <value>&lt;strong&gt;Proof of Address required for DL:&lt;/strong&gt;&lt;br&gt;&lt;br&gt;
+Permanent Proof of address (any one from the following):&lt;br&gt;
+&lt;ul&gt;
+  &lt;li&gt; Passport
+    &lt;li&gt; Aadhaar Card&lt;/li&gt;
+      &lt;li&gt; Self-owned house agreement&lt;/li&gt;
+        &lt;li&gt;Electricity bill (issued in applicants name)&lt;/li&gt;
+          &lt;li&gt;LIC bond&lt;/li&gt;
+&lt;li&gt;Voters ID Card&lt;/li&gt;
+&lt;li&gt;Ration card&lt;/li&gt;
+&lt;strong&gt;&lt;br&gt;
+&lt;/ul&gt;
+&lt;ul&gt;  
+Current Proof of address (any one from the following):&lt;/strong&gt;&lt;br&gt;&lt;br&gt;
+&lt;li&gt;Rental agreement and electricity bill&lt;/li&gt;
+&lt;li&gt;Rental agreement and LPG bill&lt;/li&gt;&lt;br&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+  &lt;strong&gt;Other Requirements for Driving License:&lt;/strong&gt;&lt;br&gt;&lt;br&gt;
+&lt;li&gt;Duly filled application form (to get the application form for driving license, visit the nearest RTO or
+download it from the online portal for your state)&lt;/li&gt;
+
+&lt;li&gt;6 passport sized photographs (when applying for Learners License)&lt;/li&gt;
+&lt;li&gt;1 passport sized photograph (when applying for driving license)&lt;/li&gt;
+&lt;li&gt;Application Fees
+&lt;li&gt;If you are staying in other cities, as current address proof, you can present the rental agreement with
+one recent utility bill copy which can be gas bill or electric bill.&lt;/li&gt;
+&lt;li&gt;Medical Certificate - Form 1 A and 1 which is to be issued by a certified Government doctor&lt;/li&gt;
+&lt;li&gt;For all applicants over the age of 40 years, a Medical certificate is mandatory.&lt;/li&gt;
+&lt;/ul&gt;</value>
+  </data>
+  <data name="drivinglicensedocumentsTitle" xml:space="preserve">
+    <value>Documentation Required for Driving License</value>
+  </data>
+  <data name="drivinglicenseoverviewText" xml:space="preserve">
+    <value>A driving license is basically an official document issued by the Government of India, permitting
+individuals to operate or drive a motorized vehicle such as a car, motorbike, truck, bus, etc., on a
+public road, without any supervision. In India, a driving license is issued by the Regional Transport
+Authority (RTA) or Regional Transport Office (RTO) of that state. The Motor Vehicles Act of 1988
+states that no individual without the Driving license is authorized to drive a motor vehicle in a public
+place.&lt;br&gt;&lt;br&gt;
+An individual who wants to drive any type of motor vehicle in India must get his/her learner&amp;#39;s license
+first. A learner’s license is issued for learning. After a month of the issued learner’s license, the
+person must appear for the test in front of an RTO authority, who upon proper examination, will
+declare if he/she has passed the exam or not.</value>
+  </data>
+  <data name="drivinglicenseoverviewTitle" xml:space="preserve">
+    <value>Driving License Overview</value>
+  </data>
+  <data name="drivinglicenseprocessText" xml:space="preserve">
+    <value>Application for a driving license can be submitted either online or offline:
+&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;
+Online Application:
+&lt;/strong&gt;
+&lt;br&gt;
+Applying for a driving license online is a simple process and involves only a few steps. Go to the official
+Sarathi website of the Road Transport &amp;amp; Highways Ministry. From the column named “Sarathi Services,”
+select “New Driving License.” You will be redirected to a new web page, which will have all the details
+about it. Read through the instructions. Download the form and fill all the required information.
+&lt;br&gt;
+&lt;ul&gt;
+The process for filling out an online application for a Learner’s License or Driving License is as follows:
+&lt;li&gt;Visit the Sarathi website and download the driving license application form.&lt;/li&gt;
+&lt;li&gt;Fill in the form as per the instructions provided on the screen and click on ‘Submit’.&lt;/li&gt;
+
+&lt;li&gt; In the case of minor applicants, the form is to be printed out and Part D is to be filled out and signed by
+the parent/guardian at the nearest RTO.&lt;/li&gt;
+&lt;li&gt; Upload the documents to be submitted along with the application form (proof of age, proof of address,
+learner’s license number).&lt;/li&gt;
+&lt;li&gt; A Web Application Number will be generated after submission, which can be used to track the status
+of the application.&lt;/li&gt;
+&lt;li&gt; Once the application has been processed, a notification will be sent via SMS.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;
+Apply for a Driving license in RTO or Offline in India:
+&lt;/strong&gt;
+&lt;br&gt;
+The procedure to apply for a Driving license in India is remarkably simple and straightforward. The steps
+given below will help you understand how to apply for a Driving license offline.
+&lt;br&gt;
+&lt;ul&gt;
+  &lt;li&gt; The applicant must obtain a Form 4 which is the application form for motor vehicle driving license in
+India. The Form can be downloaded from the state transport website. Alternatively, the customer can
+also visit the nearest RTO to procure Form 4.&lt;/li&gt;
+&lt;li&gt;  Completely fill the application form and submit it with other documents like age proof and address
+proof at the RTO in the jurisdiction in which you live. Also, schedule a slot for Driving license test at
+the RTO and pay the fee for taking the test.&lt;/li&gt;
+&lt;li&gt; Be present at your Driving license test center on the specified time and date. Once you clear the test,
+your driving license will be awarded on the spot or will be sent to your registered address.&lt;/li&gt;
+&lt;/ul&gt;</value>
+  </data>
+  <data name="drivinglicenseprocessTitle" xml:space="preserve">
+    <value>Driving License Procedure</value>
+  </data>
+  <data name="drivinglicenseServiceName" xml:space="preserve">
+    <value>Driving License</value>
+  </data>
   <data name="marriagecertificatedocumentsText" xml:space="preserve">
     <value>&lt;strong&gt;Here is the list&lt;/strong&gt;&lt;br&gt;
                     Step 1: Approach the office of the Sub Divisional Magistrate, under whose locale the marriage occurred or where both the partners resided for somewhere around a half year before the marriage took place
@@ -213,5 +423,216 @@
   </data>
   <data name="marriagecertificateServiceName" xml:space="preserve">
     <value>Marriage Registration and Certificate</value>
+  </data>
+  <data name="pandocumentsText" xml:space="preserve">
+    <value>ndian citizens need three types of documents to apply for a PAN card. These are an &lt;strong&gt;identity
+proof, an age proof, and a proof of date of birth.&lt;br&gt;
+&lt;ul&gt;
+Identity proof documents (one of):&lt;/strong&gt;
+&lt;li&gt;Elector&amp;#39;s photo identity card&lt;/li&gt;
+&lt;li&gt;Ration card having photograph of the applicant&lt;/li&gt;
+&lt;li&gt;Passport&lt;/li&gt;
+&lt;li&gt;Driving license&lt;/li&gt;
+&lt;li&gt;Arm&amp;#39;s license&lt;/li&gt;
+&lt;li&gt;Aadhaar card issued by the Unique Identification Authority of India&lt;/li&gt;
+&lt;li&gt;Photo identity card issued by the Central Government or State Government or a Public Sector
+Undertaking&lt;/li&gt;
+&lt;li&gt;Pensioner Card having photograph of the applicant&lt;/li&gt;
+&lt;li&gt;Central Government Health Scheme Card or Ex-servicemen Contributory Heath Scheme photo card&lt;/li&gt;
+&lt;li&gt;Certificate of identity in original signed by a Member of Parliament or Member of Legislative
+Assembly or Municipal Councilor or a Gazetted Officer, as the case may be&lt;/li&gt;
+&lt;li&gt;Bank certificate in original on letter head from the branch (along with name and stamp of the issuing
+officer) containing duly attested photograph and bank account number of the applicant&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;&lt;/ul&gt;&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;
+Address proof document (one of): &lt;/strong&gt;copy of the following documents of not more than three months old
+&lt;li&gt;electricity bill&lt;/li&gt;
+&lt;li&gt;landline telephone or broadband connection bill&lt;/li&gt;
+&lt;li&gt;water bill&lt;/li&gt;
+&lt;li&gt;consumer gas connection card or book or piped gas bill&lt;/li&gt;
+&lt;li&gt;bank account statement&lt;/li&gt;
+&lt;li&gt;depository account statement&lt;/li&gt;
+&lt;li&gt;credit card statement&lt;/li&gt;
+&lt;li&gt;copy of post office passbook having address of the applicant&lt;/li&gt;
+&lt;li&gt;passport&lt;/li&gt;
+&lt;li&gt;voter ID card&lt;/li&gt;
+&lt;li&gt;latest property tax assessment order&lt;/li&gt;
+&lt;li&gt;driving license&lt;/li&gt;
+&lt;li&gt;domicile certificate issued by the Government&lt;/li&gt;
+&lt;li&gt;Aadhaar card issued by the UIDAI&lt;/li&gt;
+
+&lt;li&gt;allotment letter of accommodation issued by the Central Government or State Government of not
+more than three years old&lt;/li&gt;
+&lt;li&gt;property registration document&lt;/li&gt;
+&lt;li&gt;certificate of address signed by a Member of Parliament or Member of Legislative Assembly or
+Municipal Councilor or a Gazetted Officer&lt;/li&gt;
+&lt;li&gt;employer’s certificate in original&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;&lt;/ul&gt;&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;
+Proof of date of birth (one of):&lt;/strong&gt;
+&lt;li&gt;birth certificate issued by the Municipal Authority or any office authorized to issue Birth and Death
+Certificate by the Registrar of Birth and Deaths or the Indian Consulate as defined in clause (d) of
+sub section (1) of section 2 of the Citizenship Act, 1955 (57 of 1955)&lt;/li&gt;
+&lt;li&gt;pension payment order&lt;/li&gt;
+&lt;li&gt;marriage certificate issued by Registrar of Marriages&lt;/li&gt;
+&lt;li&gt;matriculation certificate&lt;/li&gt;
+&lt;li&gt;passport&lt;/li&gt;
+&lt;li&gt;driving license&lt;/li&gt;
+&lt;li&gt;domicile certificate issued by the Government&lt;/li&gt;
+&lt;li&gt;affidavit sworn before a magistrate stating the date of birth&lt;/li&gt;
+&lt;/ul&gt;</value>
+  </data>
+  <data name="pandocumentsTitle" xml:space="preserve">
+    <value>Documentation Required for  Pan Card</value>
+  </data>
+  <data name="panoverviewText" xml:space="preserve">
+    <value>PAN, or permanent account number, is a unique 10-digit alphanumeric identity allotted to each taxpayer
+by the Income Tax Department under the supervision of the Central Board of Direct Taxes. It also serves
+as an identity proof. PAN is mandatory for financial transactions such as receiving taxable salary or
+professional fees, sale or purchase of assets above specified limits, buy mutual funds and more.
+&lt;br&gt;&lt;br&gt;
+The primary objective of PAN is to use a universal identification key to track financial transactions that
+might have a taxable component to prevent tax evasion. The PAN number remains unaffected by
+change of address throughout India.&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;Who requires a PAN?&lt;/strong&gt;
+&lt;ul&gt;
+  &lt;li&gt; Anybody who earns a taxable income in India, including foreign nationals who pay taxes here&lt;/li&gt;
+    &lt;li&gt; Anybody who runs a business (be it retail, services or consultancy) that had total sales, turnover or
+gross receipt exceeding Rs 5 lakh in the previous financial year&lt;/li&gt;
+&lt;/ul&gt;&lt;br&gt;&lt;br&gt;
+The PAN is broadly issued under the categories:&lt;br&gt;
+a. Individual &amp;amp; HUF
+&lt;ul&gt;
+  &lt;li&gt;- Indian Taxpaying Nationals&lt;/li&gt;
+    &lt;li&gt;- Foreign Nationals Paying taxes in India&lt;/li&gt;
+      &lt;li&gt;- Hindu Undivided Family (HUF)&lt;/li&gt;
+&lt;/ul&gt;
+b. Company.
+&lt;ul&gt;
+  &lt;li&gt; association of persons, body of individuals, company, trust, limited liability partnership, firm.&lt;/li&gt;
+&lt;/ul&gt;</value>
+  </data>
+  <data name="panoverviewTitle" xml:space="preserve">
+    <value>Pan Card Overview</value>
+  </data>
+  <data name="panprocessText" xml:space="preserve">
+    <value>The process to apply for a PAN differs for individuals and Companies:&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;. PAN Application Process for Individuals:&lt;/strong&gt;&lt;br&gt;
+a. You can apply for a PAN card online either via NSDL or UTITSL websites. Both have been
+authorised to issue PAN cards in India. To apply a PAN on NSDL website, follow the steps below.&lt;br&gt;&lt;br&gt;
+b. On the page linked in the previous step, you will see a form titled &lt;strong&gt;.Online PAN application.&lt;/strong&gt;&lt;br&gt;
+Under &lt;strong&gt;Application Type&lt;/strong&gt;  &lt;strong&gt;select New PAN - Indian Citizen (Form 49A). &lt;/strong&gt;&lt;br&gt;
+If you’re a foreign national, select &lt;strong&gt;New PAN - Foreign Citizen (Form 49AA).&lt;/strong&gt;&lt;br&gt;&lt;br&gt;
+c. Select the category of PAN card you need. For most people, this will be &lt;strong&gt;Individual&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;
+
+d. Now fill in your personal details such as name, date of birth, mobile number, etc., enter the
+captcha code and &lt;strong&gt;Submit&lt;/strong&gt;.&lt;br&gt;&lt;br&gt;
+e. Now you have three choices — authenticate via Aadhaar to avoid sending any documents, scan
+documents and upload them via e-sign, or to physically submit documents&lt;br&gt;&lt;br&gt;
+If you chose to authenticate via Aadhaar, it needs an OTP and payment. If you don’t want that
+option, the steps for the other two are similar except the part where you have to send
+documents.&lt;br&gt;&lt;br&gt;
+&lt;strong&gt;2. PAN Application Process for a Company:&lt;/strong&gt;&lt;br&gt;&lt;br&gt;
+a. Visit the Paperless PAN Application Section on the NSDL website. Select Form 49A or 49AA from
+the ‘Application Type’ dropdown menu and select ‘category’ as ‘Company’ from the next
+dropdown menu.&lt;br&gt;&lt;br&gt;
+b. Fill out the Title (M/s), Name of the Company (in the ‘Last Name’ Box), Date of Incorporation of
+the Company, email ID and Contact Number. Fill the Captcha Code and proceed. A token
+number will be generated and sent to the email address provided by you. You can now continue
+the PAN Application.&lt;br&gt;&lt;br&gt;
+c. In case of Company PAN Application, e-KYC and e-sign facility is not available and the application
+documents can be only forwarded physically. The company’s name, email ID and contact
+number will be prefilled. You only have to fill the Registration Number of your company. Submit
+and proceed.&lt;br&gt;&lt;br&gt;
+d. In this part, you have to mention the source of income of the company. Select ‘Income from
+Business / Profession’ and from the menu provided, select the type of business. If you are also
+earning other income from house property, capital gains or other sources, mention the same.&lt;br&gt;&lt;br&gt;
+e. Next you have to fill out the office address which will also be your communication address in the
+PAN database. Other contact details will be prefilled. Proceed to the next step.&lt;br&gt;&lt;br&gt;
+f. Now you have to provide the Assessing Officer (AO) Code which is designated according to area
+jurisdiction of your location. You can click on the ‘Indian Citizen’ option and then select ‘State’
+and ‘City’. You can also go to the ‘AO Code search for PAN’ Page on NSDL Website.&lt;br&gt;&lt;br&gt;
+g. You can now proceed to the documentation page. Sign the declaration. Here you will be asked
+about your relationship with the company. Either the Director or an Authorised Signatory can
+apply for a company’s PAN. Submit the form. Now you have to upload scanned copies of the
+required documents. Your complete filled form will be available for review. If all the information
+provided by you is correct, submit the form.&lt;br&gt;&lt;br&gt;
+h. You are now required to pay the fee. The payment can be made by way of demand draft, credit
+card/debit card or net banking. In case of company, only a director can make the credit/debit
+card or net banking payment.&lt;br&gt;&lt;br&gt;
+i. On successful payment of the fee, an acknowledgement receipt will be generated. The
+acknowledgement number mentioned on the receipt can be used by the applicant to check the
+
+PAN application status of the company’s PAN. The duly signed acknowledgement has to be sent
+to the NSDL office with the copy of registration certificate and demand draft (if any).</value>
+  </data>
+  <data name="panprocessTitle" xml:space="preserve">
+    <value>Pan Card Procedure</value>
+  </data>
+  <data name="panServiceName" xml:space="preserve">
+    <value>Pan Card</value>
+  </data>
+  <data name="rationcarddocumentsText" xml:space="preserve">
+    <value>Following are the list of documents to be submitted at the local ration office by the applicant:&lt;br&gt;&lt;br&gt;
+1. Completed and signed application form&lt;br&gt;
+2. Identify proof of the applicant can be any of the following:&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt; Election photo ID card
+&lt;li&gt; Driving license
+&lt;li&gt; Passport
+&lt;li&gt; Any other Govt issued ID card.
+&lt;/ul&gt;
+3. Applicant’s current residence proof should be submitted which can be any of the following
+document:&lt;br&gt;
+&lt;ul&gt;
+&lt;li&gt; Electricity bill
+&lt;li&gt; Telephone bill
+&lt;li&gt; Latest LPG receipt
+&lt;li&gt; Bank Passbook
+&lt;li&gt; Rental agreement/ rent paid receipt
+&lt;li&gt; Photograph of the head of the family
+&lt;li&gt; Details about the annual income of the applicant
+&lt;li&gt; Old cancelled/surrendered ration card if any
+&lt;/ul&gt;</value>
+  </data>
+  <data name="rationcarddocumentsTitle" xml:space="preserve">
+    <value>Documentation Required for Ration Card</value>
+  </data>
+  <data name="rationcardoverviewText" xml:space="preserve">
+    <value>Ration card, a document issued by the state government, serves as a proof of identity for Indian
+citizens. As per the Public Distribution System (PDS), it can be used for the purchase of essential
+commodities from &amp;#39;fair price&amp;#39; or ration shops. Ration cards come in multiple categories, which are
+issued as per the earning capacity of an individual.&lt;br&gt;&lt;br&gt;
+Any person who is a legal citizen of India can only apply for a ration card. The applicant should not hold
+ration card in other states and not possess any other family card in the same state. These are issued based
+upon the total members in a family, and each category of the ration card determines an individual’s
+entitlement to certain rationed goods. Individuals with higher earning capacity (as fixed by the respective
+state government) cannot obtain rations at a subsidized cost.</value>
+  </data>
+  <data name="rationcardoverviewTitle" xml:space="preserve">
+    <value>Ration Card Overview</value>
+  </data>
+  <data name="rationcardprocessText" xml:space="preserve">
+    <value>Each state Government has prescribed separate application forms which can be submitted manually, or,
+online for obtaining a ration card. Common procedures that are generally followed in most of the states
+are given below.&lt;br&gt;&lt;br&gt;
+The applicant is required to pay a basic minimum fee along with the application form. Once the
+application is submitted, the file is sent for field verification. The officer in charge of verification must
+inspect and certify the details submitted by the applicant for further processing.&lt;br&gt;&lt;br&gt;
+This inspection must be carried out generally within 30 days from the date of submission of the
+application. Once all the details are verified and confirmed by the officer, ration card is created and issued
+to the applicant based on their annual income. If the application is rejected, a rejection letter is issued with
+reasons for the same to the applicant.  &lt;br&gt;&lt;br&gt;
+Identification of beneficiaries/households under the National Food Security Act, 2013 (NFSA) and
+issuance of Antodaya Anna Yojana (AAY) and Priority Household (PHH) ration cards is dealt by the
+respective State Government / UT Administration.</value>
+  </data>
+  <data name="rationcardprocessTitle" xml:space="preserve">
+    <value>Ration Card Procedure</value>
+  </data>
+  <data name="rationcardServiceName" xml:space="preserve">
+    <value>Ration Card</value>
   </data>
 </root>

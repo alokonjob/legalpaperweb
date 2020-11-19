@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{userEmail?}"
 @using Microsoft.Extensions.Localization;
 @inject IStringLocalizer<CaseListingModel> localizer
 @model PaperWorks.CaseListingModel
@@ -18,78 +18,108 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].Order.ServiceName)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.ServiceName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].Order.City)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.City)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].Order.CustomerEmail)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.CustomerEmail)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].Order.CustomerPhone)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.CustomerPhone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].Order.ConsultantEmail)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.Receipt)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].Order.ConsultantPhone)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.ConsultantEmail)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].Order.CostToCustomer)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.ConsultantPhone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].CurrentStatus)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.CostToCustomer)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].EscalationStatus)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.CurrentStatus)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].CreatedDate)
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.EscalationStatus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.CreatedDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].Payment.FinalizedCost)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].Payment.PaymentReleased)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FullCaseInfo[0].Nudge)
             </th>
             <th>
                 Navigate To
+            </th>
+            <th>
+                PayInfo
             </th>
 
         </tr>
     </thead>
     <tbody>
 
-        @foreach (var customerCase in Model.CaseList)
+        @foreach (var customerCase in Model.FullCaseInfo)
                 {
         <tr>
             <td>
-                @Html.DisplayFor(model => localizer[customerCase.Order.ServiceName].Value)
+                @Html.DisplayFor(model => localizer[customerCase.ClientCase.Order.ServiceName].Value)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.Order.City)
+                @Html.DisplayFor(model => customerCase.ClientCase.Order.City)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.Order.CustomerEmail)
+                @Html.DisplayFor(model => customerCase.ClientCase.Order.CustomerEmail)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.Order.CustomerPhone)
+                @Html.DisplayFor(model => customerCase.ClientCase.Order.CustomerPhone)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.Order.ConsultantEmail)
+                @Html.DisplayFor(model => customerCase.ClientCase.Order.Receipt)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.Order.ConsultantPhone)
+                @Html.DisplayFor(model => customerCase.ClientCase.Order.ConsultantEmail)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.Order.CostToCustomer)
+                @Html.DisplayFor(model => customerCase.ClientCase.Order.ConsultantPhone)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.CurrentStatus)
+                @Html.DisplayFor(model => customerCase.ClientCase.Order.CostToCustomer)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.EscalationStatus)
+                @Html.DisplayFor(model => customerCase.ClientCase.CurrentStatus)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.CreatedDate)
+                @Html.DisplayFor(model => customerCase.ClientCase.EscalationStatus)
             </td>
             <td>
-                <a asp-page="/Case/CaseDetail" class="btn btn-success btn-block" asp-route-caseId="@customerCase.CaseId">Details</a>
+                @Html.DisplayFor(model => customerCase.ClientCase.CreatedDate)
+            </td>
+            <td>
+                @Html.DisplayFor(model => customerCase.Payment.FinalizedCost)
+            </td>
+            <td>
+                @Html.DisplayFor(model => customerCase.Payment.PaymentReleased)
+            </td>
+            <td>
+                @Html.DisplayFor(model => customerCase.Nudge)
+            </td>
+            <td>
+                <a asp-page="/Case/CaseDetail" class="btn btn-success btn-block" asp-route-rct="@customerCase.ClientCase.Order.Receipt">Details</a>
+            </td>
+            <td>
+                <a asp-page="/Case/Fin" class="btn btn-success btn-block" asp-route-rct="@customerCase.ClientCase.Order.Receipt">Details</a>
             </td>
 
         </tr>
@@ -114,7 +144,7 @@
     <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
     <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>
-    
+
     <script>
         $(document).ready(function () {
             $('#caseList').DataTable({
@@ -125,7 +155,14 @@
                 columnDefs: [
                     { width: '20%', targets: 0 }
                 ],
-                fixedColumns: true
+                fixedColumns: true,
+                "rowCallback": function (row, data) {
+                    if (data[13] == "NudgeOn") {
+                        //$('td:eq(13)', row).html('<b>A</b>');
+                        $('td', row).css('background-color', 'red');
+                        //$('td', row).css('background-color', 'red');
+                    }
+                }
             });
         });
     </script>

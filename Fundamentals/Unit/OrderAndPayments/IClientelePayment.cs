@@ -7,11 +7,11 @@ namespace OrderAndPayments
 {
     public interface IClientelePayment
     {
-        [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         ObjectId ClienteleOrderId { get; set; }
         IGateWaysPaymentInfo GateWayDetails { get; set; }
         double FinalAmount { get; set; }
         DateTime PaymentDate { get; set; }
+        [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
         ObjectId PaymentId { get; set; }
         ClientRefund RefundDetails { get; set; }
         /// <summary>

@@ -93,7 +93,7 @@
                             <p class="text-left d-inline text-muted">Payment Structure</p>
                         </div>
                         <div class="col-md-6">
-                            <p class="text-right text-muted">Rs @Model.CurrentOrderService.CostToCustomer</p>
+                            <p class="text-right text-muted">Rs @Model.CurrentOrderService.CostToCustomer.ToString("#,##0.00")</p>
                         </div>
 
                     </div>
@@ -125,7 +125,14 @@
 
                         </div>
                         <div class="row">
-                            <button id="preCheckout" type="submit" class="btn btn-success btn-block">Create Account and  Pay</button>
+                            @if (SignInManager.IsSignedIn(User))
+                            {
+                                <button id="preCheckout" type="submit" class="btn btn-success btn-block">Pay Securely</button>
+                            }
+                            else
+                            {
+                                <button id="preCheckout" type="submit" class="btn btn-success btn-block">Create Account and  Pay Securely</button>
+                            }
                         </div>
                     </div>
 
@@ -149,7 +156,7 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $("#checkoutsection").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
-        }
+        });
     </script>
 }
 

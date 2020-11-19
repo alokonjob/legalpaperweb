@@ -42,11 +42,28 @@ namespace PaperWorks.Areas.Identity.Pages.Account
             if (ModelState.IsValid)
             {
                 var user = await _userManager.FindByEmailAsync(Input.Email);
-                if (user == null || !(await _userManager.IsEmailConfirmedAsync(user)))
+                if (user == null)
                 {
                     // Don't reveal that the user does not exist or is not confirmed
-                    return RedirectToPage("./ForgotPasswordConfirmation");
+                    ModelState.AddModelError(string.Empty, user != null ? "Your Account is Not Confirmed. Please check your Inbox and Confirm Your Email First" : "Invalid Email");
+                    return Page();
                 }
+                if (!(await _userManager.IsEmailConfirmedAsync(user)))
+                {
+                    var emailConfirmCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                    emailConfirmCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmCode));
+                    var confirmcallbackUrl = Url.Page(
+                        "/Account/ConfirmEmail",
+                        pageHandler: null,
+                        values: new { area = "Identity", userId = user.Id, code = emailConfirmCode, returnUrl = Url.Content("~/")},
+                        protocol: Request.Scheme);
+
+                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(confirmcallbackUrl)}'>clicking here</a>.");
+                    ModelState.AddModelError(string.Empty, "Your Account is Not Confirmed. Please check your Inbox and Confirm Your Email First");
+                    return Page();
+                }
+
 
                 // For more information on how to enable account confirmation and password reset please 
                 // visit https://go.microsoft.com/fwlink/?LinkID=532713

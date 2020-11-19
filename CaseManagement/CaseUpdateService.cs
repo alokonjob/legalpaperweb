@@ -19,6 +19,11 @@ namespace CaseManagementSpace
         {
             return await caseUpdateRepository.GetAllUpdates(caseId);
         }
+        public async Task<List<CaseUpdate>> GetMyUpdates(string caseId,string email)
+        {
+            return await caseUpdateRepository.GetMyUpdates(caseId, email);
+        }
+
 
         public async Task<CaseUpdate> AddUpdate(CaseUpdate caseupdate)
         {

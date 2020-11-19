@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{rct}"
 @model PaperWorks.AssignCaseModel
 @{
     ViewData["Title"] = "AssignCase";
@@ -22,7 +22,7 @@
                             </div>
                             <div class="col-md-2">
                                 <input type="radio" asp-for="SeletedEmail" id="radioStff" class="form-control" value="@Model.FullConsultantDetails[i].UserDetails.Email" data-toggle="modal" data-target="#exampleModal">
-                                <input type="hidden" asp-for="CaseId">
+                                <input type="hidden" asp-for="Receipt">
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,8 @@
                                 <span class="fa fa-rupee-sign fa-2x" aria-hidden="true"></span>
                             </div>
                             <div class="col-md-10 col-lg-9">
-                                @Model.FullConsultantDetails[i].ConsultantDetails.CurrentService.Fee
+                                <input type="text" class="form-control" value="@Model.FullConsultantDetails[i].ConsultantDetails.CurrentService.Fee" asp-for="FinalizedCost"/>
+                                
                             </div>
                         </div>
                         <div class="row form-group">

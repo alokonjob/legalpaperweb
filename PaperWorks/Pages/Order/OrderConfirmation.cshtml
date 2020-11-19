@@ -28,22 +28,7 @@
             </div>
         </div>
     </div>
-    @*<div class="card bg-white border-0 p-3 m-5">
-            <img class="card-img-top img-fluid"
-                 src="../img/orderConfirm.jpg"
-                 alt="" />
-            <div class="card-body mt-3">
-                <h4 class="card-title">Your Order is Confirmed ! Thank you</h4>
-                <ul class="list-group border-0">
-                    <li class="list-group-item border-0"><span class="fas fa-certificate fa-lg" aria-hidden="true"></span><small class="text-muted ml-2">No Questions Asked Money back Policy</small></li>
-                    <li class="list-group-item border-0"><span class="fas fa-rupee-sign fa-lg" aria-hidden="true"></span><small class="text-muted ml-2">Fixed One Time Quote</small></li>
-                    <li class="list-group-item border-0"><span class="fas fa-headset fa-lg" aria-hidden="true"></span><small class="text-muted ml-2">Dedicated Support Manager</small></li>
-                    <li class="list-group-item border-0"><span class="fas fa-truck" fa-lg" aria-hidden="true"></span><small class="text-muted ml-2">Timely Delivery</small></li>
-                </ul>
 
-
-            </div>
-        </div>*@
     <div class="col-md-6">
         <div class="card bg-light border-0 p-3 m-5 disabled">
             <div class="card-header">
@@ -56,10 +41,10 @@
 
                 <div class="row">
                     <div class="col-md-6">
-                        <p class="text-left d-inline text-muted">Case Id</p>
+                        <p class="text-left d-inline text-muted">Order Id</p>
                     </div>
                     <div class="col-md-6">
-                        <p class="text-right text-muted">@Model.CustomerOrderId</p>
+                        <p class="text-right text-muted">@Model.CustomerRecceiptId</p>
                     </div>
 
                 </div>
@@ -68,28 +53,43 @@
                         <p class="text-left d-inline text-muted">Payment Status</p>
                     </div>
                     <div class="col-md-6">
-                        <p class="text-right text-muted">Confirmed</p>
+                        <p class="text-right text-muted">@Model.PaymentStatus</p>
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p class="text-left d-inline text-muted">Amount Paid</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p class="text-right text-muted">@Model.CustomerFinalPaidAmount</p>
                     </div>
 
                 </div>
 
-                <div class="card-footer text-muted mt-3">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="text-left d-inline text-muted"><strong>Amount Paid</strong></p>
+                <div class="card-footer bg-info text-muted mt-3">
+                    @if (ModelState.Root.ValidationState != Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Unvalidated && ModelState.ErrorCount > 0)
+                    {<div class="alert alert-danger" role="alert">
+                            @Html.ValidationSummary(true)
                         </div>
-                        <div class="col-md-6">
-                            <p class="text-right text-muted"><strong>2000</strong></p>
-                        </div>
-
+                    }
+                    <div class="row justify-content-center">
+                        <p class="lead text-white ml-2">You will received a call from our dedicated Case Manager at your phone  @Model.CustomerPhone</p>
                     </div>
                     <div class="row justify-content-center">
-                        <small class="text-muted ml-2">You can reach us at our Customer Care Number</small>
+                        <p class="lead text-white ml-2">We have sent you an Order Confirmation at your Email @Model.CustomerEmail</p>
                     </div>
-
+                    <div class="row justify-content-center">
+                        <small class="text-muted text-white ml-2">You can see Status of your Order at your Orders Page</small>
+                    </div>
                 </div>
 
             </div>
+        </div>
+
+        <div>
+
+
         </div>
     </div>
 </div>

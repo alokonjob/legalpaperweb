@@ -38,6 +38,8 @@ using Twilio;
 using CaseManagementSpace;
 using CaseManagement;
 using Consultant;
+using MongoDB.Bson.Serialization;
+using Audit;
 
 namespace PaperWorks
 {
@@ -72,6 +74,36 @@ namespace PaperWorks
             }, mongoIdentityOptions =>
             {
                 mongoIdentityOptions.ConnectionString = gateKeeper.GetSecretValue("MongoConnection");
+            });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AddEditPeople", policy => policy.RequireRole("Founder", "Staff").RequireClaim("access", new List<string>() { "webadmin", "founder" }));//Staff Management
+                options.AddPolicy("AccessConsultants", policy => policy.RequireRole("Founder", "Staff").RequireClaim("access", new List<string>() { "webadmin", "founder","finance" }));//ConsultantMAnagement
+
+                options.AddPolicy("AccessCasesPolicy", policy => policy.RequireRole("Founder","Staff","CaseManager").RequireClaim("access", new List<string>() { "founder", "caselist","finance" }));//CaseManager
+                options.AddPolicy("UpdateCasesPolicy", policy => policy.RequireRole("Founder", "Staff", "CaseManager").RequireClaim("access", new List<string>() { "founder", "caseupdate" }));//CaseManager
+
+
+                options.AddPolicy("RequireConsultantRole", policy => policy.RequireRole("Founder", "Consultant"));
+
+            options.AddPolicy("ManageFinancePolicy", policy => policy.RequireRole("Founder", "Staff").RequireClaim("access", new List<string>() { "founder","finance" }));//Finance
+
+                //Founder Role - Founder , Claims founder
+                //consultnant - Role Consultant
+                //caseManager - Role CaseManager, claims caselist,caseupdate
+                //Finance -> Role Staff , claims finance
+                //Webadmin Role Staff, claims webadmin
+
+                //So Roles Founder  are Founder, Consultant, CaseManager , Staff
+                //Claims are founder, webadmin
+
+
+            });
+            BsonClassMap.RegisterClassMap<RazorPePaymentDetails>(cm =>
+            {
+                cm.MapProperty(c => c.PaymentGateWay_OrderId);
+                cm.MapProperty(c => c.PaymentGateWay_PayId);
+                cm.MapIdProperty(c => c.PaymentGateWay_Signature);
             });
             //https://docs.microsoft.com/en-us/azure/key-vault/general/vs-key-vault-add-connected-service#:~:text=Go%20to%20the%20Azure%20portal,from%20the%20All%20account%20section.
             services.AddRazorPages();
@@ -127,8 +159,11 @@ namespace PaperWorks
             services.AddSingleton<CountryService>();
             services.AddSingleton<StateStaticService>();
             services.AddScoped<IClienteleRepository, ClienteleRepository>();
+            services.AddScoped<IClienteleStaffRepository, ClienteleRepository>();
+
 
             services.AddScoped<IClienteleServices, ClienteleServices>();
+            services.AddScoped<IClienteleStaffServices, ClienteleServices>();
             services.AddScoped<IServiceManagement, ServiceManager>();
             services.AddScoped<IServiceRepository, ServiceRepository>();
             services.AddScoped<IGeographyManagement, GeographyManagement>();
@@ -150,8 +185,13 @@ namespace PaperWorks
             services.AddScoped<ICaseUpdateRepository, CaseUpdateRepository>();
             services.AddScoped<IConsultantCareerManagement, ConsultantCareerManagement>();
             services.AddScoped<IConsultantCareerRepository, ConsultantCareerRepository>();
+            services.AddScoped<ICasePaymentReleaseService, CasePaymentReleaseService>();
+            services.AddScoped<ICasePaymentReleaseRepository, CasePaymentReleaseRepository>();
 
-            //services.AddApplicationInsightsTelemetry();
+            services.AddScoped<IOrderAuditService, OrderAuditService>();
+            services.AddScoped<IOrderAuditRepository, OrderAuditRepository>();
+            services.AddScoped<IPaymentNudgeService, PaymentNudgeService>();
+            services.AddScoped<IPaymentNudgeRepository, PaymentNudgeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

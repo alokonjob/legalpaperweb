@@ -37,12 +37,50 @@ namespace OrderAndPayments
             return updatedDoc;
         }
 
-        public async Task<ClienteleOrder> GetOrderByCaseId(string orderId)
+        public async Task<ClienteleOrder> AddPaymentToOrder(string orderId, string paymentId)
         {
             ObjectId orderObjectId = ObjectId.Parse(orderId);
+            ObjectId paymentObjectId = ObjectId.Parse(paymentId);
+            var filter = Builders<ClienteleOrder>.Filter.Eq(t => t.ClientOrderId, orderObjectId);
+            var updatedDoc = await _orderCollection.FindOneAndUpdateAsync<ClienteleOrder>(
+               filter,
+               Builders<ClienteleOrder>.Update.Set(
+                   t => t.ClientelePaymentId,
+                   paymentObjectId)
+               );
+            return updatedDoc;
+        }
+
+        public async Task<ClienteleOrder> GetOrderByCaseId(string caseId)
+        {
+            ObjectId orderObjectId = ObjectId.Parse(caseId);
             var filter = Builders<ClienteleOrder>.Filter.Eq(t => t.CaseId, orderObjectId);
             var fullOrder = await _orderCollection.FindAsync<ClienteleOrder>(filter);
             return fullOrder.FirstOrDefault();
         }
+
+        public async Task<ClienteleOrder> GetOrderById(string orderId)
+        {
+            ObjectId orderObjectId = ObjectId.Parse(orderId);
+            var filter = Builders<ClienteleOrder>.Filter.Eq(t => t.ClientOrderId, orderObjectId);
+            var fullOrder = await _orderCollection.FindAsync<ClienteleOrder>(filter);
+            return fullOrder.FirstOrDefault();
+        }
+
+        public async Task<ClienteleOrder> GetOrderByReceipt(string receipt)
+        {
+            var filter = Builders<ClienteleOrder>.Filter.Eq(t => t.Receipt, receipt);
+            var fullOrder = await _orderCollection.FindAsync<ClienteleOrder>(filter);
+            return fullOrder.FirstOrDefault();
+        }
+
+        public async Task<List<ClienteleOrder>> GetOrderOfUser(string userId)
+        {
+            ObjectId userObjetId = ObjectId.Parse(userId);
+            var filter = Builders<ClienteleOrder>.Filter.Eq(t => t.ClientId, userObjetId);
+            return await _orderCollection.Find<ClienteleOrder>(filter).SortByDescending(x=>x.OrderPlacedOn).ToListAsync();
+        }
+
+
     }
 }

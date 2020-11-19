@@ -1,4 +1,4 @@
-﻿@page "{servicename}/{city}"
+﻿@page "{servicename}"
 @*es means enabled Service and gl means Geographic Location which expects city name*@
 @using Microsoft.Extensions.Localization;
 @inject IStringLocalizer<DetailModel> localizer
@@ -42,7 +42,7 @@
 
 
     <div class="col-md-4 col-sm-12 bg-light text-darks bg-secondary">
-        <a asp-page="/Order/PreCheckout"  class="btn btn-success btn-block" >Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer</a>
+        <a asp-page="/Order/PreCheckout"  class="btn btn-success btn-block" >Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
         @*<button class="btn btn-primary btn-lg d-block w-100">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer</button>*@
     </div>
 
@@ -62,8 +62,10 @@
             </div>
             <div class="card-body">
                 <h5 class="card-title">@localizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Overview.Title]<br></h5>
-                @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Overview.Text]
-                <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer</a>
+                <p class="card-text">
+                    @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Overview.Text]
+                </p>
+                    <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
             </div>
         </div>
     </div>
@@ -92,7 +94,7 @@
                 <p class="card-text">
                     @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Process.Text]
                 </p>
-                <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer</a>
+                <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
             </div>
         </div>
     </div>
@@ -120,7 +122,7 @@
                 <p class="card-text">
                     @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Documents.Text]
                 </p>
-                <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer</a>
+                <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
             </div>
         </div>
     </div>

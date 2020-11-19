@@ -18,14 +18,14 @@ namespace Fundamentals.Unit
         public Geography Location { get; set; }
         public List<ServiceStep> Steps { get; set; }
         public bool IsActive { get; set; }
-        public int CostToCustomer { get; set; }
-        public int CostToConsultant { get; set; }
+        public double CostToCustomer { get; set; }
+        public double CostToConsultant { get; set; }
     }
 
     public class ServiceStep
     { 
         public string Name { get; set; }
         public string Description { get; set; }
-        public string Status { get; set; }
+        public int Status { get; set; }
     }
 }

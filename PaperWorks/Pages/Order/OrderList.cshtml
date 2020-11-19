@@ -1,0 +1,139 @@
+﻿
+@page
+@using Microsoft.AspNetCore.Identity
+@using  Users
+@inject IStringLocalizer<OrderListModel> localizer
+@inject SignInManager<Clientele> SignInManager
+@inject UserManager<Clientele> UserManager
+@model PaperWorks.OrderListModel
+@{
+    ViewData["Title"] = "OrderList";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>OrderList</h1>
+<section id="orderList">
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">My Orders</h4>
+</section>
+
+<div class="container">
+
+    @if (Model.CompleteOrderInformation == null || Model.CompleteOrderInformation.Count == 0)
+    {
+        <p class="display-4 m-3 lead text-danger text-center" data-aos="fade-left" data-aos-delay="800">You have not placed any orders yet.</p>
+        <img class="card-img-top"
+             src="../img/dogbegging.jpg" 
+             alt="" />
+    }
+    else
+        @foreach (var order in Model.CompleteOrderInformation)
+        {
+            <div class="card border mt-1 mt-lg-2">
+                <div class="card-header">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-start">
+                                <div class="d-flex flex-column row-hl">
+                                    <div class="small text-muted text-black-50 mx-lg-3 mx-md-2 mx-sm-1">ORDER DATE</div>
+                                    <div class="small text-muted mx-lg-3 mx-md-2 mx-sm-1">@order.Order.OrderPlacedOn.ToLongDateString()</div>
+                                </div>
+                                <div class="d-flex flex-column row-hl">
+                                    <div class="small text-muted text-black-50 mx-lg-3 mx-md-2 mx-sm-1">TOTAL</div>
+                                    <div class="small text-muted mx-lg-3 mx-md-2 mx-sm-1">@order.Payment.FinalAmount.ToString("#,##0.00")</div>
+                                </div>
+                                <div class="d-flex flex-column row-hl">
+                                    <div class="small text-muted text-black-50 mx-lg-3 mx-md-2 mx-sm-1">STATUS</div>
+                                    <div class="small text-muted mx-lg-3 mx-md-2 mx-sm-1">Ongoing</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="d-flex justify-content-end">
+                                <div class="d-flex flex-column row-hl">
+                                    <div class="small text-muted text-black-50 mx-lg-3 mx-md-2 mx-sm-1">Receipt No</div>
+                                    <div class="small text-muted mx-lg-3 mx-md-2 mx-sm-1">@order.Order.Receipt</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="row d-block">
+                        <h4 class="card-title text-center">@localizer[order.Order.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName] , @order.Order.CustomerRequirementDetail.Location.City</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <div class="card-subtitle text-muted">Your Details </div>
+                                        <div class="card-subtitle text-black-50 mt-1">
+                                            Name : @UserManager.GetUserAsync(User).Result.FullName
+                                        </div>
+                                        <div class="card-subtitle text-black-50 mt-1">Phone : @order.Case.Order.CustomerPhone</div>
+                                        <div class="card-subtitle text-black-50 mt-1">Email : @order.Case.Order.CustomerEmail</div>
+                                    </p>
+                                </div>
+                            </div>
+                            @*<h4 class="card-title">@localizer[order.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName] , @order.CustomerRequirementDetail.Location.City</h4>*@
+
+
+                        </div>
+                        <div class="col-md-4 mt-1">
+                            <div class="card border">
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <div class="card-subtitle text-muted">Consultant Details </div>
+                                        <div class="card-subtitle text-black-50 mt-1">
+                                            Name : @order.Consultant?.FullName
+                                        </div>
+                                        <div class="card-subtitle text-black-50 mt-1">Phone :@order.Consultant?.PhoneNumber</div>
+                                        <div class="card-subtitle text-black-50 mt-1">Email : @order.Consultant?.Email</div>
+                                    </p>
+                                </div>
+                            </div>
+                            @*<h4 class="card-title">@localizer[order.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName] , @order.CustomerRequirementDetail.Location.City</h4>*@
+
+                        </div>
+                        <div class="col-md-4 mt-1">
+                            <div class="card border">
+                                @*<h4 class="card-title">@localizer[order.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName] , @order.CustomerRequirementDetail.Location.City</h4>*@
+                                <div class="card-body">
+                                    <p class="card-text">
+                                        <div class="card-subtitle text-muted">Case Manager Details </div>
+                                        @*<div class="card-subtitle text-black-50 mt-1">
+                                                Name : us
+                                            </div>*@
+                                        <div class="card-subtitle text-black-50 mt-1">
+                                            Name : @order.CaseManager?.FullName
+                                        </div>
+                                        <div class="card-subtitle text-black-50 mt-1">Phone : @order.CaseManager?.PhoneNumber </div>
+                                        <div class="card-subtitle text-black-50 mt-1">Email : @order.CaseManager?.Email  </div>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*<p class="card-text">
+                            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aut,
+                            perspiciatis.
+                        </p>*@
+                    @*<a asp-page="/OrderDetail" asp-route-rct="@order.Order.Receipt"  class="btn btn-danger btn-lg">Book Now</a>*@
+                </div>
+            </div>
+        }
+</div>
+
+
+
+@section Scripts{
+
+
+    <partial name="_ValidationScriptsPartial" />
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#orderList").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+        }
+    </script>
+}

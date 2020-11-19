@@ -1,12 +1,18 @@
-﻿@page "{caseId}"
+﻿@page "{rct}"
+
+@using Microsoft.Extensions.Localization;
+@using User
+@inject IStringLocalizer<DetailModel> localizer
+
 @model PaperWorks.CaseDetailModel
+
 @{
     ViewData["Title"] = "CaseDetail";
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
 <section id="caseDetailSection">
-    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Case Detail</h4>
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800"> @localizer[Model.CurrentOrder.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName] - @Model.CurrentCase.Order.Receipt</h4>
 </section>
 
 
@@ -43,7 +49,7 @@
             <div class="card-body mt-3">
                 @if (string.IsNullOrEmpty(@Model.CurrentCase.Order.ConsultantEmail))
                 {
-                    <a asp-page="/Case/AssignCase" class="btn btn-primary btn-block" asp-route-caseId="@Model.CurrentCase.CaseId">Assign Consultant</a>
+                    <a asp-page="/Case/AssignCase" class="btn btn-primary btn-block" asp-route-rct="@Model.CurrentCase.Order.Receipt">Assign Consultant</a>
                 }
                 else
                 {
@@ -59,6 +65,11 @@
                             <h6 class="card-subtitle lead m-1">@Model.CurrentCase.ExpectedCaseCloseDate?.ToLongDateString()</h6>
                         </div>
                     </div>
+                    @if (User.IsFounder())
+                    {
+
+                        <a asp-page="/Case/AssignCase" class="btn btn-primary btn-block" asp-route-rct="@Model.CurrentCase.Order.Receipt">Change Consultant</a>
+                    }
                 }
             </div>
         </div>
@@ -80,7 +91,7 @@
                         <textarea class="form-control w-100" asp-for="@Model.Comment">
 
                     </textarea>
-                        <input type="hidden" asp-for="@Model.CaseId" />
+                        <input type="hidden" asp-for="@Model.Receipt" />
                     </div>
                     <button class="form-control btn btn-success" type="submit">Post Update</button>
 
@@ -91,30 +102,57 @@
     </div>
 
     <div class="col-md-6">
-        <div class="card  border-0 p-2 m-1 bg-info text-white mb-3">
-            <div class="card-header">
-                <h5 class="lead text-center"><strong>User Documents</strong></h5>
+        <div class="row">
+            <div class="col-6">
+                <div class="card  border-0 p-2 m-1 bg-info text-white mb-3">
+                    <div class="card-header">
+                        <h5 class="lead text-center"><strong>User Documents</strong></h5>
+                    </div>
+                    <div class="card-body mt-3">
+                        <div class="row">
+                            <form enctype="multipart/form-data" asp-page-handler="Upload" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="fileUploadcompleted">
+                                <dl>
+                                    <dd>
+                                        <input asp-for="FileUpload.FormFiles" type="file">
+                                        <span asp-validation-for="FileUpload.FormFiles"></span>
+                                        <input type="hidden" asp-for="@Model.Receipt" />
+                                    </dd>
+                                </dl>
+                                <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="card-body mt-3">
-                <div class="row">
-                    <form enctype="multipart/form-data" asp-page-handler="Upload" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="fileUploadcompleted">
-                    <dl>
-                        <dt>
-                            <label asp-for="FileUpload.FormFiles"></label>
-                        </dt>
-                        <dd>
-                            <input asp-for="FileUpload.FormFiles" type="file">
-                            <span asp-validation-for="FileUpload.FormFiles"></span>
-                        </dd>
-                    </dl>
-                    <input asp-page-handler="Upload" class="btn" type="submit" value="Upload" />
-                    </form>
+            <div class="col-6">
+                <div class="card  border-0 m-1 bg-secondary text-white mb-3" id="NudgePayment">
+                    <div class="card-header">
+                        <h5 class="lead text-center"><strong>Payment Request</strong></h5>
+                    </div>
+                    <div class="card-body mt-3">
+                        <div class="row">
+                            <form class="form-inline" asp-page-handler="Nudge" method="post" data-ajax="true" data-ajax-method="post">
+                                <input asp-for="@Model.NudgeAmount" class="form-control" />
+                                <input asp-for="@Model.Receipt" type="hidden" class="form-control" />
+
+                                <button class="form-control btn btn-success" type="submit">Nudge</button>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
+
     </div>
 </div>
+<section id="caseDetailSection">
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Case Payments</h4>
+</section>
+<div class="casePayInfoList mt-2">
+    <partial name="_PayUpdates" model="Model.ConsultantPay" />
+</div>
+
 <section id="caseDetailSection">
     <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Case Updates</h4>
 </section>
@@ -131,7 +169,7 @@
 </div>
 
 @section Scripts{
-
+    <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
         $(document).ready(function () {
             $("#caseDetailSection").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);

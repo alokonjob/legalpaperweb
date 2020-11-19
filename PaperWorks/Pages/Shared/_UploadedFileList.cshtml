@@ -1,12 +1,18 @@
 ﻿@model List<string>
-@*@if (Model.Count() == 0)
+@if (Model.Count() == 0)
 {
-    <div>
-        <h4 class="lead text-center">This Selection has no Services</h4>
-    </div>
+    <section class="text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col">
+                    <h4 class="lead text-danger">No Files Uploaded Yet.</h4>
+                </div>
+            </div>
+        </div>
+    </section>
 }
-else*@
-
+else
+{
 <div>
     <table class="table table-striped table-bordered " id="serviceListingTable" style="width:100%">
         <thead>
@@ -46,3 +52,4 @@ else*@
         </tbody>
     </table>
 </div>
+}

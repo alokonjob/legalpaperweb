@@ -6,6 +6,20 @@ using System;
 
 namespace OrderAndPayments
 {
+    public enum OrderStatus
+    { 
+        Initiated =0,
+
+        PaymentStarted = 10,
+
+        PaymentCompletedSuccess = 20,
+
+        PaymentCompletedFailure = 30,
+
+        OrderCompletedSuccess = 40,
+
+        OrderCompletedFailure = 50
+    }
     public class ClienteleOrder
     {
         [BsonId(IdGenerator = typeof(ObjectIdGenerator))]
@@ -16,6 +30,7 @@ namespace OrderAndPayments
         public DateTime OrderPlacedOn { get; set; }
         public ObjectId ClientId { get; set; }
         public ObjectId CaseId { get; set; }
+        public OrderStatus OrderStatus { get; set; }
 
     }
 
@@ -32,6 +47,9 @@ namespace OrderAndPayments
 
         public string ConsultantPhone { get; set; }
         public string CostToCustomer { get; set; }
-        
+        [BsonIgnore]
+        public string CustomerName { get; set; }
+        public string Receipt { get; set; }
+
     }
 }

@@ -19,14 +19,16 @@ namespace Emailer
         {
             var apiKey = GateKeeper.GetSecretValue("SendGridApiKey");
             var client = new SendGridClient(apiKey);
-            var msg = new SendGridMessage()
-            {
-                From = new EmailAddress("alok@planful.com"),
-                Subject = subject,
-                PlainTextContent = $"Hello, {toEmail}",
-                HtmlContent = htmlMessage
-            };
-            msg.AddTo(new EmailAddress(toEmail, "Test User"));
+            //var msg = new SendGridMessage()
+            //{
+            //    From = new EmailAddress("alok@planful.com"),
+            //    Subject = subject,
+            //    PlainTextContent = $"Hello, {toEmail}",
+            //    HtmlContent = htmlMessage
+            //};
+            var msg = MailHelper.CreateSingleEmail(new EmailAddress("alok@planful.com"), new EmailAddress(toEmail), subject, "Hello", htmlMessage);
+
+            //msg.AddTo(new EmailAddress(toEmail, "Test User"));
             var response = await client.SendEmailAsync(msg);
 
         }

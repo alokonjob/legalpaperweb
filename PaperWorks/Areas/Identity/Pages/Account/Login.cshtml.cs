@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Users;
+using User;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
 {
@@ -48,7 +49,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account
             [EmailAddress]
             public string Email { get; set; }
 
-            [Required]
+            [Required]                              
             [DataType(DataType.Password)]
             public string Password { get; set; }
 
@@ -82,9 +83,14 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
+               
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+                    if (User.IsFinanceUser())
+                    {
+                        return RedirectToPage("/Case/CaseListing");
+                    }
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

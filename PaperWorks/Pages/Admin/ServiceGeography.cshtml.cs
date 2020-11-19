@@ -61,9 +61,10 @@ namespace PaperWorks
 
         }
 
-        public void OnPostEnableService()
+        public async Task<IActionResult> OnPostEnableService()
         {
             enableService.EnableServiceInLocation(InputEnableService);
+            return RedirectToPage("/Admin/EnabledServices", new { city = InputEnableService.Location.City });
 
         }
     }

@@ -8,7 +8,9 @@ using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using Address;
 using Asgard;
+using Audit;
 using Emailer;
+using Fundamentals.Events;
 using Fundamentals.Managers;
 using Fundamentals.Unit;
 using Microsoft.AspNetCore.Http;
@@ -18,8 +20,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+using OrderAndPayments;
 using Phone;
 using Razorpay.Api;
+using shortid;
+using shortid.Configuration;
 using Tax;
 using User;
 using Users;
@@ -30,39 +36,51 @@ namespace PaperWorks
     {
         private readonly IEnabledServices enabledServicesManager;
         private readonly ITaxService taxService;
+        private readonly IClienteleServices clientServices;
         private readonly UserManager<Clientele> userManager;
         private readonly SignInManager<Clientele> signInManager;
+        private readonly IClienteleServices clienteleServices;
         private readonly CountryService countryService;
         private readonly IEmailer emailSender;
         private readonly IPhoneService phoneService;
+        private readonly IOrderService orderService;
+        private readonly IOrderAuditService orderAuditService;
+        private readonly IOrderAuditService orderAudit;
+        private readonly ILogger<PreCheckout> logger;
 
         public List<SelectListItem> AvailableCountries { get; }
         public string TaxAmount { get; set; }
         public string FinalAmount { get; set; }
         public EnabledServices CurrentOrderService = null;
 
+        StringBuilder AuditString = new StringBuilder();
         /// <summary>
         /// This variable will be useful when we try to create a new user from this page and it fails.
         /// It will help in not disabling the UI elements, 
         /// which are otherwise disabled when input fields are non-empty on page load
         /// </summary>
         public bool UserCreationFailed { get; set; }
-        public PreCheckout(IEnabledServices enabledServicesManager, ITaxService taxService, UserManager<Clientele> userManager,
-            SignInManager<Clientele> signInManager,
-            CountryService countryService, IEmailer emailSender,IPhoneService phoneService)
+        public PreCheckout(IEnabledServices enabledServicesManager, ITaxService taxService,IClienteleServices clientServices, UserManager<Clientele> userManager,
+            SignInManager<Clientele> signInManager,IClienteleServices clienteleServices,
+            CountryService countryService, IEmailer emailSender, IPhoneService phoneService, IOrderService orderService, IOrderAuditService orderAuditService, ILogger<PreCheckout> logger)
         {
             this.enabledServicesManager = enabledServicesManager;
             this.taxService = taxService;
+            this.clientServices = clientServices;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.clienteleServices = clienteleServices;
             this.countryService = countryService;
             this.emailSender = emailSender;
             this.phoneService = phoneService;
+            this.orderService = orderService;
+            this.orderAuditService = orderAuditService;
+            this.logger = logger;
             AvailableCountries = countryService.GetCountries();
             AvailableCountries.Where(x => x.Value == "IN").FirstOrDefault().Selected = true;
             Input = new InputModel();
         }
-        [BindProperty(SupportsGet =true)]
+        [BindProperty(SupportsGet = true)]
         public InputModel Input { get; set; }
         public class InputModel
         {
@@ -87,26 +105,26 @@ namespace PaperWorks
 
         public void OnGetAsync()
         {
-            
+
             //Detail Page passes this Enabled Service Id in Tempdata
             //We are saving it in session because we need this in Post Operation also.
             //Even when i try to peek tempdata it is not available in Post Call of same page.(do a research)
-            var dbId= HttpContext.Session.GetString("DataBaseId");
+            var dbId = HttpContext.Session.GetString("DataBaseId");
 
             if (!string.IsNullOrEmpty(dbId))
             {
                 CurrentOrderService = enabledServicesManager.GetEnabledServiceById(dbId);
                 double currentApplicableTax = taxService.GetTaxAmount(CurrentOrderService.Location.State, CurrentOrderService.ServiceDetail.Name, CurrentOrderService.CostToCustomer);
                 double finalAmount = currentApplicableTax + CurrentOrderService.CostToCustomer;
-                TaxAmount = currentApplicableTax.ToString();
-                FinalAmount = finalAmount.ToString();
+                TaxAmount = currentApplicableTax.ToString("#,##0.00");
+                FinalAmount = finalAmount.ToString("#,##0.00");
             }
 
             if (signInManager.IsSignedIn(User))
             {
                 var signedInUser = userManager.GetUserAsync(User).Result;
                 var phoneNumber = signedInUser.PhoneNumber != null ? signedInUser.PhoneNumber.Substring(signedInUser.PhoneNumber.Length - 10) : "";
-                Input = new InputModel() { Name = signedInUser.FullName ??"", Email = signedInUser.Email, PhoneNumber = phoneNumber };
+                Input = new InputModel() { Name = signedInUser.FullName ?? "", Email = signedInUser.Email, PhoneNumber = phoneNumber };
             }
             else
             {
@@ -114,120 +132,201 @@ namespace PaperWorks
             }
         }
 
-        public IActionResult OnPostAsync()
+        public async Task<IActionResult> OnPostAsync()
         {
-            var dbId = HttpContext.Session.GetString("DataBaseId");
-            //If User is not already signed in then create a login
-            if (signInManager.IsSignedIn(User) == false)
+            try
             {
-                //create a new user with provided details
-                if (ModelState.IsValid)
+                
+
+                var dbId = HttpContext.Session.GetString("DataBaseId");
+                CurrentOrderService = enabledServicesManager.GetEnabledServiceById(dbId);
+                logger.LogInformation($"Precheckout.ServiceRequested.{CurrentOrderService.ServiceDetail.Name}.City.{CurrentOrderService.Location.City}");
+
+                //If User is not already signed in then create a login
+                if (signInManager.IsSignedIn(User) == false)
                 {
-                    string returnUrl =  Url.Content("~/");
-                    Clientele user = null;
-                    //get a valid phone Number and save it while creating user
-                    try
+                    //create a new user with provided details
+                    if (ModelState.IsValid)
                     {
-                        var phoneNumber = phoneService.ExtractPhoneNumber(Input.PhoneNumberCountryCode, Input.PhoneNumber).Result;
-                        user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true, PhoneNumber = phoneNumber };
-                    }
-                    catch (Exception error)
-                    {
-                        Console.WriteLine(error.Message);
-                    }
-                    //If there is error while fetching phone details , user will not be created.
-                    //so create a user without the phone
-                    if (user == null)
-                    {
-                        user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true};
-                    }
-                    var password = PasswordGenerator.GenerateRandomPassword();
-                    var existingUserByPhone = userManager.Users.Where(item => item.PhoneNumber == user.PhoneNumber).FirstOrDefault();
-                    if (existingUserByPhone != null)
-                    {
-                        ModelState.AddModelError(string.Empty, $"Phone Number {user.PhoneNumber} Is Already Taken");
-                        CurrentOrderService = enabledServicesManager.GetEnabledServiceById(dbId);
-                        UserCreationFailed = true;
-                        return Page();
-                    }
-                    var result = userManager.CreateAsync(user, password).Result;
-                    if (result.Succeeded)
-                    {
-                       // _logger.LogInformation("User created a new account with password.");
+                        string returnUrl = Url.Content("~/");
+                        Clientele user = null;
+                        //get a valid phone Number and save it while creating user
+                        try
+                        {
+                            var phoneNumber = await phoneService.ExtractPhoneNumber(Input.PhoneNumberCountryCode, Input.PhoneNumber);
+                            user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true, PhoneNumber = phoneNumber };
+                        }
+                        catch (Exception error)
+                        {
+                            logger.LogWarning(LogEvents.ErrorGetPhone, $"Error while Extracting Phone From Input CC {Input.PhoneNumberCountryCode},Phone {Input.PhoneNumber}, {error.Message}");
+                        }
 
-                        var code = userManager.GenerateEmailConfirmationTokenAsync(user).Result;
-                        code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-                        var callbackUrl = Url.Page(
-                            "/Account/ConfirmEmail",
-                            pageHandler: null,
-                            values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
-                            protocol: Request.Scheme);
+                        //If there is error while fetching phone details , user will not be created.
+                        //so create a user without the phone
+                        if (user == null)
+                        {
+                            user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true };
+                        }
 
-                        emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                            $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-                        emailSender.SendEmailAsync(Input.Email, "Your password",
-                            $"Please Use the below password to login.<br/> {password} <br/> This is your confidential information, please dont share with others or our staff.");
+                        logger.LogInformation($"Precheckout.ServiceRequestedBy.{Input.Email}");
+                        AuditString.AppendLine($"1.Precheckout.NotSingedIn.{Input.Email}.Service.{CurrentOrderService.ServiceDetail.Name}.City.{CurrentOrderService.Location.City}");
 
-                        
+
+                        if (IsExistingUser(user) == true)
+                        {
+                            UserCreationFailed = true;
+                            return Page();
+                        }
+
+                        var password = PasswordGenerator.GenerateRandomPassword();
+                        var userCreationResult = await clientServices.CreateNewUserWithPassword(user, password);
+
+
+                        if (userCreationResult.ResultValue == Fundamentals.ResultValue.Success)
+                        {
+                            logger.LogInformation(LogEvents.NewUserCreated, $"Precheckout.NewUserCreated.{Input.Email}.Success");
+                            AuditString.AppendLine($"2.Precheckout.NewUserCreated.{Input.Email}.Success");
+                            // _logger.LogInformation("User created a new account with password.");
+
+                            var code = await userManager.GenerateEmailConfirmationTokenAsync(user);
+                            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+                            var callbackUrl = Url.Page(
+                                "/Account/ConfirmEmail",
+                                pageHandler: null,
+                                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                                protocol: Request.Scheme);
+
+                            var confirmEmailTask = emailSender.SendEmailAsync(Input.Email, "Confirm your email",
+                                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                            var PassworkEmailTask = emailSender.SendEmailAsync(Input.Email, "Your password",
+                                $"Please Use the below password to login.<br/> {password} <br/> This is your confidential information, please dont share with others or our staff.");
+
+
                             //signInManager.SignInAsync(user, isPersistent: false);
-                            var loginResult = signInManager.PasswordSignInAsync(Input.Email, password, true, lockoutOnFailure: false).Result;
-                            if (loginResult.Succeeded)
+                            var loginResult = signInManager.PasswordSignInAsync(Input.Email, password, true, lockoutOnFailure: false);
+
+                            await Task.WhenAll(new List<Task>() { confirmEmailTask, PassworkEmailTask, loginResult });
+
+                            logger.LogInformation(LogEvents.PasswordSignInSuccess, $"Precheckout.SignIn.{Input.Email}.Success");
+                            AuditString.AppendLine($"3.Precheckout.SignIn.{Input.Email}.Success");
+                            if (loginResult.Result.Succeeded)
                             {
-                               // TempData["DataBaseId"] = HttpContext.Session.GetString("DataBaseId");
-                                //var dbId = ViewData["MyNumber"];// TempData.Peek("DataBaseId").ToString();
+                                await CreateFreshOrder(Input.Email);
                                 return RedirectToPage("./Checkout");
                             }
-                            
-                        
+
+
+                        }
+
+                        foreach (var error in userCreationResult.ResultMessages)
+                        {
+                            ModelState.AddModelError(string.Empty, error);
+                            UserCreationFailed = true;
+                            logger.LogInformation(LogEvents.NewUserCreated, $"Precheckout.UserCreation.{Input.Email}.Fail.Message.{error}");
+                        }
                     }
-                    foreach (var error in result.Errors)
+                    else
                     {
-                        ModelState.AddModelError(string.Empty, error.Description);
-                        CurrentOrderService = enabledServicesManager.GetEnabledServiceById(dbId);
-                        UserCreationFailed = true;
+                        if (!string.IsNullOrEmpty(dbId))
+                        {
+
+                            double currentApplicableTax = taxService.GetTaxAmount(CurrentOrderService.Location.State, CurrentOrderService.ServiceDetail.Name, CurrentOrderService.CostToCustomer);
+                            double finalAmount = currentApplicableTax + CurrentOrderService.CostToCustomer;
+                            TaxAmount = currentApplicableTax.ToString();
+                            FinalAmount = finalAmount.ToString();
+                        }
+                        return Page();
                     }
                 }
-                else {
-                    if (!string.IsNullOrEmpty(dbId))
+                else if (signInManager.IsSignedIn(User))
+                {
+                    UserCreationFailed = false;//it is a hack , think of another graceful solution man
+                    logger.LogInformation(LogEvents.NewUserCreated, $"Precheckout.UserCreation.{User.Identity.Name}.NotNeeded.SignedIn");
+                    AuditString.AppendLine($"1.Precheckout.SignedIn.{User.Identity.Name}.Service.{CurrentOrderService.ServiceDetail.Name}.City.{CurrentOrderService.Location.City}");
+                    var user = userManager.GetUserAsync(User).Result;
+                    bool requiresUpdate = false;
+                    if (string.IsNullOrEmpty(user.FullName))
                     {
-                        CurrentOrderService = enabledServicesManager.GetEnabledServiceById(dbId);
-                        double currentApplicableTax = taxService.GetTaxAmount(CurrentOrderService.Location.State, CurrentOrderService.ServiceDetail.Name, CurrentOrderService.CostToCustomer);
-                        double finalAmount = currentApplicableTax + CurrentOrderService.CostToCustomer;
-                        TaxAmount = currentApplicableTax.ToString();
-                        FinalAmount = finalAmount.ToString();
+                        user.FullName = Input.Name;
+                        requiresUpdate = true;
+                        AuditString.AppendLine($"1.1.Precheckout.Service.SignedIn.{User.Identity.Name}.NameTobeUpdated");
                     }
-                    return Page();
-                }
-            }
-            else if (signInManager.IsSignedIn(User))
-            {
-                UserCreationFailed = false;//it is a hack , think of another graceful solution man
-                var user = userManager.GetUserAsync(User).Result;
-                bool requiresUpdate = false;
-                if (string.IsNullOrEmpty(user.FullName))
-                {
-                    user.FullName = Input.Name;
-                    requiresUpdate = true;
-                }
-                if (string.IsNullOrEmpty(user.PhoneNumber))
-                {
-                    var phoneNumber = phoneService.ExtractPhoneNumber(Input.PhoneNumberCountryCode, Input.PhoneNumber).Result;
-                    user.PhoneNumber = phoneNumber;
-                    requiresUpdate = true;
+                    if (string.IsNullOrEmpty(user.PhoneNumber))
+                    {
+                        var phoneNumber = phoneService.ExtractPhoneNumber(Input.PhoneNumberCountryCode, Input.PhoneNumber).Result;
+                        user.PhoneNumber = phoneNumber;
+                        requiresUpdate = true;
+                        AuditString.AppendLine($"1.2.Precheckout.Service.SignedIn.{Input.PhoneNumber}.PhoneTobeUpdated");
+                    }
+
+                    if (requiresUpdate)
+                    {
+                        var userUpdateResult = userManager.UpdateAsync(user).Result;
+                        await signInManager.RefreshSignInAsync(user);
+                    }
+                    await CreateFreshOrder();
+                    return RedirectToPage("./Checkout");
                 }
 
-                if (requiresUpdate)
-                {
-                   var userUpdateResult= userManager.UpdateAsync(user).Result;
-                    signInManager.RefreshSignInAsync(user);
-                }
-                              
-                return RedirectToPage("./Checkout");
+            }
+            catch (Exception error)
+            {
+                logger.LogCritical(LogEvents.PreCheckoutError, $"Unknow Error in Precheckout {error.Message}");
+            }
+            finally 
+            {
+                OrderAudit audit = new OrderAudit();
+                audit.Email = Input.Email??User.Identity.Name;
+                audit.DateOfOrder = DateTime.UtcNow;
+                audit.OrderReceipt = HttpContext.Session.GetString("OrderReceipt");
+                audit.History = AuditString.ToString().Split('\n').ToList();
+                await orderAuditService.AddAudit(audit);
             }
             //If user is already signed in but no phone. Ask to Enter Phone.
             //If User is already signed in and there phone/email verification and email verifi
             return Page();
         }
-        
+
+        private bool IsExistingUser(Clientele user)
+        {
+            var existingUserByPhone = userManager.Users.Where(item => item.PhoneNumber == user.PhoneNumber).FirstOrDefault();
+            var existingUserByEmail = userManager.Users.Where(item => item.Email.ToLower() == Input.Email.ToLower()).FirstOrDefault();
+            if (existingUserByPhone != null || existingUserByEmail != null)
+            {
+                if (existingUserByEmail != null)
+                {
+                    ModelState.AddModelError(string.Empty, $"Phone Number {user.PhoneNumber} Is Already Taken");
+                }
+                if (existingUserByPhone != null)
+                {
+                    ModelState.AddModelError(string.Empty, $"Email {user.Email} Is Already Taken");
+                }
+
+
+                return true;
+            }
+            return false;
+        }
+
+        public async Task CreateFreshOrder(string UserEmail = "")
+        {
+            ClienteleOrder order = new ClienteleOrder();
+            order.CustomerRequirementDetail = CurrentOrderService;
+            order.OrderPlacedOn = DateTime.UtcNow;
+            var options = new GenerationOptions
+            {
+                UseNumbers = true,
+                Length = 10,
+            };
+            var userDetails = string.IsNullOrEmpty(UserEmail) ?  await clienteleServices.GetUserAsync(User) : await clienteleServices.GetByEmail(UserEmail);
+
+            order.Receipt = ShortId.Generate(options).ToUpper();
+            order.ClientId = userDetails.Id;
+            order.OrderStatus = OrderStatus.Initiated;
+            var finalOrder = await orderService.SaveOrder(order);
+            HttpContext.Session.SetString("OrderReceipt", finalOrder.Receipt);
+            AuditString.AppendLine($"#.Precheckout.FreshOrder.OrderId.{finalOrder.ClientOrderId.ToString()}.Client.{userDetails.Id}");
+        }
+
     }
 }

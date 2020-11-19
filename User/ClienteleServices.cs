@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -24,15 +25,28 @@ namespace User
     /// </summary>
     public interface IClienteleServices
     {
-        Task<Result> CreateLogin(string fullName, string Email, string PhoneNumberCountryCode, string PhoneNumber, UserAddress Address, string password);
+        Task<Clientele> GetUserAsync(ClaimsPrincipal User);
+        bool IsSignedIn(ClaimsPrincipal User);
+        Task<Result> CreateLogin(string fullName, string Email, string PhoneNumberCountryCode, string PhoneNumber, UserAddress Address, string password,string Role = null,Claim claimToAdd = null);
+        Task<Result> CreateNewUserWithPassword(Clientele user,string password="");
         string GetEmailConfirmationCode(Clientele user);
-        void SendAccountConfirmEmailOnLoginCreation(string Email, string callBackUrl);
-        void SendNewPassword(string Email, string password);
+        Task SendAccountConfirmEmailOnLoginCreation(string Email, string callBackUrl);
+        Task SendStaffAccountConfirmEmailOnLoginCreation(string Email, string callBackUrl);
+        Task SendNewPassword(string Email, string password);
         Task SaveAddress(Clientele endUser, UserAddress address);
         Task<List<Clientele>> GetUserByIds(List<ObjectId> UserIds);
         Task<Clientele> GetByEmail(string Email);
     }
-    public class ClienteleServices : IClienteleServices
+
+    public interface IClienteleStaffServices
+    {
+        Task<IList<Clientele>> GetUserByRoles(string Role);
+        Task<List<Clientele>> GetUserByClaims(string claim);
+        Clientele FindAvailableCaseManager();
+    }
+
+
+    public class ClienteleServices : IClienteleServices, IClienteleStaffServices
     {
         private readonly IClienteleRepository userRepository;
         private readonly UserManager<Clientele> userManager;
@@ -50,11 +64,12 @@ namespace User
             this.phoneService = phoneService;
         }
 
-        public async Task<Result> CreateLogin(string fullName, string Email, string PhoneNumberCountryCode, string PhoneNumber, UserAddress Address,string password)
+        public async Task<Result> CreateLogin(string fullName, string Email, string PhoneNumberCountryCode, string PhoneNumber, UserAddress Address, string password, string Role = null, Claim claimToAdd = null)
         {
             var phoneNumber = phoneService.ExtractPhoneNumber(PhoneNumberCountryCode, PhoneNumber).Result;
             var user = new Clientele { FullName = fullName, Email = Email,UserName = Email, IsActive = true, PhoneNumber = phoneNumber,Addresses = new List<UserAddress>() { Address} };
-
+            //user.Roles = new List<string>() { Role };
+            user.Claims = new List<IdentityUserClaim<string>>() { new IdentityUserClaim<string>() { ClaimType = claimToAdd.Type, ClaimValue = claimToAdd.Value } };
             var existingUserByPhone = userManager.Users.Where(item => item.PhoneNumber == user.PhoneNumber).FirstOrDefault();
             if (existingUserByPhone != null)
             {
@@ -64,7 +79,14 @@ namespace User
             var result = await userManager.CreateAsync(user, password);
             if (result.Succeeded)
             {
-                return new Result(ResultValue.Success, ErrorCode.None, $"Successfully Created") { SomeGuy = user };
+
+                var addRolesResult = await userManager.AddToRoleAsync(user, Role);
+                
+                if (addRolesResult.Succeeded)
+                {
+                    return new Result(ResultValue.Success, ErrorCode.None, $"Successfully Created with Roles") { SomeGuy = user };
+                }
+                return new Result(ResultValue.Success, ErrorCode.None, $"Successfully Created without Roles") { SomeGuy = user };
             }
             else
             {
@@ -74,21 +96,49 @@ namespace User
 
         }
 
+        public async Task<Result> CreateNewUserWithPassword(Clientele user,string password = "")
+        {
+            password = string.IsNullOrEmpty(password)?  PasswordGenerator.GenerateRandomPassword() : password;
+            var result = await userManager.CreateAsync(user, password);
+            if (result.Succeeded)
+            {
+
+                if (result.Succeeded)
+                {
+                    return new Result(ResultValue.Success, ErrorCode.None, $"Successfully Created with Password") { SomeGuy = user };
+                }
+                return new Result(ResultValue.Success, ErrorCode.None, $"Successfully Created without Roles") { SomeGuy = user };
+            }
+            else
+            {
+                //Add all the errors in ModelState Error
+                return new Result(ResultValue.ErrorAndFatal, ErrorCode.UserCreationFailed, result.Errors.Select(x => x.Description).ToList());
+            }
+        }
+
         public string GetEmailConfirmationCode(Clientele user)
         { 
             return userManager.GenerateEmailConfirmationTokenAsync(user).Result;
         }
-        public void SendAccountConfirmEmailOnLoginCreation(string Email , string callBackUrl)
+        public async Task SendAccountConfirmEmailOnLoginCreation(string Email , string callBackUrl)
         {
             var callbackUrl = callBackUrl;
             
-            emailSender.SendEmailAsync(Email, "Confirm your email",
+            await emailSender.SendEmailAsync(Email, "Confirm your email",
                 $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
         }
 
-        public void SendNewPassword(string Email, string password)
+        public async Task SendStaffAccountConfirmEmailOnLoginCreation(string Email, string callBackUrl)
         {
-            emailSender.SendEmailAsync(Email, "Your password",
+            var callbackUrl = callBackUrl;
+
+            await emailSender.SendEmailAsync(Email, "Your account is created as a Staff Member.Confirm your email",
+                $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+        }
+
+        public async Task SendNewPassword(string Email, string password)
+        {
+            await emailSender.SendEmailAsync(Email, "Your password",
                 $"Please Use the below password to login.<br/> {password} <br/> This is your confidential information, please dont share with others or our staff.");
         }
         public async Task SaveAddress(Clientele endUser , UserAddress address)
@@ -111,6 +161,39 @@ namespace User
         {
             return await userManager.FindByEmailAsync(Email);
         }
+
+        public async Task<Clientele> GetUserAsync(ClaimsPrincipal User)
+        {
+            return await userManager.GetUserAsync(User);
+        }
+
+        public async Task<IList<Clientele>> GetUserByRoles(string Role)
+        {
+            return await userManager.GetUsersInRoleAsync(Role);// (userRepository as IClienteleStaffRepository).GetUserByRoles(Role);
+        }
+
+        public async Task<List<Clientele>> GetUserByClaims(string claim)
+        {
+            return await (userRepository as IClienteleStaffRepository).GetUserByRoles(claim);
+        }
+
+        public Clientele FindAvailableCaseManager()
+        {
+            return GetUserByRoles("CaseManager").Result.FirstOrDefault();
+            //var consultants = await (userRepository as IClienteleStaffRepository).GetUserByRoles("CaseManager");
+            //return consultants.Where(x=>x.Email == "aloksingh.itbhu@gmail.com").FirstOrDefault();
+        }
+
+        public bool IsSignedIn(ClaimsPrincipal User)
+        {
+            return signInManager.IsSignedIn(User);
+        }
+    }
+
+    public interface IClienteleStaffRepository
+    {
+        Task<List<Clientele>> GetUserByRoles(string Role);
+        Task<List<Clientele>> GetUserByClaims(string claim);
     }
 
     public interface IClienteleRepository
@@ -118,8 +201,9 @@ namespace User
         Task<Clientele> GetUserByEmail(string Email);
         Task AddAddress(Clientele user, UserAddress address);
         Task<List<Clientele>> GetUserByIds(List<ObjectId> UserIds);
+
     }
-    public class ClienteleRepository : IClienteleRepository
+    public class ClienteleRepository : IClienteleRepository, IClienteleStaffRepository
     {
         IMongoClient client = null;
         private readonly IMongoCollection<Clientele> _usersCollection;
@@ -172,6 +256,36 @@ namespace User
                 var filter = Builders<Clientele>.Filter.In(t => t.Id, UserIds);
                 var findUser =  _usersCollection.Find(filter).ToListAsync();
                 return  await findUser;
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error);
+                return null;
+            }
+        }
+
+        public async Task<List<Clientele>> GetUserByRoles(string Role)
+        {
+            try
+            {
+                
+                var findUser = await _usersCollection.FindAsync<Clientele>(x=>x.Roles.Any(x=>x== Role));
+                return await findUser.ToListAsync();
+            }
+            catch (Exception error)
+            {
+                Console.WriteLine(error);
+                return null;
+            }
+        }
+
+        public async Task<List<Clientele>> GetUserByClaims(string claim)
+        {
+            try
+            {
+
+                var findUser = await _usersCollection.FindAsync<Clientele>((x => x.Claims.Any(x => x.ClaimValue == claim)));
+                return await findUser.ToListAsync();
             }
             catch (Exception error)
             {
