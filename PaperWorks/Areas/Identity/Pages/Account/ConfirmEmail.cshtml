@@ -3,10 +3,18 @@
 @{
     ViewData["Title"] = "Confirm email";
 }
-<section id="confirmEmail">
-    <h1 class="display-3 text-success text-center">@Model.StatusMessage</h1>
-    <h1 class="display-4 text-success text-center mt-3">@Model.ProceedLogin</h1>
-</section>
+    <section id="confirmEmail">
+        @if (Model.ConfirmationResult.Succeeded)
+        {
+            <h4 class="lead display-3 text-success text-center">@Model.StatusMessage</h4>
+            <h6 class="lead display-4 text-success text-center mt-3">@Model.ProceedLogin</h6>
+        }
+        else
+        {
+            <h4 class="lead display-3 text-danger text-center">@Model.StatusMessage</h4>
+            <h6 class="lead display-4 text-danger text-center mt-3">@Model.ProceedLogin</h6>
+        }
+    </section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />

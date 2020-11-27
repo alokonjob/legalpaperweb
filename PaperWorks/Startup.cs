@@ -107,23 +107,23 @@ namespace PaperWorks
             });
             //https://docs.microsoft.com/en-us/azure/key-vault/general/vs-key-vault-add-connected-service#:~:text=Go%20to%20the%20Azure%20portal,from%20the%20All%20account%20section.
             services.AddRazorPages();
-            
+
             services.AddAuthentication()
                 .AddGoogle(options =>
                 {
                     options.ClientId = gateKeeper.GetSecretValue("GooglClientId");// Configuration["GooglClientId"]; ;
                     options.ClientSecret = gateKeeper.GetSecretValue("GoogleClientSecret");// Configuration["GoogleClientSecret"];
-                })
-                .AddFacebook(facebookOptions =>
-                {
-                    facebookOptions.AppId = gateKeeper.GetSecretValue("FacebookAppId");
-                    facebookOptions.AppSecret = gateKeeper.GetSecretValue("FacecbookAppSecret");// Configuration["FacecbookAppSecret"];
-                })
-                .AddMicrosoftAccount(microsoftOptions =>
-                {
-                    microsoftOptions.ClientId = gateKeeper.GetSecretValue("MicrosoftClientId");// Configuration["MicrosoftClientId"];
-                    microsoftOptions.ClientSecret = gateKeeper.GetSecretValue("MicrosoftClientSecret");// Configuration["MicrosoftClientSecret"];
                 });
+                //.AddFacebook(facebookOptions =>
+                //{
+                //    facebookOptions.AppId = gateKeeper.GetSecretValue("FacebookAppId");
+                //    facebookOptions.AppSecret = gateKeeper.GetSecretValue("FacecbookAppSecret");// Configuration["FacecbookAppSecret"];
+                //})
+                //.AddMicrosoftAccount(microsoftOptions =>
+                //{
+                //    microsoftOptions.ClientId = gateKeeper.GetSecretValue("MicrosoftClientId");// Configuration["MicrosoftClientId"];
+                //    microsoftOptions.ClientSecret = gateKeeper.GetSecretValue("MicrosoftClientSecret");// Configuration["MicrosoftClientSecret"];
+                //});
 
 
             services.Configure<RequestLocalizationOptions>(options =>

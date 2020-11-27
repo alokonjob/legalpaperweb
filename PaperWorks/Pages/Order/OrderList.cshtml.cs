@@ -14,6 +14,7 @@ using Users;
 
 namespace PaperWorks
 {
+
     public class OrderListModel : PageModel
     {
         private readonly UserManager<Clientele> userManager;
@@ -49,10 +50,18 @@ namespace PaperWorks
             this.paymentService = paymentService;
             this.userServices = userServices;
         }
-        public async  Task<IActionResult>OnGetAsync()
+        public async  Task<IActionResult>OnGetAsync(string receipt = "")
         {
+            if (userServices.IsSignedIn(User) == false)
+            {
+                return RedirectToPage("/Account/Login", new { area = "Identity",returnUrl = receipt == "" ? $"/Order/OrderList" : $"/Order/OrderList?receipt={receipt}" });
+            }
             var whoIsAsking = await userManager.GetUserAsync(User);
             MyOrders = await orderService.GetOrdersOFUser(whoIsAsking.Id.ToString());
+            if (false == string.IsNullOrEmpty(receipt))
+            {
+                MyOrders = MyOrders.Where(x => string.Compare(receipt, x.Receipt) == 0).ToList();
+            }
             MyCases = await caseManagement.GetAllCasesOfUser(whoIsAsking.Email);
             MyPayments = await paymentService.GetPaymentByOrderId(MyOrders.Select(x => x.ClientOrderId).ToList());
             CompleteOrderInformation = new List<FullOrder>();

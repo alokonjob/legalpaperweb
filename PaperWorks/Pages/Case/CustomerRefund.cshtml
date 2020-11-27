@@ -1,0 +1,72 @@
+﻿@page
+@model PaperWorks.CustomerRefundModel
+@{
+    ViewData["Title"] = "CustomerRefund";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+<h1>CustomerRefund</h1>
+<div class="col bg-light">
+    <h5 class="display-4 m-3 text-muted text-center">CUSTOMER PAYMENT PANEL</h5>
+    <form class="form m-3" id="RefundForm" asp-page-handler="RefundPayment" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
+        @*data-ajax="true" data-ajax-method="post"*@
+
+
+        <div class="form-group">
+            <label asp-for="@Model.InputForRefund.RefundAmount"></label>
+            <input asp-for="@Model.InputForRefund.RefundAmount" class="form-control" placeholder="Be Careful while refund.Once refunded , can not be unrefunded" />
+            <span asp-validation-for="@Model.InputForRefund.RefundAmount" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="@Model.InputForRefund.RefundReason"></label>
+            <input asp-for="@Model.InputForRefund.RefundReason" class="form-control" />
+            <span asp-validation-for="@Model.InputForRefund.RefundReason" class="text-danger"></span>
+        </div>
+
+        <input type="hidden" asp-for="@Model.Receipt" class="form-control" />
+        @*<input type="hidden" asp-for="@Model.ConsultantEmail" class="form-control" />*@
+
+        <button type="submit" id="refundButton" class="btn btn-primary ml-2">Refund Payment</button>
+
+
+        <div asp-validation-summary="All" class="text-danger"></div>
+    </form>
+</div>
+
+<div class="FullRefundInfoDiv bg-secondary">
+    <partial name="_RefundInformation" model="Model.RefundInformationContainer" />
+</div>
+
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
+    <script type="text/javascript">
+
+
+
+        completed = function (xhr) {
+            //
+            //$(".caseUpdateList").empty();
+            $(".FullRefundInfoDiv").append(`${xhr.responseText}`);
+            $("#refundButton").prop('disabled', false);
+            $("#refundButton").html("Refund Payment");
+
+        };
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#refundButton").click(function () {
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+                $(".FullRefundInfoDiv").empty();
+                $("#RefundForm").submit();
+            });
+        });
+    </script>
+}

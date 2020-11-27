@@ -1,0 +1,39 @@
+﻿
+@model FullRefundInformation
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@if (Model != null && Model.REFUNDLISTFROMRAZOR.Any())
+{
+    <h1> Refunded INR @Model.Total in  @Model.REFUNDLISTFROMRAZOR.Count() REFUNDS SO FAR</h1>
+    int count = 1;
+    foreach (var refund in Model.REFUNDLISTFROMRAZOR)
+    {
+        <div class="row bg- mt-2">
+
+
+            <div class="col-md-6">
+                <div class="bg-light">
+
+
+                    @foreach (var key in refund.Keys)
+                    {
+
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label><strong>@key</strong></label>
+                            </div>
+                            <div class="col-md-6">
+                                <label>@refund[key]</label>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+            </div>
+        </div>
+
+    }
+    count++;
+}

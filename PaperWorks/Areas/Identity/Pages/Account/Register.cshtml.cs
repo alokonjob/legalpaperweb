@@ -5,15 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using Address;
 using Emailer;
+using Fundamentals.Events;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Phone;
 using Users;
 
 namespace PaperWorks.Areas.Identity.Pages.Account
@@ -24,18 +28,24 @@ namespace PaperWorks.Areas.Identity.Pages.Account
         private readonly SignInManager<Clientele> _signInManager;
         private readonly UserManager<Clientele> _userManager;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly CountryService countryService;
+        private readonly IPhoneService phoneService;
         private readonly IEmailer _emailSender;
 
         public RegisterModel(
             UserManager<Clientele> userManager,
             SignInManager<Clientele> signInManager,
-            ILogger<RegisterModel> logger,
+            ILogger<RegisterModel> logger, CountryService countryService, IPhoneService phoneService,
             IEmailer emailSender)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            this.countryService = countryService;
+            this.phoneService = phoneService;
             _emailSender = emailSender;
+            AvailableCountries = countryService.GetCountries();
+            AvailableCountries.Where(x => x.Value == "IN").FirstOrDefault().Selected = true;
         }
 
         [BindProperty]
@@ -44,13 +54,15 @@ namespace PaperWorks.Areas.Identity.Pages.Account
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
-
+        public List<SelectListItem> AvailableCountries { get; }
         public class InputModel
         {
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+            [Required]
+            public string Name { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -62,6 +74,14 @@ namespace PaperWorks.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [DataType(DataType.PhoneNumber, ErrorMessage = "Invalid Phone Number")]
+            [RegularExpression(@"^([1-9][0-9]{9})$", ErrorMessage = "Invalid Phone Number.")]
+            [Display(Name = "Mobile number")]
+            public string PhoneNumber { get; set; }
+            [Display(Name = "Phone number country")]
+            public string PhoneNumberCountryCode { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -76,7 +96,25 @@ namespace PaperWorks.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = new Clientele { UserName = Input.Email, Email = Input.Email,IsActive = true };
+                Clientele user = null;
+                //get a valid phone Number and save it while creating user
+                try
+                {
+                    var phoneNumber = await phoneService.ExtractPhoneNumber(Input.PhoneNumberCountryCode, Input.PhoneNumber);
+                    user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true, FullName = Input.Name, PhoneNumber = phoneNumber };
+                }
+                catch (Exception error)
+                {
+                    _logger.LogWarning(LogEvents.ErrorGetPhone, $"Error while Extracting Phone From Input CC {Input.PhoneNumberCountryCode},Phone {Input.PhoneNumber}, {error.Message}");
+                }
+
+                //If there is error while fetching phone details , user will not be created.
+                //so create a user without the phone
+                if (user == null)
+                {
+                    user = new Clientele { UserName = Input.Email, Email = Input.Email,FullName = Input.Name, IsActive = true };
+                }
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)
                 {
@@ -87,11 +125,10 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = Input.Email, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                    await _emailSender.SendAccountCreationMail(Input.Name,Input.Email,HtmlEncoder.Default.Encode(callbackUrl));
 
                     if (_userManager.Options.SignIn.RequireConfirmedAccount)
                     {

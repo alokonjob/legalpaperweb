@@ -16,6 +16,9 @@ namespace Fundamentals.Managers
         }
         public void AddNewGeography(Geography geography)
         {
+            geography.City = geography.City.ToLower();
+            geography.State = geography.State.ToLower();
+
             geographyRepository.Add(geography);
         }
 

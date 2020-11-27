@@ -19,7 +19,7 @@ namespace PaperWorks
             this.enableServiceManager = enableServiceManager;
         }
 
-        public void OnGet(string servicename)
+        public IActionResult OnGet(string servicename)
         {
 
             //https://www.mikesdotnetting.com/article/346/using-resource-files-in-razor-pages-localisation
@@ -27,8 +27,14 @@ namespace PaperWorks
             string city = string.IsNullOrEmpty(Request.Cookies["location"]) ? "delhi" : Request.Cookies["location"].ToLower();
 
             CurrentDisplayService = enableServiceManager.GetEnabledService(servicename, city);
+            if (CurrentDisplayService == null || CurrentDisplayService.IsActive == false)
+            {
+                return RedirectToPage("/ComingToFetchSoon");
+            }
+
             var serviceEnableId = CurrentDisplayService?.EnableId.ToString();
             HttpContext.Session.SetString("DataBaseId", serviceEnableId);
+            return Page();
         }
     }
 }

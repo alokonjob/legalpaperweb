@@ -25,18 +25,27 @@ namespace CaseManagement
             return newUpdate;
         }
 
-        public async Task<List<CaseUpdate>> GetAllUpdates(string caseId)
+        public async Task<List<CaseUpdate>> GetAllUpdates(string caseId,bool includeDeleted)
         {
-            var filter = Builders<CaseUpdate>.Filter.Eq(x => x.CaseId, ObjectId.Parse(caseId));
-            var updates = await _caseUpdateCollection.FindAsync<CaseUpdate>(filter);
+            var sort = Builders<CaseUpdate>.Sort.Descending("updatedDate");
+            var filter = includeDeleted == true ? Builders<CaseUpdate>.Filter.Where(x => x.CaseId == ObjectId.Parse(caseId)) :
+                Builders<CaseUpdate>.Filter.Where(x => x.CaseId == ObjectId.Parse(caseId) && x.IsDeleted == false);
+            var updates = _caseUpdateCollection.Find<CaseUpdate>(filter).Sort(sort);
             return await updates.ToListAsync();
         }
 
         public async Task<List<CaseUpdate>> GetMyUpdates(string caseId, string Email)
         {
             var filter = Builders<CaseUpdate>.Filter.Eq(x => x.CaseId, ObjectId.Parse(caseId));
-            var updates = await _caseUpdateCollection.FindAsync<CaseUpdate>(x => x.CaseId == ObjectId.Parse(caseId) && x.UpdatedBy.Email == Email);
+            var updates = await _caseUpdateCollection.FindAsync<CaseUpdate>(x => x.CaseId == ObjectId.Parse(caseId) && (x.UpdatedBy.Email == Email || x.ShareWithConsultantEmail == Email) && x.IsDeleted == false);
             return await updates.ToListAsync();
+        }
+
+        public async Task<CaseUpdate> RemoveUpdate(string updateId)
+        {
+            var filter = Builders<CaseUpdate>.Filter.Eq(x => x.CaseUpdateId, ObjectId.Parse(updateId));
+            return await _caseUpdateCollection.FindOneAndUpdateAsync<CaseUpdate>(filter,
+                Builders<CaseUpdate>.Update.Set(x => x.IsDeleted, true));
         }
     }
 }

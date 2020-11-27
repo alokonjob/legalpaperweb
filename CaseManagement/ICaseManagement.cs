@@ -15,7 +15,7 @@ namespace CaseManagementSpace
     }
     public interface ICaseManagement:IConsultantCaseManagement, ICaseManagerCaseManagement
     {
-        Task<ObjectId> GenerateCase(Case customerCase);
+        Task<ObjectId> GenerateCase(Case customerCase, Dictionary<string, string> caseDictionary);
         Task<List<Case>> GetAllCases();
         Task<List<Case>> GetAllCasesOfUser(string userEmail);
         Task<Case> GetCaseById(string caseId);

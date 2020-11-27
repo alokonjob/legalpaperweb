@@ -5,24 +5,39 @@
     Layout = "~/Pages/Shared/_Layout.cshtml";
 }
 
-    <section id="finSection">
-        @if (Model.IsNudgeOn)
-        {
-            <div class="progress">
-                <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
-            </div>
-        }
-        <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">@Model.ConsultantEmail - Receipt  @Model.Receipt </h4>
-        <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Paid @Model.PaidSoFar out of @Model.FinalizedCost </h4>
-        @if (Model.IsNudgeOn)
-        {
-    <h4 class="display-4 m-3 text-danger text-center" data-aos="fade-left" data-aos-delay="800">Nudged For @Model.NudgeInfo.Amount By @Model.NudgeInfo.CreatedBy On  @Model.NudgeInfo.NudgeOnDate.ToShortDateString()</h4>   
-        }
+<section id="finSection">
+    @if (Model.IsNudgeOn)
+    {
+        <div class="progress" id="NudgeProgressDiv">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+        </div>
+    }
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">@Model.ConsultantEmail - Receipt  @Model.Receipt </h4>
+    <h4 id="paidSoFar" class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Finalized Cost @Model.FinalizedCost </h4>
+    @if (Model.IsNudgeOn)
+    {
+        <h4 class=" m-3 text-danger text-center" data-aos="fade-left" data-aos-delay="800" id="NudgeTextDiv">Nudged For @Model.NudgeInfo.Amount By @Model.NudgeInfo.CreatedBy On  @Model.NudgeInfo.NudgeOnDate.ToShortDateString()</h4>
+    }
 
-    </section>
+</section>
+<div id="toastDiv" class="toast" style="position: absolute; top: 0; right: 0;">
+    <div class="toast-header">
+        <img src="..." class="rounded mr-2" alt="...">
+        <strong class="mr-auto">Bootstrap</strong>
+        <small>11 mins ago</small>
+        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="toast-body">
+        Hello, world! This is a toast message.
+    </div>
+</div>
+
 <div class="row">
-    <div class="col">
-        <form class="form m-3" asp-page-handler="ReleasePayment" method="post">
+    <div class="col-md-6 bg-light">
+        <h5 class="display-4 m-3 text-muted text-center " >CONSULTANT PAYMENT PANEL</h5>
+        <form class="form m-3" id="consultantPayForm" asp-page-handler="ReleasePayment" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
             @*data-ajax="true" data-ajax-method="post"*@
 
 
@@ -45,28 +60,85 @@
             <input type="hidden" asp-for="@Model.ConsultantEmail" class="form-control" />
             @if (Model.IsNudgeOn)
             {
-                <button type="submit" class="btn btn-primary ml-2"> Update Payment And Nudge</button>
+                <button type="submit" class="btn btn-primary ml-2" id="releasePayBtn"> Release Payment And Nudge</button>
             }
             else
-            { 
-                <button type="submit" class="btn btn-primary ml-2">Update Payment</button>
+            {
+                <button type="submit" class="btn btn-primary ml-2" id="releasePayBtn">Release Payment</button>
             }
 
             <div asp-validation-summary="All" class="text-danger"></div>
         </form>
+        <div class="caseUpdateList mt-2">
+            <partial name="_PayUpdates" model="Model.FullPayInfo" />
+        </div>
+    </div>
+    <div class="col-md-6 bg-light">
+        <h5 class="display-4 m-3 text-muted text-center">CUSTOMER PAYMENT PANEL</h5>
+        <a asp-page="/Case/CustomerRefund" asp-route-receipt="@Model.Receipt">See All Refund Information</a>
+        <form class="form m-3" asp-page-handler="RefundPayment" method="post">
+            @*data-ajax="true" data-ajax-method="post"*@
+
+
+            <div class="form-group">
+                <label asp-for="@Model.InputForRefund.RefundAmount"></label>
+                <input asp-for="@Model.InputForRefund.RefundAmount" class="form-control" placeholder="Max refund amount @Model.CustomerPayment.FinalAmount" />
+                <span asp-validation-for="@Model.InputForRefund.RefundAmount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="@Model.InputForRefund.RefundReason"></label>
+                <input asp-for="@Model.InputForRefund.RefundReason" class="form-control" />
+                <span asp-validation-for="@Model.InputForRefund.RefundReason" class="text-danger"></span>
+            </div>
+
+            <input type="hidden" asp-for="@Model.Receipt" class="form-control" />
+            <input type="hidden" asp-for="@Model.ConsultantEmail" class="form-control" />
+
+            <button type="submit" class="btn btn-primary ml-2">Refund Payment</button>
+
+
+            <div asp-validation-summary="All" class="text-danger"></div>
+        </form>
+        @foreach (var key in Model.PAYDATAFROMRAZOR.Keys)
+        {
+
+
+            <div class="row">
+                <div class="col-md-6">
+                    <label><strong>@key</strong></label>
+                </div>
+                <div class="col-md-6">
+                    <label>@Model.PAYDATAFROMRAZOR[key]</label>
+                </div>
+            </div>
+
+        }
+
     </div>
 </div>
 
-<div class="caseUpdateList mt-2">
-    <partial name="_PayUpdates" model="Model.FullPayInfo" />
-</div>
 
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
     <script type="text/javascript">
         $(document).ready(function () {
+            $("#releasePayBtn").click(function () {
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+                $(".caseUpdateList").empty();
+                $("#consultantPayForm").submit();
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
             $("#finSection").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+            $("#toastDiv").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
         });
     </script>
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
@@ -75,5 +147,33 @@
             $('#payUpdatesTable').DataTable();
         });
     </script>
+    <script type="text/javascript">
+        completed = function (xhr) {
+            //
+            //$(".caseUpdateList").empty();
+            $(".caseUpdateList").append(`${xhr.responseText}`);
+            $("#releasePayBtn").prop('disabled', false);
+            $("#releasePayBtn").html("Release New Payment");
+            var updatedText = "Paid"+ @Model.PaidSoFar + "out of" + @Model.FinalizedCost;
+            $('#paidSoFar').text(updatedText);
+
+            $("#NudgeTextDiv").empty();
+            $("#NudgeProgressDiv").empty();
+
+            $('.toast').toast('show');
+        };
+
+
+    </script>
+    @*<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/dataTabless/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>
+    <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
+    <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
+    <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('#payUpdatesTable').DataTable();
+        });
+    </script>*@
 }
 

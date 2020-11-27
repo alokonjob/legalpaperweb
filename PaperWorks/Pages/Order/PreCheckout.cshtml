@@ -20,8 +20,8 @@
         <div class="col-md-6">
             <div class="card bg-light border-0 p-3 m-5">
                 <div class="card-body mt-3">
-                    <h4 class="card-title">Order Details</h4>
-                    <h6 class="card-subtitle text-muted">We will create your sign in for free</h6>
+                    <h4 class="card-title">Customer Details</h4>
+                    <h6 class="card-subtitle text-muted">We will create your sign in for free or <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="/Order/PreCheckout">Login If Account Already Exists</a></h6>
                     <div class="form-group">
                         <label asp-for="Input.Name"></label>
                         @if (string.IsNullOrEmpty(Model.Input.Name) || Model.UserCreationFailed)

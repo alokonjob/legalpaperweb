@@ -10,7 +10,7 @@
 }
 
 <section id="caseDetailSection">
-    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Case Detail of  @localizer[Model.CurrentOrder.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName]</h4>
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800"> @localizer[Model.CurrentOrder.CustomerRequirementDetail.ServiceDetail.DetailedDisplayInfo.DisplayName] - @Model.CurrentCase.Order.Receipt</h4>
 </section>
 
 
@@ -46,19 +46,19 @@
             </div>
             <div class="card-body mt-3">
 
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h6 class="card-subtitle lead m-1">Consultant Email</h6>
-                            <h6 class="card-subtitle lead m-1">Consultant Phone</h6>
-                            <h6 class="card-subtitle lead m-1">Expected Close Date</h6>
-                        </div>
-                        <div class="col-md-6">
-                            <h6 class="card-subtitle lead m-1">@Model.CurrentCase.Order.ConsultantEmail</h6>
-                            <h6 class="card-subtitle lead m-1">@Model.CurrentCase.Order.ConsultantPhone</h6>
-                            <h6 class="card-subtitle lead m-1">@Model.CurrentCase.ExpectedCaseCloseDate?.ToLongDateString()</h6>
-                        </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="card-subtitle lead m-1">Consultant Email</h6>
+                        <h6 class="card-subtitle lead m-1">Consultant Phone</h6>
+                        <h6 class="card-subtitle lead m-1">Expected Close Date</h6>
                     </div>
-                
+                    <div class="col-md-6">
+                        <h6 class="card-subtitle lead m-1">@Model.CurrentCase.Order.ConsultantEmail</h6>
+                        <h6 class="card-subtitle lead m-1">@Model.CurrentCase.Order.ConsultantPhone</h6>
+                        <h6 class="card-subtitle lead m-1">@Model.CurrentCase.ExpectedCaseCloseDate?.ToLongDateString()</h6>
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
@@ -74,14 +74,14 @@
                 <h5 class="lead text-center"><strong>Post An Update</strong></h5>
             </div>
             <div class="card-body">
-                <form method="post" asp-page-handler="addupdate" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
+                <form class="form" id="postUpdateForm" method="post" asp-page-handler="addupdate" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
                     <div class="form-group">
-                        <textarea class="form-control w-100" asp-for="@Model.Comment">
+                        <textarea class="form-control w-100" asp-for="@Model.Comment" id="postUpdateTextForm">
 
                     </textarea>
-                        <input type="hidden" asp-for="@Model.CaseId" />
+                        <input type="hidden" asp-for="@Model.Receipt" />
                     </div>
-                    <button class="form-control btn btn-success" type="submit">Post Update</button>
+                    <button class="form-control btn btn-success" type="submit" id="postUpdateBtn">Post Update</button>
 
                 </form>
 
@@ -114,6 +114,11 @@
 
     </div>
 </div>
+
+<div class="casePayInfoList mt-2">
+    <partial name="_PayUpdates" model="Model.ConsultantPay" />
+</div>
+
 <section id="caseDetailSection">
     <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">My Updates</h4>
 </section>
@@ -128,6 +133,18 @@
 <div class="fileUpldates mt-2">
     <partial name="_UploadedFileList" model="Model.AllFileNames" />
 </div>
+<div class="modal fade" id="loadMe">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="loader"></div>
+                <div clas="loader-txt">
+                    <p>Working on it<br><br><small>Hold on tight</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @section Scripts{
 
@@ -141,23 +158,78 @@
         completed = function (xhr) {
             $(".caseUpdateList").empty();
             $(".caseUpdateList").append(`${xhr.responseText}`);
-            //alert(`Wow ${xhr.responseText}, you are brave!`);
+            $('#caseUpdateTable').DataTable({
+                "order": [[2, "desc"]]
+            });
+
+            $("#postUpdateBtn").prop('disabled', false);
+            $("#postUpdateBtn").html("Post Update");
+
+            $("#postUpdateTextForm").val("");
+            $("#loadMe").modal('hide');
         };
         fileUploadcompleted = function (xhr) {
             $(".fileUpldates").empty();
             $(".fileUpldates").append(`${xhr.responseText}`);
-            //alert(`Wow ${xhr.responseText}, you are brave!`);
         };
 
     </script>
-    <script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
+    @*<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>*@
     <script src="~/dataTabless/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
     <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#caseUpdateTable').DataTable();
+            $('#caseUpdateTable').DataTable({
+                //scrollY: "600px",
+                scrollX: true,
+                scrollCollapse: true,
+                paging: true,
+                columnDefs: [
+                    { width: '40%', targets: 0 },
+                    { width: '30%', targets: 1 }
+                    ,
+                    { targets: 2, type: 'date-euro' }
+                ],
+                 "order": [[2, "desc"]],
+                fixedColumns: true});
+        });
+    </script>
+    <script>
+        $(document).ready(function () {
+            $('#payUpdatesTable').DataTable({
+                //scrollY: "600px",
+                scrollX: true,
+                scrollCollapse: true,
+                paging: true,
+                columnDefs: [
+                    { width: '20%', targets: 0 }
+                ],
+                fixedColumns: true
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#postUpdateBtn").click(function () {
+
+                $("#loadMe").modal('show');
+
+                //setTimeout(function () {
+                //    $("#loadMe").modal('hide');
+                //}, 3500);
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+                $(".caseUpdateList").empty();
+                $("#postUpdateForm").submit();
+            });
+
+
         });
     </script>
 }

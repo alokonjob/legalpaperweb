@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 using System;
+using System.Collections.Generic;
 
 namespace OrderAndPayments
 {
@@ -14,7 +15,8 @@ namespace OrderAndPayments
         public IGateWaysPaymentInfo GateWayDetails { get; set; }
         public double FinalAmount { get; set; }
         public ObjectId ClienteleOrderId { get; set; }
-        public ClientRefund RefundDetails { get; set; }
+        public ObjectId CaseId { get; set; }
+        public List<ClientRefund> RefundDetails { get; set; }
         public DateTime PaymentDate { get; set; }
         public string PaymentStatus { get; set; }
     }

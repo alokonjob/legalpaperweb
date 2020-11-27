@@ -88,7 +88,15 @@ namespace CaseManagement
         {
             var clientCase = await caseManagementService.GetCaseByReceipt(receipt);
             var nudge = await nudgeRepo.GetNudges(clientCase.CaseId.ToString());
-            return nudge != null ? nudge.Nudges.Select(x => x.IsOn == true).FirstOrDefault() : false;
+            if (nudge != null)
+            {
+                var nudgeInfo = nudge.Nudges.Where(x => x.IsOn == true).FirstOrDefault();
+                if(nudgeInfo != null)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
     }
 

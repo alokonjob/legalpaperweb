@@ -29,7 +29,7 @@ namespace PaperWorks
         {
             FullUIGeo geo = new FullUIGeo();
             geo.allGeographies = geoGraphies.FetchAllGeographies();
-            geo.SavedGeo = Get("location").ToUpper();
+            geo.SavedGeo = Get("location")?.ToUpper()??"Delhi";
             return View("Location", geo);
         }
 

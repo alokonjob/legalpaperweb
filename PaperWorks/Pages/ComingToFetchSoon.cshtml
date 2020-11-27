@@ -1,0 +1,43 @@
+﻿@page
+@model PaperWorks.ComingToFetchSoonModel
+@{
+    ViewData["Title"] = "ComingToFetchSoon";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+    <section id="notoperational">
+        <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800"> We are working hard</h4>
+        <p class="lead display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800"> Selected Service is not operational in your area</p>
+    </section>
+
+<div class="row">
+    <div class="col-2">
+
+    </div>
+    <div class="col-8">
+        <img src="~/img/dogfetch.jpg" class="d-none d-md-block h-75 w-100"  />
+    </div>
+    <div class="col-2">
+        
+    </div>
+    @*<div class="col-4">
+            <h1 class="text-danger">Error.</h1>
+            <h2 class="text-danger">An error occurred while processing your request.</h2>
+            @if (Model.ShowRequestId)
+            {
+                <p class="lead">
+                    <strong>OOPS SOMETHING WENT WRONG</strong>
+                    <strong>Request ID:</strong> <code>@Model.RequestId</code>
+                </p>
+            }
+        </div>*@
+</div>
+
+@section Scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#notoperational").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
+        });
+    </script>
+    }
+

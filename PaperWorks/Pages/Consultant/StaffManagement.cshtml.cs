@@ -167,7 +167,7 @@ namespace PaperWorks
                     var callbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                        values: new { area = "Identity", userId = Input.Email, code = code, returnUrl = returnUrl },
                         protocol: Request.Scheme);
 
                     await clientServices.SendStaffAccountConfirmEmailOnLoginCreation(Input.Email, callbackUrl);

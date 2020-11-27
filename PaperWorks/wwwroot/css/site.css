@@ -11,7 +11,7 @@
 
 
 .carousel-item {
-    width:100%;
+    width: 100%;
     height: 400px;
 }
 
@@ -99,7 +99,8 @@ body {
 a.servicelink {
     background-color: #ffffff;
 }
-a.servicelink:hover {
+
+    a.servicelink:hover {
         background-color: #eee;
     }
 
@@ -212,20 +213,19 @@ span.servicelisting {
     border-radius: 4px;
     transition-duration: 0.4s;
 }
-.razorpay-payment-button:hover {
+
+    .razorpay-payment-button:hover {
         background-color: #4CAF50; /* Green */
         color: white;
     }
 
-.ul casel{
-    text-align:center;
-
+.ul casel {
+    text-align: center;
 }
 
 .ul.li.casell {
-    display:inline-block;
-    width:200px;
-
+    display: inline-block;
+    width: 200px;
 }
 /*multistepform*/
 * {
@@ -381,7 +381,7 @@ select.list-dt {
     #progressbar li {
         list-style-type: none;
         font-size: 12px;
-        width: 20%;/*25%*/
+        width: 20%; /*25%*/
         float: left;
         position: relative
     }
@@ -486,54 +486,54 @@ select.list-dt {
         font-weight: 300
     }
 
-    #progressbar #accountsz:before {
-        font-family: FontAwesome;
-        content: "\f13e"
-    }
+#progressbar #accountsz:before {
+    font-family: FontAwesome;
+    content: "\f13e"
+}
 
-    #progressbar #personalsz:before {
-        font-family: FontAwesome;
-        content: "\f007"
-    }
+#progressbar #personalsz:before {
+    font-family: FontAwesome;
+    content: "\f007"
+}
 
-    #progressbar #paymentsz:before {
-        font-family: FontAwesome;
-        content: "\f030"
-    }
+#progressbar #paymentsz:before {
+    font-family: FontAwesome;
+    content: "\f030"
+}
 
-    #progressbar #confirmsz:before {
-        font-family: FontAwesome;
-        content: "\f00c"
-    }
+#progressbar #confirmsz:before {
+    font-family: FontAwesome;
+    content: "\f00c"
+}
 
-    #progressbarssz li:before {
-        width: 30px;
-        height: 30px;
-        line-height: 23px;
-        display: block;
-        font-size: 20px;
-        color: #ffffff;
-        background: lightgray;
-        border-radius: 30%;
-        margin: 0 auto 10px auto;
-        padding: 2px
-    }
+#progressbarssz li:before {
+    width: 30px;
+    height: 30px;
+    line-height: 23px;
+    display: block;
+    font-size: 20px;
+    color: #ffffff;
+    background: lightgray;
+    border-radius: 30%;
+    margin: 0 auto 10px auto;
+    padding: 2px
+}
 
-    #progressbarssz li:after {
-        content: '';
-        width: 100%;
-        height: 2px;
-        background: lightgray;
-        position: absolute;
-        left: 0;
-        top: 25px;
-        z-index: -1
-    }
+#progressbarssz li:after {
+    content: '';
+    width: 100%;
+    height: 2px;
+    background: lightgray;
+    position: absolute;
+    left: 0;
+    top: 25px;
+    z-index: -1
+}
 
-    #progressbarssz li.active:before,
-    #progressbarssz li.active:after {
-        background: #673AB7
-    }
+#progressbarssz li.active:before,
+#progressbarssz li.active:after {
+    background: #673AB7
+}
 
 .progress {
     height: 20px
@@ -547,4 +547,45 @@ select.list-dt {
     width: 100%;
     object-fit: cover
 }*/
+
+/** SPINNER CREATION **/
+
+.loader {
+    position: relative;
+    text-align: center;
+    margin: 15px auto 35px auto;
+    z-index: 9999;
+    display: block;
+    width: 80px;
+    height: 80px;
+    border: 10px solid rgba(0, 0, 0, .3);
+    border-radius: 50%;
+    border-top-color: #000;
+    animation: spin 1s ease-in-out infinite;
+    -webkit-animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    to {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+
+/** MODAL STYLING **/
+
+.modal-content {
+    border-radius: 0px;
+    box-shadow: 0 0 20px 8px rgba(0, 0, 0, 0.7);
+}
+
+.modal-backdrop.show {
+    opacity: 0.75;
+}
 

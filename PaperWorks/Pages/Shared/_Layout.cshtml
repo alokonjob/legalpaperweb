@@ -1,6 +1,7 @@
 ﻿
 @using Microsoft.AspNetCore.Identity
 @using  Users
+@using  User
 @inject SignInManager<Clientele> SignInManager
 @inject UserManager<Clientele> UserManager
 
@@ -30,10 +31,10 @@
 </head>
 <body>
     <header id="main-header">
-        @*<nav class="navbar  navbar-expand-sm fixed-top justify-content-center navbar-light bg-light" id="topnavbarbutnobeer">*@
+        @*<nav class="navbar  navbar-expand-sm fixed-top justify-content-center navbar-lights bg-light" id="topnavbarbutnobeer">*@
         <nav class="navbar  navbar-expand-sm fixed-top navbar-light bg-light" id="topnavbarbutnobeer">
             <a class="navbar-brand" href="/Index">
-                <img src="~/img/logocase.jpeg" width="70" height="50" class="d-inline-block align-top" alt="" href="/Index" id="topnavbarbutnobeer">
+                <img src="~/img/logocase.jpeg" width="70" height="50" class="d-none d-md-block" alt="" href="/Index" id="topnavbarbutnobeer">
             </a>
             <div class="container">
                 @*<a href="/Index" class="navbar-brand p-3">LegalPaperWorx .Net</a>*@
@@ -114,7 +115,7 @@
                                         </div>
                                         <div class="row bg-white m-1">
                                             <div class="col-sm bg-white m-1">
-                                                <a class="btn-block servicelink p-1">
+                                                <a class="btn-block servicelink p-1" asp-page="./customerservice/Detail" asp-route-servicename="marriagecertificate">
                                                     <span class="fa fa-building-o fa-lg" aria-hidden="true"></span>
                                                     <span aria-hidden="true" class="text-right ml-3 lead servicelisting">Marriage Certificate</span>
                                                 </a>
@@ -181,17 +182,31 @@
                                 <div class="dropdown-menu dropdown-menu-right">
                                     <a href="/Order/OrderList" class="dropdown-item">My Orders</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="/Account/Manage/Index" class="dropdown-item">My Account</a>
+                                    <a asp-area="Identity" asp-page="/Account/Manage/Index" class="dropdown-item">My Account</a>
                                     <div class="dropdown-divider"></div>
-                                    <a href="#" class="dropdown-item">My Cases</a>
-                                    <a href="/Case/CaseListing" class="dropdown-item">Case Listing</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="/Admin/Onboarding" class="dropdown-item">Onboard Consultant</a>
-                                    <a href="/Consultant/ConsultantManagement" class="dropdown-item">Manage Consultant</a>
-                                    <div class="dropdown-divider"></div>
-                                    <a href="/Consultant/StaffManagement" class="dropdown-item">Onboard Staff</a>
-                                    <a href="/Consultant/StaffManagement" class="dropdown-item">Manage Staff</a>
-                                    <div class="dropdown-divider"></div>
+                                    @if (User.IsConsultant())
+                                    {
+                                        <a href="#" class="dropdown-item">My Cases</a>
+                                        <div class="dropdown-divider"></div>
+                                    }
+                                    @if (User.IsCaseManager() || User.IsFounder() || User.IsFinanceUser())
+                                    {
+                                        <a href="/Case/CaseListing" class="dropdown-item">Case Listing</a>
+                                        <div class="dropdown-divider"></div>
+                                    }
+                                    @if (User.IsWebAdmin() || User.IsFounder())
+                                    {
+                                        <a href="/Admin/Onboarding" class="dropdown-item">Onboard Consultant</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="/Consultant/ConsultantManagement" class="dropdown-item">Manage Consultant</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="/Consultant/StaffManagement" class="dropdown-item">Onboard Staff</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="/Consultant/StaffManagement" class="dropdown-item">Manage Staff</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="/Admin/ServiceGeography" class="dropdown-item">Manage Services</a>
+                                        <div class="dropdown-divider"></div>
+                                    }
                                     <form class="form" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post">
                                         <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
                                     </form>
@@ -209,7 +224,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Register">Sign Up</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
@@ -219,7 +234,7 @@
 
                     </ul>
                     <vc:location></vc:location>
-                    
+
 
                 </div>
             </div>

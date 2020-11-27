@@ -15,7 +15,16 @@ namespace CaseManagementSpace
         public string Comment { get; set; }
         public AbridgedUser UpdatedBy { get; set; }
         public DateTime UpdatedDate { get; set; }
-        public string UserFriendlyUpdateDate => UpdatedDate.ToLongDateString();
+        public string UserFriendlyUpdateDate => UpdatedDate.ToLongDateString() +  UpdatedDate.ToLongTimeString();
+        public string ShareWithConsultantEmail { get; set; }
 
+        public bool IsDeleted { get; set; }
+
+    }
+
+    public class AllCaseUpdate
+    {
+        public CaseUpdate Update { get; set; }
+        public bool DELETEId { get; set; }
     }
 }

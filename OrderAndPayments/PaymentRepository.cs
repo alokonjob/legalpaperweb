@@ -28,13 +28,14 @@ namespace OrderAndPayments
             return clientPayment.PaymentId;
         }
 
-        public async Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId OrderId , string status)
+        public async Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId OrderId , ObjectId CaseId , string status)
         {
             var filter = Builders<ClientelePayment>.Filter.Eq(t => t.PaymentId, paymentId);
             var updatedDoc = await _paymentCollection.FindOneAndUpdateAsync<ClientelePayment>(
                filter,
                Builders<ClientelePayment>.Update
                .Set(t => t.ClienteleOrderId,OrderId)
+               .Set(t => t.CaseId, CaseId)
                .Set(x=>x.PaymentStatus,status)
                );
             return updatedDoc;
@@ -44,6 +45,14 @@ namespace OrderAndPayments
         {
             ObjectId OrderObjectId = ObjectId.Parse(OrderId);
             var filter = Builders<ClientelePayment>.Filter.Eq(t => t.ClienteleOrderId, OrderObjectId);
+            var updatedDoc = await _paymentCollection.FindAsync<ClientelePayment>(filter);
+            return updatedDoc.FirstOrDefault();
+        }
+
+        public async Task<ClientelePayment> GetPaymentByCaseId(string CaseId)
+        {
+            ObjectId OrderObjectId = ObjectId.Parse(CaseId);
+            var filter = Builders<ClientelePayment>.Filter.Eq(t => t.CaseId, OrderObjectId);
             var updatedDoc = await _paymentCollection.FindAsync<ClientelePayment>(filter);
             return updatedDoc.FirstOrDefault();
         }

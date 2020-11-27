@@ -96,10 +96,10 @@ namespace CaseManagementSpace
             return updatedCaseWithConsultantDetails;
         }
 
-        public async Task<List<Case>> GetCasesOfConsultant(string consultantId)
+        public async Task<List<Case>> GetCasesOfConsultant(string userEmail)
         {
-            ObjectId ConsultantObjectId = ObjectId.Parse(consultantId);
-            var filter = Builders<Case>.Filter.Eq(x => x.CurrentConsultantId, ConsultantObjectId);
+            
+            var filter = Builders<Case>.Filter.Eq(x => x.Order.ConsultantEmail, userEmail);
             var specificCase = await _caseCollection.FindAsync<Case>(filter);
             return specificCase.ToList();
         }

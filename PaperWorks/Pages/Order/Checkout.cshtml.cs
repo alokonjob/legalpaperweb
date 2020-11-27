@@ -30,6 +30,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Fundamentals.Events;
 using Audit;
+using Microsoft.Extensions.Localization;
 
 namespace PaperWorks
 {
@@ -47,6 +48,7 @@ namespace PaperWorks
         private readonly ICaseManagement caseManagement;
         private readonly IOrderAuditService orderAudit;
         private readonly ILogger<CheckoutModel> logger;
+        private readonly IStringLocalizer<CheckoutModel> localizer;
 
         public List<SelectListItem> AvailableCountries { get; }
         public string TaxAmount { get; set; }
@@ -60,7 +62,7 @@ namespace PaperWorks
 
         public CheckoutModel(IEnabledServices enabledServicesManager, ITaxService taxService,IClienteleServices clienteleServices,
             CountryService countryService, IEmailer emailSender,IPhoneService phoneService,
-            IPaymentService paymentService,IOrderService orderService,ICaseManagement caseManagement,IOrderAuditService orderAudit , ILogger<CheckoutModel> logger)
+            IPaymentService paymentService,IOrderService orderService,ICaseManagement caseManagement,IOrderAuditService orderAudit , ILogger<CheckoutModel> logger, IStringLocalizer<CheckoutModel> localizer)
         {
             this.enabledServicesManager = enabledServicesManager;
             this.taxService = taxService;
@@ -75,6 +77,7 @@ namespace PaperWorks
             this.caseManagement = caseManagement;
             this.orderAudit = orderAudit;
             this.logger = logger;
+            this.localizer = localizer;
             AvailableCountries = countryService.GetCountries();
             AvailableCountries.Where(x => x.Value == "IN").FirstOrDefault().Selected = true;
             Input = new InputModel();
@@ -184,9 +187,7 @@ namespace PaperWorks
                     logger.LogInformation(LogEvents.PaymentSavedInOrder, $"Payment.OrderUpdated.Success.ForOrderReceipt.{clienteleOrder.Receipt}");
                     AuditString.AppendLine($"Checkout.{LogEvents.PaymentSavedInOrder}.{Input.Email}.Success");
 
-                    await paymentService.UpdatePayment(payId.Result, finalOrder.ClientOrderId, paymentService.GetPaymentStatusFromPaymentGateWay(clientePayment));
-                    logger.LogInformation(LogEvents.OrderSavedInPayment, $"Payment.PaymentUpdated.Success.ForOrderReceipt.{clienteleOrder.Receipt}");
-                    AuditString.AppendLine($"Checkout.{LogEvents.OrderSavedInPayment}.{Input.Email}.Success");
+                    
 
 
                     CustomerOrderId = finalOrder.ClientOrderId.ToString();
@@ -208,7 +209,26 @@ namespace PaperWorks
                     };
                     clientCase.CreatedDate = clienteleOrder.OrderPlacedOn;
                     clientCase.PreviousConsultantId = new List<MongoDB.Bson.ObjectId>();
-                    var caseId = await caseManagement.GenerateCase(clientCase);
+
+                    var confirmcallbackUrl = Url.Page(
+                        "/Order/OrderList",
+                        pageHandler: null,
+                        values: new {receipt  = clienteleOrder.Receipt, returnUrl = Url.Content("~/")},
+                        protocol: Request.Scheme);
+
+                    Dictionary<string, string> itemDictionary = new Dictionary<string, string>();
+                    itemDictionary.Add("##SERVICE",localizer[clientCase.Order.ServiceName]);
+                    itemDictionary.Add("##ORDERNO", clientCase.Order.Receipt);
+                    itemDictionary.Add("##CITY", clientCase.Order.City.ToUpper());
+                    itemDictionary.Add("##NAME", clientCase.Order.CustomerName);
+                    itemDictionary.Add("##PHONE", clientCase.Order.CustomerPhone);
+                    itemDictionary.Add("##URL", HtmlEncoder.Default.Encode(confirmcallbackUrl));
+
+                    var caseId = await caseManagement.GenerateCase(clientCase, itemDictionary);
+
+                    await paymentService.UpdatePayment(payId.Result, finalOrder.ClientOrderId, caseId, paymentService.GetPaymentStatusFromPaymentGateWay(clientePayment));
+                    logger.LogInformation(LogEvents.OrderSavedInPayment, $"Payment.PaymentUpdated.Success.ForOrderReceipt.{clienteleOrder.Receipt}");
+                    AuditString.AppendLine($"Checkout.{LogEvents.OrderSavedInPayment}.{Input.Email}.Success");
 
                     await orderService.AddCaseToOrder(clienteleOrder.ClientOrderId, caseId);
                     logger.LogInformation(LogEvents.AddCaseToOrder, $"Order.AddedToCase.Success.ForOrderReceipt.{clienteleOrder.Receipt}");
@@ -245,6 +265,7 @@ namespace PaperWorks
 
             paymentDone.FinalAmount = Convert.ToDouble(cid);
             paymentDone.PaymentDate = DateTime.UtcNow;
+            paymentDone.RefundDetails = new List<ClientRefund>();
             return paymentDone;
         }
 

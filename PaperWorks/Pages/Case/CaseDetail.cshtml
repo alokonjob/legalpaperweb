@@ -86,14 +86,19 @@
                 <h5 class="lead text-center"><strong>Post An Update</strong></h5>
             </div>
             <div class="card-body">
-                <form method="post" asp-page-handler="addupdate" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
+                <form class="form" id="postUpdateForm" asp-page-handler="addupdate" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
                     <div class="form-group">
-                        <textarea class="form-control w-100" asp-for="@Model.Comment">
+                        <textarea class="form-control w-100" asp-for="@Model.UserUpdate.Comment" id="postUpdateTextForm">
 
                     </textarea>
+
                         <input type="hidden" asp-for="@Model.Receipt" />
                     </div>
-                    <button class="form-control btn btn-success" type="submit">Post Update</button>
+                    <div class="form-group">
+                        <label>Enter Consultant Email if want to share update with Consultant</label>
+                        <input asp-for="@Model.UserUpdate.ConsultantEmail" placeholder="ConsultantEmail" autocomplete="off">
+                    </div>
+                    <button class="btn btn-success" type="submit" id="postUpdateBtn">Post Update</button>
 
                 </form>
 
@@ -131,11 +136,11 @@
                     </div>
                     <div class="card-body mt-3">
                         <div class="row">
-                            <form class="form-inline" asp-page-handler="Nudge" method="post" data-ajax="true" data-ajax-method="post">
+                            <form class="form-inline" asp-page-handler="Nudge" method="post" id="NudgeForm">
                                 <input asp-for="@Model.NudgeAmount" class="form-control" />
                                 <input asp-for="@Model.Receipt" type="hidden" class="form-control" />
 
-                                <button class="form-control btn btn-success" type="submit">Nudge</button>
+                                <button class="form-control btn btn-success ml-md-2" type="submit" id="NudgeBtn">Nudge</button>
                             </form>
                         </div>
                     </div>
@@ -168,20 +173,141 @@
     <partial name="_UploadedFileList" model="Model.AllFileNames" />
 </div>
 
+<div class="modal fade" id="loadMe">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body text-center">
+                <div class="loader"></div>
+                <div clas="loader-txt">
+                    <p>Working on it<br><br><small>Hold on tight</small></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
+    @*<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>*@
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#caseDetailSection").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
         });
     </script>
-    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
-    <script>
-        completed = function (xhr) {
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#NudgeBtn").click(function () {
+
+                $("#loadMe").modal('show');
+
+                setTimeout(function () {
+                    $("#loadMe").modal('hide');
+                }, 3500);
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+
+                $("#NudgeForm").submit();
+            });
+
+
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#postUpdateBtn").click(function () {
+
+                $("#loadMe").modal('show');
+
+                setTimeout(function () {
+                    $("#loadMe").modal('hide');
+                }, 3500);
+                // disable button
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+                $(".caseUpdateList").empty();
+                $("#postUpdateForm").submit();
+            });
+
+
+        });
+    </script>
+    @*<script type="text/javascript">
+            $(document).ready(function () {
+                $("#postDeleteBtn").click(function () {
+
+                    $("#loadMe").modal('show');
+
+
+                    // disable button
+                    $(this).prop("disabled", true);
+                    // add spinner to button
+                    $(this).html(
+                        `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                    );
+                    $(".caseUpdateList").empty();
+                    $("#deleteForm").submit();
+                });
+
+
+            });
+        </script>*@
+    <script type="text/javascript">
+
+        function PostDeleteFunc(count) {
+
+            $("#loadMe").modal('show');
+
+
+            // disable button
+            $(this).prop("disabled", true);
+            // add spinner to button
+            $(this).html(
+                `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+            );
             $(".caseUpdateList").empty();
-            $(".caseUpdateList").append(`${xhr.responseText}`);
-            //alert(`Wow ${xhr.responseText}, you are brave!`);
+            var name = "#" + count;
+            $(name).submit();
         };
+
+
+
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            completed = function (xhr) {
+                //
+                $(".caseUpdateList").empty();
+                $(".caseUpdateList").append(`${xhr.responseText}`);
+                $('#caseUpdateTable').DataTable({
+                    destroy: true,
+                    columnDefs: [
+                        { width: '40%', targets: 0 },
+                         { width: '30%', targets: 1 }
+                        ,
+                        { targets: 2, type: 'date-euro' }
+                    ]
+                    ,
+                    "order": [[2, "desc"]]
+                });
+                $("#postUpdateBtn").prop('disabled', false);
+                $("#postUpdateBtn").html("Post Update");
+                $("#postUpdateTextForm").val("");
+                $("#loadMe").modal('hide');
+
+            };
+        });
+    </script>
+    <script>
+
         fileUploadcompleted = function (xhr) {
             $(".fileUpldates").empty();
             $(".fileUpldates").append(`${xhr.responseText}`);
@@ -189,15 +315,26 @@
         };
 
     </script>
-    <script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/dataTabless/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>
     <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
     <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
     <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>
     <script>
         $(document).ready(function () {
-            $('#caseUpdateTable').DataTable();
+            $.fn.dataTable.moment('DD/MM/YY');
+            $('#caseUpdateTable').DataTable({
+                columnDefs: [
+                    { width: '20%', targets: 0 }
+                    ,
+                    { targets: 2, type: 'date-euro' }
+                ]
+                ,
+                "order": [[2, "desc"]]
+            });
         });
     </script>
+
+
+
 }
 

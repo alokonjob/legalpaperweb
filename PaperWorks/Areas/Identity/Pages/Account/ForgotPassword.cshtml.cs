@@ -50,17 +50,16 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                 }
                 if (!(await _userManager.IsEmailConfirmedAsync(user)))
                 {
+                    ModelState.AddModelError(string.Empty, user != null ? "Your Account is Not Confirmed. Please check your Inbox and Confirm Your Email First" : "Invalid Email");
                     var emailConfirmCode = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     emailConfirmCode = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(emailConfirmCode));
                     var confirmcallbackUrl = Url.Page(
                         "/Account/ConfirmEmail",
                         pageHandler: null,
-                        values: new { area = "Identity", userId = user.Id, code = emailConfirmCode, returnUrl = Url.Content("~/")},
+                        values: new { area = "Identity", userId = Input.Email.ToLower(), code = emailConfirmCode, returnUrl = Url.Content("~/") },
                         protocol: Request.Scheme);
 
-                    await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                        $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(confirmcallbackUrl)}'>clicking here</a>.");
-                    ModelState.AddModelError(string.Empty, "Your Account is Not Confirmed. Please check your Inbox and Confirm Your Email First");
+                    await _emailSender.SendAccountConfirmationMail(user.FullName, Input.Email, confirmcallbackUrl);
                     return Page();
                 }
 
@@ -75,10 +74,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                     values: new { area = "Identity", code },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(
-                    Input.Email,
-                    "Reset Password",
-                    $"Please reset your password by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                await _emailSender.SendResetPasswordMail(user.FullName,Input.Email,HtmlEncoder.Default.Encode(callbackUrl));
 
                 return RedirectToPage("./ForgotPasswordConfirmation");
             }

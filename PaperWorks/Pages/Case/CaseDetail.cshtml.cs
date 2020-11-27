@@ -44,8 +44,12 @@ namespace PaperWorks
 
         public PayToConsultant ConsultantPay { get; set; }
         [BindProperty]
-        public string Comment { get; set; }
-
+        public UpdateInput UserUpdate { get; set; }
+        public class UpdateInput
+        {
+            public string Comment { get; set; }
+            public string ConsultantEmail { get; set; }
+        }
 
         [BindProperty]
         [DataType(DataType.Currency, ErrorMessage = "Please Enter Only Numbers")]
@@ -87,7 +91,7 @@ namespace PaperWorks
 
             //tasks.Add(GetcurrentCaseTask);
 
-            GetAllUpdatesTask = caseUpdateService.GetAllUpdates(caseId);
+            GetAllUpdatesTask = caseUpdateService.GetAllUpdates(caseId,User.IsFounder() ? true : false);
             tasks.Add(GetAllUpdatesTask);
 
 
@@ -125,21 +129,45 @@ namespace PaperWorks
 
         public async Task<PartialViewResult> OnPostAddUpdate()
         {
-            CurrentCase = caseManagementService.GetCaseByReceipt(Receipt).Result;
-            CurrentOrder = orderService.GetOrderByReceipt(Receipt).Result;
-
+            CurrentCase = await caseManagementService.GetCaseByReceipt(Receipt);
 
             CaseUpdate update = new CaseUpdate();
             var currentUser = userManager.GetUserAsync(User).Result;
+            
             update.UpdatedBy = new AbridgedUser() { Email = currentUser.Email, FullName = currentUser.FullName, PhoneNumber = currentUser.PhoneNumber };
-            update.Comment = Comment;
+            update.Comment = UserUpdate.Comment;
+            update.ShareWithConsultantEmail = UserUpdate.ConsultantEmail;
             update.CaseId = CurrentCase.CaseId;
             update.UpdatedDate = DateTime.UtcNow;
-            var newUpdate = caseUpdateService.AddUpdate(update).Result;
-            AllUpdates = caseUpdateService.GetAllUpdates(CurrentCase.CaseId.ToString()).Result;
-            ConsultantPay = casePaymentService.GetPaymentsForCase(CurrentCase.CaseId.ToString(), CurrentCase.CurrentConsultantId.ToString()).Result;
+
+            await  caseUpdateService.AddUpdate(update);
+
+            AllUpdates = await caseUpdateService.GetAllUpdates(CurrentCase.CaseId.ToString(), User.IsFounder() ? true : false);
+            ConsultantPay = await casePaymentService.GetPaymentsForCase(CurrentCase.CaseId.ToString(), CurrentCase.CurrentConsultantId.ToString());
             if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+
             return Partial("_CaseUpdates", AllUpdates);
+        }
+
+        public async Task<IActionResult> OnPostDeleteUpdate()
+        {
+            //CurrentCase = await caseManagementService.GetCaseByReceipt(Receipt);
+
+            //CaseUpdate update = new CaseUpdate();
+            //var currentUser = userManager.GetUserAsync(User).Result;
+
+            //update.UpdatedBy = new AbridgedUser() { Email = currentUser.Email, FullName = currentUser.FullName, PhoneNumber = currentUser.PhoneNumber };
+            //update.Comment = UserUpdate.Comment;
+            //update.ShareWithConsultantEmail = UserUpdate.ConsultantEmail;
+            //update.CaseId = CurrentCase.CaseId;
+            //update.UpdatedDate = DateTime.UtcNow;
+
+            var caseUpdate = await caseUpdateService.RemoveUpdate(Request.Form["UpdateId"]);
+
+            AllUpdates = await caseUpdateService.GetAllUpdates(caseUpdate.CaseId.ToString(), User.IsFounder() ? true : false);
+            if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+
+            return RedirectToPage("/Case/CaseListing");
         }
 
         public async Task<PartialViewResult> OnPostUploadAsync()

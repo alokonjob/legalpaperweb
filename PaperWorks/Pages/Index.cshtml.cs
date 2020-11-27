@@ -28,14 +28,10 @@ namespace PaperWorks.Pages
             
             if (string.IsNullOrEmpty(city) == false)
             {
-                Set("location", city == string.Empty ? "delhi" : city.ToLower(), 100);
+                Set("location", city.ToLower(), 100);
             }
 
-            var value = Get("location");
-            if (value == null)
-            {
-                Set("location",  "delhi" , 100);
-            }
+            
             if (User.IsFinanceUser())
             {
                 return RedirectToPage("/Case/CaseListing");

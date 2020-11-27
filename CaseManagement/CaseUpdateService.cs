@@ -15,9 +15,9 @@ namespace CaseManagementSpace
             this.caseUpdateRepository = caseUpdateRepository;
         }
 
-        public async Task<List<CaseUpdate>> GetAllUpdates(string caseId)
+        public async Task<List<CaseUpdate>> GetAllUpdates(string caseId, bool includeDeleted = false)
         {
-            return await caseUpdateRepository.GetAllUpdates(caseId);
+            return await caseUpdateRepository.GetAllUpdates(caseId, includeDeleted);
         }
         public async Task<List<CaseUpdate>> GetMyUpdates(string caseId,string email)
         {
@@ -28,6 +28,11 @@ namespace CaseManagementSpace
         public async Task<CaseUpdate> AddUpdate(CaseUpdate caseupdate)
         {
             return await caseUpdateRepository.PostUpdate(caseupdate);
+        }
+
+        public async Task<CaseUpdate> RemoveUpdate(string updateId)
+        {
+            return await caseUpdateRepository.RemoveUpdate(updateId);
         }
     }
 }

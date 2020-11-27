@@ -154,7 +154,7 @@ namespace PaperWorks
                         try
                         {
                             var phoneNumber = await phoneService.ExtractPhoneNumber(Input.PhoneNumberCountryCode, Input.PhoneNumber);
-                            user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true, PhoneNumber = phoneNumber };
+                            user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true,FullName = Input.Name, PhoneNumber = phoneNumber };
                         }
                         catch (Exception error)
                         {
@@ -165,7 +165,7 @@ namespace PaperWorks
                         //so create a user without the phone
                         if (user == null)
                         {
-                            user = new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true };
+                            user = new Clientele { UserName = Input.Email, Email = Input.Email, FullName = Input.Name, IsActive = true };
                         }
 
                         logger.LogInformation($"Precheckout.ServiceRequestedBy.{Input.Email}");
@@ -193,7 +193,7 @@ namespace PaperWorks
                             var callbackUrl = Url.Page(
                                 "/Account/ConfirmEmail",
                                 pageHandler: null,
-                                values: new { area = "Identity", userId = user.Id, code = code, returnUrl = returnUrl },
+                                values: new { area = "Identity", userId = Input.Email, code = code, returnUrl = returnUrl },
                                 protocol: Request.Scheme);
 
                             var confirmEmailTask = emailSender.SendEmailAsync(Input.Email, "Confirm your email",

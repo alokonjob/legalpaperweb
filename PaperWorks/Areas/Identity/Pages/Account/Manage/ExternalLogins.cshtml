@@ -46,7 +46,11 @@
             <p>
                 @foreach (var provider in Model.OtherLogins)
                 {
-                    <button id="@($"link-login-button-{provider.Name}")" type="submit" class="btn btn-primary" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">@provider.DisplayName</button>
+                <button id="@($"link-login-button-{provider.Name}")" type="submit" style="background:#4285f4; color:white; border:none; width:110px; height:40px; border-radius:3%;" name="provider" value="@provider.Name" title="Log in using your @provider.DisplayName account">
+                   
+                                    <img src="https://www.iconfinder.com/data/icons/social-media-2210/24/Google-512.png" style="width:30px; background:white; border-radius:50%;" alt="">
+                                    <b style="top: -10px; left: 5px; position: relative"> @provider.DisplayName</b>
+                                </button>
                 }
             </p>
         </div>

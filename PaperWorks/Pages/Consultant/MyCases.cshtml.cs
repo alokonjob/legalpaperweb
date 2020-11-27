@@ -14,21 +14,18 @@ namespace PaperWorks
     [Authorize(Policy = "RequireConsultantRole")]
     public class MyCasesModel : PageModel
     {
-        private readonly UserManager<Clientele> userManager;
-        private readonly SignInManager<Clientele> signInManager;
+
         private readonly ICaseManagement caseManagement;
 
         public List<Case> CaseList { get; set; }
-        public MyCasesModel(UserManager<Clientele> userManager,
-            SignInManager<Clientele> signInManager,ICaseManagement caseManagement)
+        public MyCasesModel(ICaseManagement caseManagement)
         {
-            this.userManager = userManager;
-            this.signInManager = signInManager;
             this.caseManagement = caseManagement;
         }
-        public void OnGet()
+        public async Task<IActionResult> OnGet()
         {
-            CaseList = caseManagement.GetAllCases().Result;
+            CaseList = await caseManagement.GetAllCasesOfConsultant(User.Identity.Name);
+            return Page();
         }
     }
 }

@@ -30,7 +30,7 @@ namespace CaseManagementSpace
             this.emailSender = emailSender;
             this.logger = logger;
         }
-        public async Task<ObjectId> GenerateCase(Case customerCase)
+        public async Task<ObjectId> GenerateCase(Case customerCase, Dictionary<string, string> caseDictionary)
         {
             List<Task> tasks = new List<Task>();
             var availableCaseManager = staffServices.FindAvailableCaseManager();
@@ -38,7 +38,9 @@ namespace CaseManagementSpace
             var caseId = caseRepository.AddCase(customerCase);
             tasks.Add(caseId);
             var sendMail = SendEmailToCaseManager(customerCase, availableCaseManager.Email);
-            var sendMailToCsutomer = SendEmailToCustomer(customerCase);
+
+
+            var sendMailToCsutomer = SendEmailToCustomer(customerCase, caseDictionary);
             tasks.Add(sendMail);
             tasks.Add(sendMailToCsutomer);
             await Task.WhenAll(tasks.ToArray());
@@ -138,69 +140,11 @@ namespace CaseManagementSpace
             await emailSender.SendEmailAsync(Email, $"[New Case] {newCase.Order.ServiceName} in {newCase.Order.City} - Receipt {newCase.Order.Receipt}", sb.ToString());
         }
 
-        public async Task SendEmailToCustomer(Case newCase)
+        public async Task SendEmailToCustomer(Case customerCase, Dictionary<string,string> TemplateFillers)
         {
             //image is linked, got a publicly embedding link of an image which i uploaded to onedrive
-            var url = @"https://bn1304files.storage.live.com/y4mIHFwD52DVr94Jn_fkVhvxLvKqINovh-_VXYz-qVvDpzFxF8qtaBjWbEuOqWMl67ZPYgDFU78763JFpzjd2-A-TlaRocZsPLaauT1N7k-US-3rBciIupSV0hu9pl6BDU3bV_aXHGVUab0ViPNIKcc4NoRSIsn-2oSnXv6Sah8NQNjkFvT8o8QUkakhCBJpTzs?width=660&height=275&cropmode=none";
-            var template = @$"
-<img alt=""My Image"" src=""{url}"" />
-             <table>
-<tr>
-                    <td>
-                     <strong>Customer Name </strong>
-                    </td>
-                    <td>
-                    ##Name
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                    <strong> Customer Phone </strong>
-                    </td>
-                    <td>
-                    ##Phone
-                    </td>
-                </tr>
-                    <tr>
-                    <td>
-                     </strong>Customer Email </strong>
-                    </td>
-                    <td>
-                    ##Email
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>
-                     </strong>Service</strong>
-                    </td>
-                    <td>
-                    ##Service
-                    </td>
-                    </tr>
-                    <tr>
-                    <td>
-                     </strong>City</strong>
-                    </td>
-                    <td>
-                    ##City
-                    </td>
-                    </tr>
-</table>
-<br>
 
-
-<br>
-<p>
-We have your Order. You will shortly hear from our Case Manager with updates.<br>
-Requesting you to kindly keep documents ready.<br>
-If you have any doubts regarding the documents, share the same with Case Manager.<br>
-He will be happy to share with you the details of the proces.<br>
-</p>
-";
-            StringBuilder sb = new StringBuilder();
-            sb.Append(template.Replace("##Name", newCase.Order.CustomerName).Replace("##Phone", newCase.Order.CustomerPhone).Replace("##Email", newCase.Order.CustomerEmail).Replace("##Service", newCase.Order.ServiceName).Replace("##City", newCase.Order.City)
-            );
-            await emailSender.SendEmailAsync(newCase.Order.CustomerEmail, $"Thank you ! Your Order is Confirmed - Receipt {newCase.Order.Receipt}", sb.ToString());
+            await emailSender.SendNewOrderMail(TemplateFillers, customerCase.Order.CustomerEmail);
         }
     }
 }

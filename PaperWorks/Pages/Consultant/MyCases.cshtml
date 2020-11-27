@@ -36,8 +36,9 @@
                 @Html.DisplayNameFor(model => model.CaseList[0].Order.ConsultantPhone)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.CaseList[0].Order.CostToCustomer)
+                @Html.DisplayNameFor(model => model.CaseList[0].Order.Receipt)
             </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.CaseList[0].CurrentStatus)
             </th>
@@ -77,7 +78,7 @@
                 @Html.DisplayFor(model => customerCase.Order.ConsultantPhone)
             </td>
             <td>
-                @Html.DisplayFor(model => customerCase.Order.CostToCustomer)
+                @Html.DisplayFor(model => customerCase.Order.Receipt)
             </td>
             <td>
                 @Html.DisplayFor(model => customerCase.CurrentStatus)
@@ -89,7 +90,7 @@
                 @Html.DisplayFor(model => customerCase.CreatedDate)
             </td>
             <td>
-                <a asp-page="/Consultant/MyCaseDetail" class="btn btn-success btn-block" asp-route-caseId="@customerCase.CaseId">Details</a>
+                <a asp-page="/Consultant/MyCaseDetail" class="btn btn-success btn-block" asp-route-caseId="@customerCase.Order.Receipt">Details</a>
             </td>
 
         </tr>

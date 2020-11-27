@@ -53,6 +53,8 @@ namespace PaperWorks.Areas.Identity.Pages.Account
             [Required]
             [EmailAddress]
             public string Email { get; set; }
+            [Required]
+            public string Name { get; set; }
         }
 
         public IActionResult OnGetAsync()
@@ -105,7 +107,11 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                     {
                         Email = info.Principal.FindFirstValue(ClaimTypes.Email)
                     };
-                    if (ModelState.IsValid)
+                    if (info.Principal.HasClaim(c => c.Type == ClaimTypes.Name))
+                    {
+                        Input.Name = info.Principal.FindFirstValue(ClaimTypes.Name);
+                    }
+                        if (ModelState.IsValid)
                     {
                         var user = new Clientele { UserName = Input.Email, Email = Input.Email,IsActive=true };
 
@@ -126,8 +132,7 @@ namespace PaperWorks.Areas.Identity.Pages.Account
                                     values: new { area = "Identity", userId = userId, code = code },
                                     protocol: Request.Scheme);
 
-                                await emailer.SendEmailAsync(Input.Email, "Confirm your email",
-                                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                                await emailer.SendAccountCreationMail(Input.Name, Input.Email, HtmlEncoder.Default.Encode(callbackUrl));
 
                                 // If account confirmation is required, we need to show the link if we don't have a real email sender
                                 if (_userManager.Options.SignIn.RequireConfirmedAccount)

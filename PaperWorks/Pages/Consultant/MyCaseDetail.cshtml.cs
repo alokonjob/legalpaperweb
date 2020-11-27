@@ -28,6 +28,7 @@ namespace PaperWorks
         private readonly ICaseUpdateService caseUpdateService;
         private readonly UserManager<Clientele> userManager;
         private readonly SignInManager<Clientele> signInManager;
+        private readonly ICasePaymentReleaseService casePaymentService;
 
         [BindProperty(SupportsGet = true)]
         public string CaseId { get; set; }
@@ -40,6 +41,10 @@ namespace PaperWorks
         public List<string> AllFileNames { get; set; }
         [BindProperty]
         public string Comment { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string Receipt { get; set; }
+
+        public PayToConsultant ConsultantPay { get; set; }
 
         [BindProperty]
         public BufferedMultipleFileUploadDb FileUpload { get; set; }
@@ -47,42 +52,76 @@ namespace PaperWorks
         private readonly long _fileSizeLimit = 2097152;
 
         public MyCaseDetailModel(ICaseManagement caseManagementService , IOrderService orderService,ICaseUpdateService caseUpdateService, UserManager<Clientele> userManager,
-            SignInManager<Clientele> signInManager)
+            SignInManager<Clientele> signInManager, ICasePaymentReleaseService casePaymentService)
         {
             this.caseManagementService = caseManagementService;
             this.orderService = orderService;
             this.caseUpdateService = caseUpdateService;
             this.userManager = userManager;
             this.signInManager = signInManager;
+            this.casePaymentService = casePaymentService;
         }
         public async Task<IActionResult> OnGetAsync(string caseId)
         {
-            CurrentCase = caseManagementService.GetCaseById(caseId).Result;
-            CurrentOrder = orderService.GetOrderByCaseId(caseId).Result;
-            var currentUser = userManager.GetUserAsync(User).Result;
-            AllUpdates = caseUpdateService.GetMyUpdates(caseId, currentUser.Email).Result;
-            if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+            Receipt = caseId;
+            var tasks = new List<Task>();
+
+            Task<ClienteleOrder> CurrentOrderTask;
+            Task<List<CaseUpdate>> GetAllUpdatesTask;
+            Task<List<string>> GetAllFilesTask;
+            Task<PayToConsultant> PayInfoTask;
+            CurrentOrderTask = orderService.GetOrderByReceipt(Receipt);
+            tasks.Add(CurrentOrderTask);
+
+            
+
+            await Task.WhenAll(tasks.ToArray());
+            CurrentCase = await caseManagementService.GetCaseByReceipt(Receipt);
+
+            PayInfoTask = casePaymentService.GetPaymentsForCase(CurrentCase.CaseId.ToString(), CurrentCase.CurrentConsultantId.ToString());
+
+            tasks.Add(PayInfoTask);
+
 
             Storage store = new Storage();
-            AllFileNames = await store.List(caseId);
+            GetAllFilesTask = store.List(CurrentCase.CaseId.ToString());
+            tasks.Add(GetAllFilesTask);
+            
+            GetAllUpdatesTask = caseUpdateService.GetMyUpdates(CurrentCase.CaseId.ToString(), User.Identity.Name);
+            tasks.Add(GetAllUpdatesTask);
+
+            await Task.WhenAll(tasks.ToArray());
+
+            CurrentOrder = CurrentOrderTask.Result;//  orderService.GetOrderByCaseId(caseId).Result;
+            AllUpdates = GetAllUpdatesTask.Result;
+            AllFileNames = GetAllFilesTask.Result;
+            if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+            ConsultantPay = PayInfoTask.Result;
+
             return Page();
         }
 
 
-        public PartialViewResult OnPostAddUpdate()
+        public async Task<PartialViewResult> OnPostAddUpdate()
         {
-            CurrentCase = caseManagementService.GetCaseById(CaseId).Result;
-            CurrentOrder = orderService.GetOrderByCaseId(CaseId).Result;
+            CurrentCase = await caseManagementService.GetCaseByReceipt(Receipt);
+           
             
-            CaseUpdate update = new CaseUpdate();
             var currentUser = userManager.GetUserAsync(User).Result;
+
+            CaseUpdate update = new CaseUpdate(); 
             update.UpdatedBy = new AbridgedUser() { Email = currentUser.Email, FullName = currentUser.FullName, PhoneNumber = currentUser.PhoneNumber };
             update.Comment = Comment;
-            update.CaseId = ObjectId.Parse(CaseId);
+            update.CaseId = CurrentCase.CaseId;
             update.UpdatedDate = DateTime.UtcNow;
-            var newUpdate = caseUpdateService.AddUpdate(update).Result;
-            AllUpdates = caseUpdateService.GetMyUpdates(CaseId, currentUser.Email).Result;
+            update.ShareWithConsultantEmail = string.Empty;
+
+            await caseUpdateService.AddUpdate(update);
+            AllUpdates = await caseUpdateService.GetAllUpdates(CurrentCase.CaseId.ToString());
+
+            //ConsultantPay = await casePaymentService.GetPaymentsForCase(CurrentCase.CaseId.ToString(), CurrentCase.CurrentConsultantId.ToString());
             if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
+
             return Partial("_CaseUpdates", AllUpdates);
         }
 

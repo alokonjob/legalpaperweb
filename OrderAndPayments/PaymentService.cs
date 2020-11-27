@@ -31,14 +31,20 @@ namespace OrderAndPayments
             return await PaymentRepository.SavePaymentAsync(clientsPayment);
         }
 
-        public async Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId orderId, string status)
+        public async Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId orderId, ObjectId caseId, string status)
         {
-            return await PaymentRepository.UpdatePayment(paymentId, orderId, status);
+            return await PaymentRepository.UpdatePayment(paymentId, orderId, caseId,status);
         }
 
         public async Task<ClientelePayment> GetPaymentByOrderId(string OrderId)
         {
             return await PaymentRepository.GetPaymentByOrderId(OrderId);
+        }
+
+
+        public async Task<ClientelePayment> GetPaymentByCaseId(string caseId)
+        {
+            return await PaymentRepository.GetPaymentByCaseId(caseId);
         }
 
         public async Task<List<ClientelePayment>> GetPaymentByOrderId(List<ObjectId> orderIds)
