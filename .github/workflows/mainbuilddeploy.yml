@@ -34,6 +34,8 @@ jobs:
           dotnet-version: ${{ env.DOTNET_VERSION }} 
       
       # Run dotnet build and publish
+      #https://www.pmichaels.net/tag/the-current-working-directory-does-not-contain-a-project-or-solution-file/
+      
       - name: where are we
         run: pwd
       - name: list all
@@ -44,10 +46,10 @@ jobs:
         run: ls -lrt websitemeta
       
       - name: RESTORE
-        run: dotnet restore
+        run: dotnet restore ./PaperWorks
         
       - name: BUILD
-        run: dotnet build --no-restore -configuration Release
+        run: dotnet build --no-restore -configuration Release ./PaperWorks
        
           
       - name: PUBLISH
