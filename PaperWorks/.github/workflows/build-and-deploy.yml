@@ -1,0 +1,18 @@
+name: "unPaperWorkz Build And Deploy"
+
+on:[push]
+
+jobs:
+  build:
+    name: "unPaperWorkz Build And Deploy"
+    runs-on: ubuntu-latest
+    steps:
+      -uses: actions/checkout@v1
+
+      -name: Setup .Net Core SDK ${{ env.NETCORE_VERSION }}
+       uses: actions/setup-dotnet@v1
+       with:
+         dotnet-version:${{ env.NETCORE_VERSION }}
+         
+      
+
