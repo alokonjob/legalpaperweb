@@ -2,17 +2,40 @@ name: "unPaperWorkz Build And Deploy"
 
 on:[push]
 
+env:
+  AZURE_WEBAPP_NAME: onjob-webapp-dev-001
+  AZURE_WEBAPP_PACKAGE_PATH : './published'
+  NETCORE_VERSION : '3.1.103'
+
 jobs:
   build:
     name: "unPaperWorkz Build And Deploy"
-    runs-on: ubuntu-latest
+    runs-on: winodws-latest
     steps:
-      -uses: actions/checkout@v1
+      -uses: actions/checkout@v2
 
       -name: Setup .Net Core SDK ${{ env.NETCORE_VERSION }}
        uses: actions/setup-dotnet@v1
        with:
-         dotnet-version:${{ env.NETCORE_VERSION }}
-         
+         dotnet-version: ${{ env.NETCORE_VERSION }}
+
+      -name: Restore
+       run: dotnet restore
+
+      -name : Build
+       run : dotnet build --no-restore -c Release
+
+      -name: Publish app for Deploy
+       run: dotnet publish --configuration Release --no-build --outout ${{ env.AZURE_WEBAPP_PACKAGE_PATH}}
+
+      -name : 'Deploy to Azure WebApp'
+       uses: azure/webapps-deploy@v2
+       with : 
+        app-name: ${{ env.AZURE_WEBAPP_NAME}}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH}}
+
+
+
       
 
