@@ -45,7 +45,7 @@ jobs:
         run: dotnet restore ./PaperWorks
         
       - name: BUILD
-        run: dotnet build --no-restore -configuration Release ./PaperWorks
+        run: dotnet build --no-restore --configuration Release ./PaperWorks
        
           
       - name: PUBLISH
