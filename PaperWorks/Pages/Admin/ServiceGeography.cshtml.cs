@@ -9,9 +9,12 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Fundamentals;
 using Fundamentals.Managers;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PaperWorks
 {
+    //AddEditPeople
+    [Authorize(Policy = "AddEditPeople")]
     public class ServiceGeographyModel : PageModel
     {
         private readonly IServiceManagement serviceManagement;

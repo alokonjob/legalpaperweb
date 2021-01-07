@@ -30,7 +30,7 @@ namespace Emailer
             //    PlainTextContent = $"Hello, {toEmail}",
             //    HtmlContent = htmlMessage
             //};
-            var msg = MailHelper.CreateSingleEmail(new EmailAddress("alok@planful.com"), new EmailAddress(toEmail), subject, "Hello", htmlMessage);
+            var msg = MailHelper.CreateSingleEmail(new EmailAddress("alok@unpaperworkz.in"), new EmailAddress(toEmail), subject, "Hello", htmlMessage);
 
             //msg.AddTo(new EmailAddress(toEmail, "Test User"));
             var response = await client.SendEmailAsync(msg);
@@ -104,6 +104,25 @@ namespace Emailer
 
             }
             await SendEmailAsync(toEmail, $"Your OnJob Order #{templateReplace["##ORDERNO"]} Placed for {templateReplace["##SERVICE"]} has been placed", htmlTemplate);
+        }
+
+        public async Task SendCaseConfirmationEmail(Dictionary<string, string> templateReplace, string toEmail)
+        {
+            string htmlTemplate = string.Empty;
+            using (var stream = ReadEmailTemplate("wwwroot\\static\\Email\\Consultant\\NewCaseConfirmation.html"))
+            {
+                using (var streamReader = new StreamReader(stream))
+                {
+                    htmlTemplate = streamReader.ReadToEnd();
+                }
+                foreach (var item in templateReplace)
+                {
+                    htmlTemplate = htmlTemplate.Replace(item.Key, item.Value);
+                }
+
+
+            }
+            await SendEmailAsync(toEmail, $"Your OnJob Case Acceptance for {templateReplace["##SERVICE"]} in city {templateReplace["##CITY"]}", htmlTemplate);
         }
 
         public Stream ReadEmailTemplate(string filePath)

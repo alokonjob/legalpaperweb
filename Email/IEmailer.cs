@@ -10,6 +10,7 @@ namespace Emailer
         Task SendAccountConfirmationMail(string Name, string toEmail, string url);
         Task SendResetPasswordMail(string Name, string toEmail, string url);
         Task SendNewOrderMail(Dictionary<string, string> templateReplace, string toEmail);
+        Task SendCaseConfirmationEmail(Dictionary<string, string> templateReplace, string toEmail);
 
 
     }

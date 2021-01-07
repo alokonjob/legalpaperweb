@@ -49,12 +49,25 @@ namespace PaperWorks
 
         [BindProperty]
         public Clientele StaffUser { get; set; }
+        [BindProperty(SupportsGet =true)]
+        public UserClaimRoles ClaimsRolesOfUser { get; set; }
         public string Email { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+
         public class InputModel
         {
+
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Name")]
+            public string FullName { get; set; }
+
+            [Phone]
+            [Display(Name = "Phone")]
+            public string PhoneNumber { get; set; }
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
@@ -68,12 +81,46 @@ namespace PaperWorks
             [DataType(DataType.PostalCode)]
             [Display(Name = "Add claims(comma separated)")]
             public string Claims { get; set; }
+
         }
 
         public async Task OnGetAsync(string userEmail = null)
         {
             StaffUser = userEmail != null ? await _userManager.FindByEmailAsync(userEmail) : null;
+            ClaimsRolesOfUser = new UserClaimRoles();
+            if (StaffUser != null)
+            {
+                
+                var roles = await clientServices.GetRoles(StaffUser);
+                ClaimsRolesOfUser.Email = StaffUser.Email;
+                ClaimsRolesOfUser.User = StaffUser;
+                ClaimsRolesOfUser.UserRoles = roles;
+                ClaimsRolesOfUser.UserClaims = StaffUser.Claims;
+                ClaimsRolesOfUser.Input = new UserClaimRoles.UserInput() { FullName = StaffUser.FullName, PhoneNumber = StaffUser.PhoneNumber };
+                
+            }
         }
+
+        public async Task<PartialViewResult> OnPostFetchUserAsync()
+        {
+            StaffUser = Input.Email != null ? await _userManager.FindByEmailAsync(Input.Email) : null;
+            ClaimsRolesOfUser = new UserClaimRoles();
+            if (StaffUser != null)
+            {
+
+                var roles = await clientServices.GetRoles(StaffUser);
+                ClaimsRolesOfUser.Email = StaffUser.Email;
+                ClaimsRolesOfUser.User = StaffUser;
+                ClaimsRolesOfUser.UserRoles = roles;
+                ClaimsRolesOfUser.UserClaims = StaffUser.Claims;
+                ClaimsRolesOfUser.Input = new UserClaimRoles.UserInput() { FullName = StaffUser.FullName, PhoneNumber = StaffUser.PhoneNumber };
+
+            }
+
+            return Partial("_User", ClaimsRolesOfUser);
+        }
+
+
         public async Task<IActionResult> OnPostDeleteUserAsync()
         {
             string Email = Request.Form["Email"];
@@ -83,7 +130,7 @@ namespace PaperWorks
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(string returnUrl = null)
+        public async Task<PartialViewResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl = returnUrl ?? Url.Content("~/");
 
@@ -112,20 +159,10 @@ namespace PaperWorks
                         List<Claim> allClaimsToAdd = new List<Claim>();
                         foreach (var claim in claims)
                         {
-                            //IdentityUserClaim<string> identityClaim = new IdentityUserClaim<string>()
-                            //{
-                            //    ClaimType = "access",
-                            //    ClaimValue = claim
-                            //};
+                            
 
                             var newClaimToAdd = new Claim("access", claim);
                             
-
-                            //if (StaffUser.Claims.Any(x=>x.ClaimValue == claim) == false)
-                            //{
-                                
-                            //    StaffUser.Claims.Add(identityClaim);
-                            //}
                             var allExistingClaims = _userManager.GetClaimsAsync(StaffUser).Result;
                             var isExistingClaim = allExistingClaims.Where(x => x.Type == newClaimToAdd.Type && x.Value == newClaimToAdd.Value).FirstOrDefault();
                             if (isExistingClaim == null) await _userManager.AddClaimAsync(StaffUser, newClaimToAdd);
@@ -133,11 +170,35 @@ namespace PaperWorks
                         
 
                     }
+
+                    if (!string.IsNullOrEmpty(Input.FullName))
+                    {
+                        StaffUser.FullName = Input.FullName;
+                    }
+
+                    if (!string.IsNullOrEmpty(Input.PhoneNumber))
+                    {
+                        StaffUser.PhoneNumber = Input.PhoneNumber;
+
+                    }
+
                     var updatedResult = await _userManager.UpdateAsync(StaffUser);
-                    return Page();
+                    StaffUser = await _userManager.FindByEmailAsync(Input.Email);
+                    if (StaffUser != null)
+                    {
+
+                        var roles = await clientServices.GetRoles(StaffUser);
+                        ClaimsRolesOfUser.Email = StaffUser.Email;
+                        ClaimsRolesOfUser.User = StaffUser;
+                        ClaimsRolesOfUser.UserRoles = roles;
+                        ClaimsRolesOfUser.UserClaims = StaffUser.Claims;
+                        ClaimsRolesOfUser.Input = new UserClaimRoles.UserInput() { FullName = StaffUser.FullName, PhoneNumber = StaffUser.PhoneNumber };
+
+                    }
+                    return Partial("_User", ClaimsRolesOfUser);
                 }
 
-                var user =new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true };
+                var user =new Clientele { UserName = Input.Email, Email = Input.Email, IsActive = true,FullName = Input.FullName, PhoneNumber = Input.PhoneNumber };
 
                 //if (Input.Role != null) user.Roles.Add(Input.Role);
                 if (Input.Claims != null)
@@ -181,10 +242,22 @@ namespace PaperWorks
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
                 StaffUser = await _userManager.FindByEmailAsync(Input.Email);
+                if (StaffUser != null)
+                {
+
+                    var roles = await clientServices.GetRoles(StaffUser);
+                    ClaimsRolesOfUser.Email = StaffUser.Email;
+                    ClaimsRolesOfUser.User = StaffUser;
+                    ClaimsRolesOfUser.UserRoles = roles;
+                    ClaimsRolesOfUser.UserClaims = StaffUser.Claims;
+                    ClaimsRolesOfUser.Input = new UserClaimRoles.UserInput() { FullName = StaffUser.FullName, PhoneNumber = StaffUser.PhoneNumber };
+
+                }
+
+                
             }
 
-            // If we got this far, something failed, redisplay form
-            return Page();
+            return Partial("_User", ClaimsRolesOfUser);
         }
 
         public async Task<IActionResult> OnPostDeleteRoleAsync()
@@ -207,5 +280,30 @@ namespace PaperWorks
             StaffUser = await _userManager.FindByEmailAsync(Email);
             return Page();
         }
+
+        
+    }
+    public class UserClaimRoles
+    {
+        public class UserInput
+        {
+
+            [Required]
+            [EmailAddress]
+            [Display(Name = "Name")]
+            public string FullName { get; set; }
+            
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
+            [Display(Name = "Phone number country")]
+            public string PhoneNumberCountryCode { get; set; }
+        }
+        public Clientele User{ get; set; }
+        public string Email { get; set; }
+        public IList<string> UserRoles { get; set; }
+        public List<IdentityUserClaim<string>> UserClaims { get; set; }
+        public UserInput Input { get; set; } 
+
     }
 }

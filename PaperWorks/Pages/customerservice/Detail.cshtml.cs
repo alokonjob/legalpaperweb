@@ -14,6 +14,8 @@ namespace PaperWorks
     {
         private readonly IEnabledServices enableServiceManager;
         public EnabledServices CurrentDisplayService = null;
+        public string ServiceBookingText { get; set; }
+        Random r = new Random();
         public DetailModel(IEnabledServices enableServiceManager)
         {
             this.enableServiceManager = enableServiceManager;
@@ -33,8 +35,28 @@ namespace PaperWorks
             }
 
             var serviceEnableId = CurrentDisplayService?.EnableId.ToString();
+            ServiceBookingText = CurrentDisplayService.KindofService == EnableServiceType.Corporate ? "Request Callback" : "Book Now";
             HttpContext.Session.SetString("DataBaseId", serviceEnableId);
+            
+            int genRand = r.Next();
+            if (genRand % 2 == 0)
+            {
+                genRand += 1;
+            }
+            HttpContext.Session.SetInt32("bkc", genRand);
             return Page();
+        }
+
+        public IActionResult OnPost()
+        {
+            int genRand = r.Next();
+            if (genRand % 2 != 0)
+            {
+                genRand += 1;
+            }
+            HttpContext.Session.Remove("bkc");
+            HttpContext.Session.SetInt32("bkc", genRand);
+            return RedirectToPage("/Order/PreCheckout");
         }
     }
 }

@@ -132,6 +132,7 @@ namespace Fundamentals.Managers
                 .Set(t=>t.CostToConsultant,service.CostToConsultant)
                 .Set(t => t.IsActive, service.IsActive)
                 .Set(t=>t.Steps , service.Steps)
+                .Set(t => t.KindofService, service.KindofService)
                 );
         }
 

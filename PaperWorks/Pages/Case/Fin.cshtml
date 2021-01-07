@@ -1,4 +1,6 @@
 ﻿@page
+@using  CaseManagement
+@using Fundamentals.Extensions
 @model PaperWorks.FinModel
 @{
     ViewData["Title"] = "Fin";
@@ -6,37 +8,47 @@
 }
 
 <section id="finSection">
-    @if (Model.IsNudgeOn)
+    @if (Model.IsNudgeOn == NudgeType.ConsultantPaymentNudge)
     {
         <div class="progress" id="NudgeProgressDiv">
-            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-info" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
+        </div>
+    }
+    @if (Model.IsNudgeOn == NudgeType.RequestCaseClosure)
+    {
+        <div class="progress" id="NudgeProgressDiv">
+            <div class="progress-bar progress-bar-striped progress-bar-animated bg-danger" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%"></div>
         </div>
     }
     <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">@Model.ConsultantEmail - Receipt  @Model.Receipt </h4>
     <h4 id="paidSoFar" class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Finalized Cost @Model.FinalizedCost </h4>
-    @if (Model.IsNudgeOn)
+    @if (Model.IsNudgeOn == NudgeType.ConsultantPaymentNudge)
     {
         <h4 class=" m-3 text-danger text-center" data-aos="fade-left" data-aos-delay="800" id="NudgeTextDiv">Nudged For @Model.NudgeInfo.Amount By @Model.NudgeInfo.CreatedBy On  @Model.NudgeInfo.NudgeOnDate.ToShortDateString()</h4>
+    }
+    @if (Model.IsNudgeOn == NudgeType.RequestCaseClosure)
+    {
+        <h4 class=" m-3 text-danger text-center" data-aos="fade-left" data-aos-delay="800" id="NudgeTextDiv">Nudged For CASE CLOSURE requested By @Model.NudgeInfo.CreatedBy On  @Model.NudgeInfo.NudgeOnDate.ToShortDateString()</h4>
     }
 
 </section>
 <div id="toastDiv" class="toast" style="position: absolute; top: 0; right: 0;">
     <div class="toast-header">
         <img src="..." class="rounded mr-2" alt="...">
-        <strong class="mr-auto">Bootstrap</strong>
+        <strong class="mr-auto">Notification</strong>
         <small>11 mins ago</small>
         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
             <span aria-hidden="true">&times;</span>
         </button>
     </div>
     <div class="toast-body">
-        Hello, world! This is a toast message.
+        Quick Notification.
     </div>
 </div>
 
 <div class="row">
     <div class="col-md-6 bg-light">
-        <h5 class="display-4 m-3 text-muted text-center " >CONSULTANT PAYMENT PANEL</h5>
+        <h5 class="display-4 m-3 text-muted text-center ">CONSULTANT PAYMENT PANEL</h5>
         <form class="form m-3" id="consultantPayForm" asp-page-handler="ReleasePayment" method="post" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
             @*data-ajax="true" data-ajax-method="post"*@
 
@@ -58,7 +70,7 @@
             </div>
             <input type="hidden" asp-for="@Model.Receipt" class="form-control" />
             <input type="hidden" asp-for="@Model.ConsultantEmail" class="form-control" />
-            @if (Model.IsNudgeOn)
+            @if (Model.IsNudgeOn == CaseManagement.NudgeType.ConsultantPaymentNudge)
             {
                 <button type="submit" class="btn btn-primary ml-2" id="releasePayBtn"> Release Payment And Nudge</button>
             }
@@ -67,51 +79,68 @@
                 <button type="submit" class="btn btn-primary ml-2" id="releasePayBtn">Release Payment</button>
             }
 
+
+
             <div asp-validation-summary="All" class="text-danger"></div>
         </form>
+        @if (Model.IsNudgeOn == CaseManagement.NudgeType.RequestCaseClosure)
+        {
+            <form asp-page-handler="CaseClosed" method="post">
+                <button type="submit" class="btn btn-danger btn-lg ml-2" id="releasePayBtn">Close Case</button>
+                <input type="hidden" asp-for="@Model.Receipt" class="form-control" />
+                <input type="hidden" asp-for="@Model.ConsultantEmail" class="form-control" />
+            </form>
+        }
         <div class="caseUpdateList mt-2">
             <partial name="_PayUpdates" model="Model.FullPayInfo" />
         </div>
     </div>
     <div class="col-md-6 bg-light">
         <h5 class="display-4 m-3 text-muted text-center">CUSTOMER PAYMENT PANEL</h5>
-        <a asp-page="/Case/CustomerRefund" asp-route-receipt="@Model.Receipt">See All Refund Information</a>
-        <form class="form m-3" asp-page-handler="RefundPayment" method="post">
-            @*data-ajax="true" data-ajax-method="post"*@
-
-
-            <div class="form-group">
-                <label asp-for="@Model.InputForRefund.RefundAmount"></label>
-                <input asp-for="@Model.InputForRefund.RefundAmount" class="form-control" placeholder="Max refund amount @Model.CustomerPayment.FinalAmount" />
-                <span asp-validation-for="@Model.InputForRefund.RefundAmount" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.InputForRefund.RefundReason"></label>
-                <input asp-for="@Model.InputForRefund.RefundReason" class="form-control" />
-                <span asp-validation-for="@Model.InputForRefund.RefundReason" class="text-danger"></span>
-            </div>
-
-            <input type="hidden" asp-for="@Model.Receipt" class="form-control" />
-            <input type="hidden" asp-for="@Model.ConsultantEmail" class="form-control" />
-
-            <button type="submit" class="btn btn-primary ml-2">Refund Payment</button>
-
-
-            <div asp-validation-summary="All" class="text-danger"></div>
-        </form>
-        @foreach (var key in Model.PAYDATAFROMRAZOR.Keys)
+        @if (@Model.CustomerPayment.PaymentType == OrderAndPayments.PaymentType.GateWay)
         {
+            <a asp-page="/Case/CustomerRefund" asp-route-receipt="@Model.Receipt">See All Refund Information</a>
+            <form class="form m-3" asp-page-handler="RefundPayment" method="post">
+                @*data-ajax="true" data-ajax-method="post"*@
 
 
-            <div class="row">
-                <div class="col-md-6">
-                    <label><strong>@key</strong></label>
+                <div class="form-group">
+                    <label asp-for="@Model.InputForRefund.RefundAmount"></label>
+                    <input asp-for="@Model.InputForRefund.RefundAmount" class="form-control" placeholder="Max refund amount @Model.CustomerPayment.FinalAmount" />
+                    <span asp-validation-for="@Model.InputForRefund.RefundAmount" class="text-danger"></span>
                 </div>
-                <div class="col-md-6">
-                    <label>@Model.PAYDATAFROMRAZOR[key]</label>
+                <div class="form-group">
+                    <label asp-for="@Model.InputForRefund.RefundReason"></label>
+                    <input asp-for="@Model.InputForRefund.RefundReason" class="form-control" />
+                    <span asp-validation-for="@Model.InputForRefund.RefundReason" class="text-danger"></span>
                 </div>
-            </div>
 
+                <input type="hidden" asp-for="@Model.Receipt" class="form-control" />
+                <input type="hidden" asp-for="@Model.ConsultantEmail" class="form-control" />
+
+                <button type="submit" class="btn btn-primary ml-2">Refund Payment</button>
+
+
+                <div asp-validation-summary="All" class="text-danger"></div>
+            </form>
+            @foreach (var key in Model.PAYDATAFROMRAZOR.Keys)
+            {
+
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <label><strong>@key</strong></label>
+                    </div>
+                    <div class="col-md-6">
+                        <label>@Model.PAYDATAFROMRAZOR[key]</label>
+                    </div>
+                </div>
+
+            }
+        }
+        else
+        { 
+    <p class="text-center lead">Payment Type is @Model.CustomerPayment.PaymentType.GetDescription() </p>
         }
 
     </div>
@@ -166,14 +195,14 @@
 
     </script>
     @*<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/dataTabless/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>
-    <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
-    <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
-    <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#payUpdatesTable').DataTable();
-        });
-    </script>*@
+        <script src="~/dataTabless/DataTables-1.10.21/js/jquery.dataTables.min.js"></script>
+        <script src="~/dataTabless/DataTables-1.10.21/js/dataTables.bootstrap4.min.js"></script>
+        <script src="~/dataTabless/Responsive-2.2.5/js/responsive.bootstrap4.min.js"></script>
+        <script src="~/dataTabless/FixedColumns-3.3.1/js/dataTables.fixedColumns.min.js"></script>
+        <script>
+            $(document).ready(function () {
+                $('#payUpdatesTable').DataTable();
+            });
+        </script>*@
 }
 

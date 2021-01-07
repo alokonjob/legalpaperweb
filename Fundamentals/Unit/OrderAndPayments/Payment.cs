@@ -3,6 +3,7 @@ using MongoDB.Bson.Serialization.Attributes;
 using MongoDB.Bson.Serialization.IdGenerators;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace OrderAndPayments
 {
@@ -19,6 +20,17 @@ namespace OrderAndPayments
         public List<ClientRefund> RefundDetails { get; set; }
         public DateTime PaymentDate { get; set; }
         public string PaymentStatus { get; set; }
+        public PaymentType PaymentType { get; set; }
+    }
+
+    public enum PaymentType
+    { 
+        [Description("Payment Link")]
+        PaymentLink,
+        [Description("Gateway")]
+        GateWay,
+        [Description("No Pay")]
+        Free,
     }
 
     public class ContactDetails

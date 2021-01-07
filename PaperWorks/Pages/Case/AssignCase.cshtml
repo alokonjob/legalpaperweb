@@ -32,8 +32,8 @@
                                 <span class="fa fa-rupee-sign fa-2x" aria-hidden="true"></span>
                             </div>
                             <div class="col-md-10 col-lg-9">
-                                <input type="text" class="form-control" value="@Model.FullConsultantDetails[i].ConsultantDetails.CurrentService.Fee" asp-for="FinalizedCost"/>
-                                
+                                <input type="text" class="form-control" value="@Model.FullConsultantDetails[i].ConsultantDetails.CurrentService.Fee" disabled />
+
                             </div>
                         </div>
                         <div class="row form-group">
@@ -53,13 +53,13 @@
                             </div>
                         </div>
                     </div>
-                        <div class="card-footer">
-                            <span class="fa fa-star" aria-hidden="true"></span>
-                            <span aria-hidden="true" class="text-right ml-3 lead">@Model.FullConsultantDetails[i].ConsultantDetails.RatingsValue/5</span>
-                            <span class="fas fa-award fa-lg ml-3" aria-hidden="true"></span>
-                            <span aria-hidden="true" class="text-right ml-3 lead">@Model.FullConsultantDetails[i].ConsultantDetails.TotalCases Cases</span>
-                        </div>
+                    <div class="card-footer">
+                        <span class="fa fa-star" aria-hidden="true"></span>
+                        <span aria-hidden="true" class="text-right ml-3 lead">@Model.FullConsultantDetails[i].ConsultantDetails.RatingsValue/5</span>
+                        <span class="fas fa-award fa-lg ml-3" aria-hidden="true"></span>
+                        <span aria-hidden="true" class="text-right ml-3 lead">@Model.FullConsultantDetails[i].ConsultantDetails.TotalCases Cases</span>
                     </div>
+                </div>
             </div>
 
         }
@@ -76,10 +76,12 @@
                     </div>
 
                     <div class="modal-body form-group">
+                        <input type="text" class="form-control mb-2" asp-for="FinalizedCost" placeholder="Final Negotiated Cost" />
+                        <span asp-validation-for="FinalizedCost" class="text-danger"></span>
                         <textarea class="form-control" rows="3" asp-for="@Model.ReasonOfAssignment" placeholder="e.g. agreed On Low cost, Good rating"></textarea>
                         @*<input class="form-control" type="hidden" id="Email" name="Email" value="@Model.FullConsultantDetails[i].UserDetails.Email" />
-                            <input class="form-control" type="hidden" id="Name" name="Name" value="@Model.FullConsultantDetails[i].UserDetails.FullName" />
-                            <input class="form-control" type="hidden" id="Phone" name="Phone" value="@Model.FullConsultantDetails[i].UserDetails.PhoneNumber" />*@
+        <input class="form-control" type="hidden" id="Name" name="Name" value="@Model.FullConsultantDetails[i].UserDetails.FullName" />
+        <input class="form-control" type="hidden" id="Phone" name="Phone" value="@Model.FullConsultantDetails[i].UserDetails.PhoneNumber" />*@
                     </div>
                     <div class="modal-footer form-group">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -91,6 +93,10 @@
         </div>
     </div>
 </form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
 
 
 

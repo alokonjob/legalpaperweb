@@ -11,5 +11,6 @@ namespace OrderAndPayments
         Task<List<ClientelePayment>> GetPaymentByOrderId(List<ObjectId> orderIds);
         Task<ObjectId> SavePaymentAsync(ClientelePayment clientPayment);
         Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId OrderId, ObjectId CaseId, string status);
+        Task<ClientelePayment> UpdatePaymentLinkAsync(ClientelePayment clientPayment);
     }
 }

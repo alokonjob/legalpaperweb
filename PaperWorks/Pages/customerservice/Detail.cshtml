@@ -42,98 +42,155 @@
 
 
     <div class="col-md-4 col-sm-12 bg-light text-darks bg-secondary">
-        <a asp-page="/Order/PreCheckout"  class="btn btn-success btn-block" >Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
+        <a asp-page="/Order/PreCheckout" class="btn btn-success btn-block">@Model.ServiceBookingText For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
         @*<button class="btn btn-primary btn-lg d-block w-100">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer</button>*@
     </div>
 
 
 
 </div>
+<div class="row">
+    <div class="col-md-8">
+        <div class="row w-100 mt-3" id="overview">
 
-<div class="row w-100 mt-3" id="overview">
 
 
-
-    @*<div class="col" ></div>*@
-    <div class="col-md-8 col-sm-12 bg-white mt-5">
-        <div class="card ml-2">
-            <div class="card-header ">
-                <h5 class="text-muted">OVERVIEW</h5>
+            @*<div class="col" ></div>*@
+            <div class="col-sm-12 bg-white mt-5">
+                <div class="card ml-2">
+                    <div class="card-header ">
+                        <h5 class="text-muted">OVERVIEW</h5>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@localizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Overview.Title]<br></h5>
+                        <p class="card-text">
+                            @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Overview.Text]
+                        </p>
+                        <a asp-page="/Order/PreCheckout" class="btn btn-success">@Model.ServiceBookingText  For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
+                    </div>
+                </div>
             </div>
-            <div class="card-body">
-                <h5 class="card-title">@localizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Overview.Title]<br></h5>
-                <p class="card-text">
-                    @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Overview.Text]
-                </p>
-                    <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
+
+
+            @*<div class="col-md-4 bg-light text-darks bg-secondary mt-5 d-none d-sm-block">
+                    <button class="btn btn-primary btn-lg d-block w-100">Book Now For Rs.17000</button>
+                </div>*@
+
+
+
+        </div>
+
+        <div class="row w-100 mt-3" id="process">
+
+
+
+            @*<div class="col" ></div>*@
+            <div class="col-sm-12 bg-white mt-5">
+                <div class="card ml-2">
+                    <div class="card-header">
+                        PROCESS
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@localizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Process.Title]</h5>
+                        <p class="card-text">
+                            @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Process.Text]
+                        </p>
+                        <a asp-page="/Order/PreCheckout" class="btn btn-success">@Model.ServiceBookingText  For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="col-md-4 bg-light text-darks bg-secondary mt-5 d-none d-sm-block">
+                    <button class="btn btn-primary btn-lg d-block">Book Now For Rs.17000</button>
+                </div>*@
+
+
+
+        </div>
+
+        <div class="row w-100 mt-3" id="documentsandpaper">
+
+
+
+            @*<div class="col" ></div>*@
+            <div class="col-sm-12 bg-white mt-5">
+                <div class="card ml-2">
+                    <div class="card-header">
+                        Documents and Papers
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">@localizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Documents.Title]</h5>
+                        <p class="card-text">
+                            @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Documents.Text]
+                        </p>
+                        <a asp-page="/Order/PreCheckout" class="btn btn-success">@Model.ServiceBookingText For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
+                    </div>
+                </div>
+            </div>
+
+            @*<div class="col-md-4 bg-light text-darks bg-secondary mt-5 d-none d-sm-block">
+                    <button class="btn btn-primary btn-lg d-block">Book Now For Rs.17000</button>
+                </div>*@
+
+
+
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="row w-100 mt-3">
+            <div class="col-sm-12">
+                <div class="card bg-dark text-white p-3 mt-3 mx-md-4">
+                    <h4 class="card-title my-2 text-center">What We Offer</h4>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-2">
+                                <span aria-hidden="true"><i class="fas fa-rupee-sign"></i></span>
+                            </div>
+                            <div class="col-10">
+                                <small>100% refund - No Questions Asked</small>
+                            </div>
+
+
+                        </div>
+                        <div class="row mt-md-1">
+                            <div class="col-2">
+                                <span aria-hidden="true"><i class="fas fa-user-tie"></i></span>
+                            </div>
+                            <div class="col-10">
+                                <small>100% Professional Case Manager</small>
+                            </div>
+
+                        </div>
+                        <div class="row mt-md-1">
+                            <div class="col-2">
+                                <span aria-hidden="true"><i class="fas fa-user-tie"></i></span>
+                            </div>
+                            <div class="col-10">
+                                <small>Experts with vast experience</small>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                    <form method="post" asp-page-handler="RequestCallBack">
+                        <button class="btn  btn-block btn-primary mt-md-3"><i class="fas fa-headset mr-1"></i><small>Still have doubt ? Talk to Us For Free</small></button>
+                    </form>
+                    @*<a asp-page="/Order/PreCheckout" class="btn  btn-block btn-primary mt-md-3"><i class="fas fa-headset mr-1"></i><small>Still have doubt ? Talk to Us For Free</small></a>*@
+                    <footer class="mt-md-3">
+                        <small>
+                            Terms And Conditions Apply
+                            <cite title="Source Title"><a asp-page="/General/TermsAndConditions">Read Them Here</a></cite>
+                        </small>
+                    </footer>
+
+                </div>
             </div>
         </div>
     </div>
-
-
-    @*<div class="col-md-4 bg-light text-darks bg-secondary mt-5 d-none d-sm-block">
-            <button class="btn btn-primary btn-lg d-block w-100">Book Now For Rs.17000</button>
-        </div>*@
-
-
-
 </div>
 
-<div class="row w-100 mt-3" id="process">
 
-
-
-    @*<div class="col" ></div>*@
-    <div class="col-md-8 col-sm-12 bg-white mt-5">
-        <div class="card ml-2">
-            <div class="card-header">
-                PROCESS
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">@localizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Process.Title]</h5>
-                <p class="card-text">
-                    @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Process.Text]
-                </p>
-                <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
-            </div>
-        </div>
-    </div>
-
-    @*<div class="col-md-4 bg-light text-darks bg-secondary mt-5 d-none d-sm-block">
-            <button class="btn btn-primary btn-lg d-block">Book Now For Rs.17000</button>
-        </div>*@
-
-
-
-</div>
-
-<div class="row w-100 mt-3" id="documentsandpaper">
-
-
-
-    @*<div class="col" ></div>*@
-    <div class="col-md-8 col-sm-12 bg-white mt-5">
-        <div class="card ml-2">
-            <div class="card-header">
-                Documents and Papers
-            </div>
-            <div class="card-body">
-                <h5 class="card-title">@localizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Documents.Title]</h5>
-                <p class="card-text">
-                    @htmlLocalizer[Model.CurrentDisplayService.ServiceDetail.DetailedDisplayInfo.Documents.Text]
-                </p>
-                <a asp-page="/Order/PreCheckout" class="btn btn-success">Book Now For Rs.@Model.CurrentDisplayService.CostToCustomer.ToString("#,##0")</a>
-            </div>
-        </div>
-    </div>
-
-    @*<div class="col-md-4 bg-light text-darks bg-secondary mt-5 d-none d-sm-block">
-            <button class="btn btn-primary btn-lg d-block">Book Now For Rs.17000</button>
-        </div>*@
-
-
-
-</div>
 
 
 @section Scripts{

@@ -2,6 +2,8 @@
 
 @using Microsoft.Extensions.Localization;
 @using User
+@using CaseManagement
+@using  Fundamentals.Extensions
 @inject IStringLocalizer<DetailModel> localizer
 
 @model PaperWorks.CaseDetailModel
@@ -98,7 +100,7 @@
                         <label>Enter Consultant Email if want to share update with Consultant</label>
                         <input asp-for="@Model.UserUpdate.ConsultantEmail" placeholder="ConsultantEmail" autocomplete="off">
                     </div>
-                    <button class="btn btn-success" type="submit" id="postUpdateBtn">Post Update</button>
+                    <button class="btn btn-success" id="postUpdateBtn">Post Update</button>
 
                 </form>
 
@@ -132,17 +134,38 @@
             <div class="col-6">
                 <div class="card  border-0 m-1 bg-secondary text-white mb-3" id="NudgePayment">
                     <div class="card-header">
-                        <h5 class="lead text-center"><strong>Payment Request</strong></h5>
+                        <h5 class="lead text-center"><strong>Nudge Requests</strong></h5>
                     </div>
                     <div class="card-body mt-3">
                         <div class="row">
-                            <form class="form-inline" asp-page-handler="Nudge" method="post" id="NudgeForm">
-                                <input asp-for="@Model.NudgeAmount" class="form-control" />
-                                <input asp-for="@Model.Receipt" type="hidden" class="form-control" />
+                            <div class="col">
+                                @if (Model.InputForNudge.TypeOfNudge == NudgeType.None)
+                                {
+                                    <form class="form" asp-page-handler="Nudge" method="post" id="NudgeForm">
+                                        <div class="form-group">
 
-                                <button class="form-control btn btn-success ml-md-2" type="submit" id="NudgeBtn">Nudge</button>
-                            </form>
+                                            <select class="text-muted" asp-for="@Model.InputForNudge.TypeOfNudge" asp-items="Html.GetEnumSelectList<NudgeType>()"></select>
+
+                                        </div>
+                                        <div class="form-group">
+                                            <input asp-for="@Model.InputForNudge.NudgeAmount" class="form-control" />
+                                            <input asp-for="@Model.Receipt" type="hidden" class="form-control" />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <button class="form-control btn-sm btn btn-success" type="submit" id="NudgeBtn">Raise The Nudge</button>
+
+                                        </div>
+                                    </form>
+                                }
+                                else
+                                {
+                                    <p class="lead  m-md-1 text-white text-center">@Model.InputForNudge.TypeOfNudge.GetDescription() Nudge is already raised  </p>
+                                }
+                            </div>
+
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -151,6 +174,37 @@
 
     </div>
 </div>
+
+
+<div class="row ">
+    <div class="col-md-6">
+        <div class="card  border-0 p-2 m-1 bg-light mb-3">
+            <div class="card-header">
+                <h5 class="lead text-center"><strong>Case Manager Details</strong></h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="card-subtitle lead m-1">Case Manager Name</h6>
+                        <h6 class="card-subtitle lead m-1">Case Manager Email</h6>
+                        <h6 class="card-subtitle lead m-1">Case Manager Phone</h6>
+                    </div>
+                    <div class="col-md-6">
+                        <h6 class="card-subtitle lead m-1">@Model.CaseManager.FullName</h6>
+                        <h6 class="card-subtitle lead m-1">@Model.CaseManager.Email</h6>
+                        <h6 class="card-subtitle lead m-1">@Model.CaseManager.PhoneNumber</h6>
+                    </div>
+                </div>
+                @if (User.IsFounder())
+                {
+                    <a asp-page="/Case/ASsignCaseManager" class="btn btn-primary btn-block" asp-route-rct="@Model.Receipt">Change Case Manager</a>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
 <section id="caseDetailSection">
     <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Case Payments</h4>
 </section>
@@ -173,7 +227,7 @@
     <partial name="_UploadedFileList" model="Model.AllFileNames" />
 </div>
 
-<div class="modal fade" id="loadMe">
+<div class="modal fade" id="loadMe" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body text-center">
@@ -187,6 +241,7 @@
 </div>
 
 @section Scripts{
+
     <partial name="_ValidationScriptsPartial" />
     @*<script type="text/javascript" language="javascript" src="~/lib/jquery/dist/jquery.min.js"></script>*@
     <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
@@ -202,9 +257,6 @@
 
                 $("#loadMe").modal('show');
 
-                setTimeout(function () {
-                    $("#loadMe").modal('hide');
-                }, 3500);
                 // disable button
                 $(this).prop("disabled", true);
                 // add spinner to button
@@ -289,9 +341,10 @@
                 $(".caseUpdateList").append(`${xhr.responseText}`);
                 $('#caseUpdateTable').DataTable({
                     destroy: true,
+                    //https://stackoverflow.com/questions/36984554/sorting-date-in-datatable
                     columnDefs: [
                         { width: '40%', targets: 0 },
-                         { width: '30%', targets: 1 }
+                        { width: '30%', targets: 1 }
                         ,
                         { targets: 2, type: 'date-euro' }
                     ]

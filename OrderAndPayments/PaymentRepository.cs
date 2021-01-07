@@ -28,6 +28,17 @@ namespace OrderAndPayments
             return clientPayment.PaymentId;
         }
 
+        public async Task<ClientelePayment> UpdatePaymentLinkAsync(ClientelePayment clientPayment)
+        {
+            var filter = Builders<ClientelePayment>.Filter.Eq(x => x.PaymentId, clientPayment.PaymentId);
+            var updatedDoc = await _paymentCollection.FindOneAndUpdateAsync<ClientelePayment>(
+              filter,
+              Builders<ClientelePayment>.Update
+              .Set(t => t.GateWayDetails, clientPayment.GateWayDetails)
+              );
+            return updatedDoc;
+        }
+
         public async Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId OrderId , ObjectId CaseId , string status)
         {
             var filter = Builders<ClientelePayment>.Filter.Eq(t => t.PaymentId, paymentId);

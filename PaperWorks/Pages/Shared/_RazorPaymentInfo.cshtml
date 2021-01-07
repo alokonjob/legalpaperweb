@@ -1,0 +1,28 @@
+﻿@model Dictionary<string, string>
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+@if (Model != null && Model.Keys.Any())
+{
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">Payment Info</h4>
+    @foreach (var key in Model.Keys)
+    {
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <label><strong>@key</strong></label>
+            </div>
+            <div class="col-md-6">
+                <label>@Model[key]</label>
+            </div>
+        </div>
+
+    }
+}
+else
+
+{
+    <h4 class="display-4 m-3 text-muted text-center" data-aos="fade-left" data-aos-delay="800">No payment Info Updated</h4>
+}

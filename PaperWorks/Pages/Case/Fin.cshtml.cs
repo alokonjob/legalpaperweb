@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AspNetCore.Identity.Mongo.Model;
 using CaseManagement;
 using CaseManagementSpace;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -16,6 +17,7 @@ using Users;
 
 namespace PaperWorks
 {
+    [Authorize(Policy = "ManageFinancePolicy")]
     public class FinModel : PageModel
     {
         private readonly ICasePaymentReleaseService casePaymentReleaseService;
@@ -23,7 +25,7 @@ namespace PaperWorks
         private readonly IPaymentService paymentService;
         private readonly UserManager<Clientele> userManager;
         private readonly RoleManager<MongoRole> roleManager;
-        private readonly IPaymentNudgeService nudGeService;
+        private readonly INudgeService nudGeService;
 
         [BindProperty]
         public string PaidSoFar { get; set; }
@@ -38,7 +40,7 @@ namespace PaperWorks
 
         [BindProperty]
         public Dictionary<string, string> PAYDATAFROMRAZOR { get; set; }
-        public bool IsNudgeOn { get; set; }
+        public NudgeType IsNudgeOn { get; set; }
 
 
         [BindProperty]
@@ -72,7 +74,7 @@ namespace PaperWorks
         public NudgeInfo NudgeInfo { get; set; }
 
 
-        public FinModel(ICasePaymentReleaseService casePaymentReleaseService, ICaseManagement caseManagement, IPaymentService paymentService, UserManager<Clientele> userManager, RoleManager<MongoRole> roleManager, IPaymentNudgeService nudGeService)
+        public FinModel(ICasePaymentReleaseService casePaymentReleaseService, ICaseManagement caseManagement, IPaymentService paymentService, UserManager<Clientele> userManager, RoleManager<MongoRole> roleManager, INudgeService nudGeService)
         {
             this.casePaymentReleaseService = casePaymentReleaseService;
             this.caseManagement = caseManagement;
@@ -106,15 +108,19 @@ namespace PaperWorks
             }
             catch (Exception error)
             {
+                CustomerPaymentWithRazor = null;
             }
             PAYDATAFROMRAZOR = new Dictionary<string, string>();
 
-            foreach (var child in CustomerPaymentWithRazor.Attributes)
+            if (CustomerPaymentWithRazor != null)
             {
-                if (child.Type == JTokenType.Property)
+                foreach (var child in CustomerPaymentWithRazor.Attributes)
                 {
-                    var property = child as Newtonsoft.Json.Linq.JProperty;
-                    PAYDATAFROMRAZOR.Add(property.Name, property.Value.ToString());
+                    if (child.Type == JTokenType.Property)
+                    {
+                        var property = child as Newtonsoft.Json.Linq.JProperty;
+                        PAYDATAFROMRAZOR.Add(property.Name, property.Value.ToString());
+                    }
                 }
             }
 
@@ -125,7 +131,7 @@ namespace PaperWorks
             ConsultantEmail = consultantInfo?.Email ?? "#####";
 
             NudgeInfo = await nudGeService.GetNudge(rct);
-            IsNudgeOn = NudgeInfo == null ? false : true;
+            IsNudgeOn = NudgeInfo == null ? NudgeType.None : NudgeInfo.TypeOfNudge;
 
             ModelState.Clear();
 
@@ -138,7 +144,7 @@ namespace PaperWorks
             var consultant = usersInRoleTask.Where(x => x.Email == ConsultantEmail).FirstOrDefault();
 
             if (consultant == null) return Partial("_PayUpdates", null);//No Consultant attached
-            
+
 
             var caseByReceipt = await caseManagement.GetCaseByReceipt(Receipt);
 
@@ -146,15 +152,27 @@ namespace PaperWorks
             FullPayInfo = await casePaymentReleaseService.GetPaymentsForCase(caseByReceipt.CaseId.ToString(), consultant.Id.ToString());
 
             NudgeInfo = await nudGeService.GetNudge(Receipt);
-            IsNudgeOn = NudgeInfo == null ? false : true;
-            if (IsNudgeOn)
+            IsNudgeOn = NudgeInfo == null ? NudgeType.None : NudgeInfo.TypeOfNudge;
+            if (IsNudgeOn == NudgeType.ConsultantPaymentNudge)
             {
                 nudGeService.EndANudge(User.Identity.Name, Receipt);
             }
             PaidSoFar = FullPayInfo?.PaymentReleased.ToString() ?? "###";
-            
+
             return Partial("_PayUpdates", FullPayInfo);
 
+        }
+
+        public async Task<IActionResult> OnPostCaseClosed()
+        {
+            NudgeInfo = await nudGeService.GetNudge(Receipt);
+            IsNudgeOn = NudgeInfo == null ? NudgeType.None : NudgeInfo.TypeOfNudge;
+            if (IsNudgeOn == NudgeType.RequestCaseClosure)
+            {
+                await caseManagement.ChangeStatus(Receipt, CaseStatus.FinanceClosed);
+                nudGeService.EndANudge(User.Identity.Name, Receipt);
+            }
+            return RedirectToPage("/Case/CaseListing");
         }
 
         public async Task<IActionResult> OnPostRefundPaymentAsync()
@@ -162,7 +180,7 @@ namespace PaperWorks
             try
             {
                 var caseByReceipt = caseManagement.GetCaseByReceipt(Receipt);
-                var customerPayment =  await paymentService.GetPaymentByCaseId(caseByReceipt.Result.CaseId.ToString());
+                var customerPayment = await paymentService.GetPaymentByCaseId(caseByReceipt.Result.CaseId.ToString());
 
                 CustomerPayment = await paymentService.GetPaymentByCaseId(caseByReceipt.Result.CaseId.ToString());
 
@@ -174,10 +192,10 @@ namespace PaperWorks
                     ModelState.AddModelError(string.Empty, $"Amount can not be greater than customer payment amount {InputForRefund.RefundAmount}");
                 }
                 Dictionary<string, object> data = new Dictionary<string, object>();
-                data.Add("amount", (InputForRefund.RefundAmount*100).ToString());
+                data.Add("amount", (InputForRefund.RefundAmount * 100).ToString());
                 return RedirectToPage("/Case/CustomerRefund", new { receipt = Receipt });
 
-                
+
             }
             catch (Exception error)
             {

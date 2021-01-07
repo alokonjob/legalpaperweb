@@ -1,6 +1,7 @@
 ﻿
 @page
 @using Microsoft.AspNetCore.Identity
+@using Fundamentals.Extensions
 @using  Users
 @inject IStringLocalizer<OrderListModel> localizer
 @inject SignInManager<Clientele> SignInManager
@@ -42,8 +43,12 @@
                                     <div class="small text-muted mx-lg-3 mx-md-2 mx-sm-1">@order.Payment.FinalAmount.ToString("#,##0.00")</div>
                                 </div>
                                 <div class="d-flex flex-column row-hl">
-                                    <div class="small text-muted text-black-50 mx-lg-3 mx-md-2 mx-sm-1">STATUS</div>
-                                    <div class="small text-muted mx-lg-3 mx-md-2 mx-sm-1">Ongoing</div>
+                                    <div class="small text-muted text-black-50 mx-lg-3 mx-md-2 mx-sm-1">ORDER STATUS</div>
+                                    <div class="small text-muted mx-lg-3 mx-md-2 mx-sm-1">@order.Order.OrderStatus.GetDescription()</div>
+                                </div>
+                                <div class="d-flex flex-column row-hl">
+                                    <div class="small text-muted text-black-50 mx-lg-3 mx-md-2 mx-sm-1">CASE STATUS</div>
+                                    <div class="small text-muted mx-lg-3 mx-md-2 mx-sm-1">@order.Case.CurrentStatus.GetDescription()</div>
                                 </div>
                             </div>
                         </div>

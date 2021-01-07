@@ -45,9 +45,31 @@ namespace OrderAndPayments
             return await orderRepository.GetOrderOfUser(userId);
         }
 
-        public async Task<ClienteleOrder> AddPaymentToOrder(string orderId , string paymentId)
+        public async Task<List<ClienteleOrder>> GetCustomOrders(string Email = "")
         {
-            return await orderRepository.AddPaymentToOrder(orderId, paymentId);
+            return await orderRepository.GetCustomOrders(Email);
         }
+
+        public async Task<ClienteleOrder> AddPaymentToOrder(string orderId , string paymentId, OrderStatus status = OrderStatus.PaymentCompletedSuccess)
+        {
+            return await orderRepository.AddPaymentToOrder(orderId, paymentId, status);
+        }
+
+        public async Task<ClienteleOrder> UpdateOrderStatus(string orderId, OrderStatus status)
+        {
+           return await orderRepository.UpdateOrderStatus(orderId, status);
+        }
+
+        public async Task<ClienteleOrder> UpdateOrderStatusByReceipt(string receipt, OrderStatus status)
+        {
+            return await orderRepository.UpdateOrderStatusByReceipt(receipt, status);
+        }
+
+        public async Task<ClienteleOrder> UpdateCustomerCost(string orderId, double cost)
+        {
+            return await orderRepository.UpdateCustomerCost(orderId, cost);
+        }
+
+
     }
 }

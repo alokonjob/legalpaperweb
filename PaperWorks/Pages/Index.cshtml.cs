@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Emailer;
 using Fundamentals.Managers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +16,14 @@ namespace PaperWorks.Pages
     public class IndexModel : PageModel
     {
         private readonly IGeographyManagement geoManager;
+        private readonly IEmailer emailSender;
         private readonly ILogger<IndexModel> _logger;
         List<string> Cities = new List<string>();
 
-        public IndexModel(IGeographyManagement geoManager, ILogger<IndexModel> logger)
+        public IndexModel(IGeographyManagement geoManager,IEmailer emailSender, ILogger<IndexModel> logger)
         {
             this.geoManager = geoManager;
+            this.emailSender = emailSender;
             _logger = logger;
         }
 
@@ -58,6 +62,7 @@ namespace PaperWorks.Pages
             }
             return Page();
         }
+
 
 
         public string Get(string key)

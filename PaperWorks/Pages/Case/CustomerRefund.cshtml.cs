@@ -28,6 +28,7 @@ namespace PaperWorks
         public string Receipt { get; set; }
         public ClientelePayment CustomerPayment { get; set; }
         public List<Refund> FullRefundInfo { get; set; }
+        public string TextMessage { get; set; }
         public CustomerRefundModel(ICaseManagement caseManagement, IPaymentService paymentService)
         {
             this.caseManagement = caseManagement;
@@ -43,10 +44,22 @@ namespace PaperWorks
 
             await paymentService.GetPaymentByCaseId(caseByReceipt.Result.CaseId.ToString());
             CustomerPayment = await paymentService.GetPaymentByCaseId(caseByReceipt.Result.CaseId.ToString());
+            TextMessage = GetMessageForRefund(CustomerPayment);
+            if (!string.IsNullOrEmpty(TextMessage))
+            {
+                ModelState.AddModelError(string.Empty, TextMessage);
+            }
             RazorpayClient client = new RazorpayClient("rzp_test_ju6u0OTTuolb5J", "mUb1k41FXOvU9qrCFAyqQAY4");
-            var payment = client.Payment.Fetch(CustomerPayment.GateWayDetails.PaymentGateWay_PayId);
+            try
+            {
+                var payment = client.Payment.Fetch(CustomerPayment.GateWayDetails.PaymentGateWay_PayId);
 
-            FullRefundInfo = payment.AllRefunds();
+                FullRefundInfo = payment.AllRefunds();
+            }
+            catch (Exception error)
+            {
+                FullRefundInfo = new List<Refund>();
+            }
 
             double total = 0.0;
 
@@ -73,6 +86,23 @@ namespace PaperWorks
             return Page();
         }
 
+        private string GetMessageForRefund(ClientelePayment customerPayment)
+        {
+            switch (customerPayment.PaymentType)
+            { 
+               case PaymentType.Free:
+                    {
+                        return $"Refund Not Needed , Payment Was Free";
+                    }
+                case PaymentType.PaymentLink:
+                    {
+                        return $"Refund To Be Generated from Razor, not here";
+                    }
+
+            }
+            return string.Empty;
+        }
+
         public async Task<PartialViewResult> OnPostRefundPaymentAsync()
         {
             try
@@ -81,7 +111,10 @@ namespace PaperWorks
                 var customerPayment = await paymentService.GetPaymentByCaseId(caseByReceipt.Result.CaseId.ToString());
 
                 CustomerPayment = await paymentService.GetPaymentByCaseId(caseByReceipt.Result.CaseId.ToString());
-
+                if (CustomerPayment.PaymentType == PaymentType.Free || CustomerPayment.PaymentType == PaymentType.PaymentLink)
+                {
+                    return Partial("_RefundInformation", null);
+                }
                 RazorpayClient client = new RazorpayClient("rzp_test_ju6u0OTTuolb5J", "mUb1k41FXOvU9qrCFAyqQAY4");
                 var rzorPayment = client.Payment.Fetch(CustomerPayment.GateWayDetails.PaymentGateWay_PayId);
                 //CustomerPaymentWithRazor = new Razorpay.Api.Payment(CustomerPayment.GateWayDetails.PaymentGateWay_PayId).Fetch(CustomerPayment.GateWayDetails.PaymentGateWay_PayId);

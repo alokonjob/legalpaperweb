@@ -81,7 +81,7 @@
                     </textarea>
                         <input type="hidden" asp-for="@Model.Receipt" />
                     </div>
-                    <button class="form-control btn btn-success" type="submit" id="postUpdateBtn">Post Update</button>
+                    <button class="form-control btn btn-success" id="postUpdateBtn">Post Update</button>
 
                 </form>
 
@@ -133,7 +133,7 @@
 <div class="fileUpldates mt-2">
     <partial name="_UploadedFileList" model="Model.AllFileNames" />
 </div>
-<div class="modal fade" id="loadMe">
+<div class="modal fade" id="loadMe" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-body text-center">

@@ -6,6 +6,8 @@
 @inject UserManager<Clientele> UserManager
 @inject IStringLocalizer<DetailModel> localizer
 @model PaperWorks.PreCheckout
+
+
 @{
     ViewData["Title"] = "Pre Checkout";
     Layout = "~/Pages/Shared/_Layout.cshtml";
@@ -15,13 +17,16 @@
 </section>
 
 
-<form method="POST" data-ajax="true" data-ajax-method="post" id="checkoutForm">
+<form method="POST" id="checkoutForm">
     <div class="row ">
         <div class="col-md-6">
             <div class="card bg-light border-0 p-3 m-5">
                 <div class="card-body mt-3">
                     <h4 class="card-title">Customer Details</h4>
-                    <h6 class="card-subtitle text-muted">We will create your sign in for free or <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="/Order/PreCheckout">Login If Account Already Exists</a></h6>
+                    @if (SignInManager.IsSignedIn(User) == false)
+                    {
+                        <h6 class="card-subtitle text-muted">We will create your sign in for free or <a asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="/Order/PreCheckout">Login If Account Already Exists</a></h6>
+                    }
                     <div class="form-group">
                         <label asp-for="Input.Name"></label>
                         @if (string.IsNullOrEmpty(Model.Input.Name) || Model.UserCreationFailed)
@@ -48,7 +53,7 @@
                         <span asp-validation-for="Input.Email" class="text-danger"></span>
                     </div>
 
-                    
+
                     <div class="form-group">
                         <label asp-for="Input.PhoneNumberCountryCode"></label>
                         <select asp-for="Input.PhoneNumberCountryCode" asp-items="Model.AvailableCountries" class="form-control" value="India"></select>
@@ -59,17 +64,51 @@
                         @if (string.IsNullOrEmpty(Model.Input.PhoneNumber) || Model.UserCreationFailed)
                         {
                             <input asp-for="Input.PhoneNumber" class="form-control" />
+                            <button class="btn-sm btn-link text-md-center border-0 small" id="VerificationLink">
+                                Get Verification Code
+                            </button>
+                            <div class="countdown"></div>
+                            <div class="input-group">
+                                <div class="verficationCodeDiv">
+                                </div>
+                            </div>
                         }
                         else
                         {
-                            <input asp-for="Input.PhoneNumber" class="form-control" disabled />
+                            <div class="input-group">
+                                <input asp-for="Input.PhoneNumber" class="form-control d-block" disabled />
+                                @if (@Model.IsPhoneVerified)
+                                {
+                                    <div class="input-group-append" data-toggle="tooltip" data-placement="top" title="Verified">
+                                        <span class="input-group-text text-success font-weight-bold"> ✓</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="input-group-append" data-toggle="tooltip" data-placement="top" title="Not Verified">
+                                        <span class="input-group-text text-danger font-weight-bold"> ✗</span>
+                                    </div>
+                                    <div>
+                                        <button class="btn-sm btn-link text-md-center border-0 small" id="VerificationLink">
+                                            Get Verification Code
+                                        </button>
+                                    </div>
+                                    <div class="countdown text-center small"></div>
+
+
+                                }
+                            </div>
+                            <div class="input-group">
+                                <div class="verficationCodeDiv">
+                                </div>
+                            </div>
                         }
                         <span asp-validation-for="Input.PhoneNumber" class="text-danger" disabled></span>
 
                     </div>
                     <div class="form-group">
 
-                        @if(ModelState.Root.ValidationState != Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Unvalidated &&  ModelState.ErrorCount > 0)
+                        @if (ModelState.Root.ValidationState != Microsoft.AspNetCore.Mvc.ModelBinding.ModelValidationState.Unvalidated && ModelState.ErrorCount > 0)
                         {<div class="alert alert-danger" role="alert">
                                 @Html.ValidationSummary(true)
                             </div>
@@ -143,21 +182,120 @@
 
 
 </form>
+@if (false == Model.IsPhoneVerified)
+{
+    <div class="row">
+        <div class="col-md-6">
+            <form method="post" id="verificationForm" asp-page-handler="sendverification" data-ajax="true" data-ajax-method="post" data-ajax-complete="completed">
+                <div class="form-group">
+
+                    <input id="verificationCountry" name="verificationCountry" type="hidden" class="form-control" />
+                    <input id="verificationPhone" name="verificationPhone" type="hidden" class="form-control" />
+                </div>
+            </form>
+        </div>
+    </div>
+}
 
 
-
-
-
-
-@section Scripts{
-
-
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script src="~/lib/jquery-ajax-unobtrusive/jquery.unobtrusive-ajax.min.js"></script>
     <script type="text/javascript">
         $(document).ready(function () {
             $("#checkoutsection").css("margin-top", $("#topnavbarbutnobeer").height() * 1.3);
         });
     </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#VerificationLink").click(function () {
+
+                // disable button
+                $(this).prop("disabled", true);
+                var phoneValue = $("#Input_PhoneNumber").val();
+                var countryCode = $('#Input_PhoneNumberCountryCode option:selected').val();
+
+                $("#verificationCountry").val(countryCode);
+                $("#verificationPhone").val(phoneValue);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+
+                $("#verificationForm").submit();
+            });
+
+
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            completed = function (xhr) {
+                //
+                $(".verficationCodeDiv").empty();
+                $(".verficationCodeDiv").append(`${xhr.responseText}`);
+
+                $("#VerificationLink").prop('disabled', false);
+                $("#VerificationLink").html("Get Verification Code");
+                $("#VerificationLink").hide();
+                var timer2 = "00:15";
+
+                var interval = setInterval(function () {
+
+
+                    var timer = timer2.split(':');
+                    //by parsing integer, I avoid all extra string processing
+                    var minutes = parseInt(timer[0], 10);
+                    var seconds = parseInt(timer[1], 10);
+                    --seconds;
+                    minutes = (seconds < 0) ? --minutes : minutes;
+                    if (minutes < 0) {
+                        clearInterval(interval);
+                        $("#VerificationLink").show();
+                        $('.countdown').empty();
+                    }
+                    else {
+                        seconds = (seconds < 0) ? 59 : seconds;
+                        seconds = (seconds < 10) ? '0' + seconds : seconds;
+                        //minutes = (minutes < 10) ?  minutes : minutes;
+                        $('.countdown').html(minutes + ':' + seconds);
+                        timer2 = minutes + ':' + seconds;
+                    }
+                }, 1000);
+            };
+        });
+    </script>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#myInput").on("input", function () {
+                // Print entered value in a div box
+                $("#result").text($(this).val());
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#Input_PhoneNumber").on("input", function () {
+                // Print entered value in a div box
+                var phoneValue = $("#Input_PhoneNumber").val();
+                if (phoneValue.length == 10) {
+                    $("#VerificationLink").show()
+                }
+                else {
+                    $("#VerificationLink").hide()
+                }
+            });
+        });
+    </script>
+
 }
+
+
+
+
+
+
+
 
 

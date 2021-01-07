@@ -27,10 +27,9 @@ namespace PaperWorks
         private readonly ICaseManagement caseManagementService;
         private readonly IOrderService orderService;
         private readonly ICaseUpdateService caseUpdateService;
-        private readonly UserManager<Clientele> userManager;
-        private readonly SignInManager<Clientele> signInManager;
+        private readonly IClienteleServices clienteleServices;
         private readonly ICasePaymentReleaseService casePaymentService;
-        private readonly IPaymentNudgeService nudgeService;
+        private readonly INudgeService nudgeService;
 
         [BindProperty(SupportsGet = true)]
         public string Receipt { get; set; }
@@ -39,6 +38,7 @@ namespace PaperWorks
         [BindProperty]
         public ClienteleOrder CurrentOrder { get; set; }
         public List<CaseUpdate> AllUpdates { get; set; }
+        public Clientele CaseManager { get; set; }
 
         public List<string> AllFileNames { get; set; }
 
@@ -51,23 +51,29 @@ namespace PaperWorks
             public string ConsultantEmail { get; set; }
         }
 
-        [BindProperty]
-        [DataType(DataType.Currency, ErrorMessage = "Please Enter Only Numbers")]
-        public string NudgeAmount { get; set; }
+        public class NudgeInput
+        {
+            [DataType(DataType.Currency, ErrorMessage = "Please Enter Only Numbers")]
+            public string NudgeAmount { get; set; }
+            public NudgeType TypeOfNudge { get; set; }
+        }
+
+        [BindProperty(SupportsGet =true)]
+        public NudgeInput InputForNudge { get; set; }
 
         [BindProperty]
         public BufferedMultipleFileUploadDb FileUpload { get; set; }
         private readonly string[] _permittedExtensions = { ".txt", ".png", ".pdf", ".jpg", ".jpeg" };
         private readonly long _fileSizeLimit = 2097152;
 
-        public CaseDetailModel(ICaseManagement caseManagementService, IOrderService orderService, ICaseUpdateService caseUpdateService, UserManager<Clientele> userManager,
-            SignInManager<Clientele> signInManager, ICasePaymentReleaseService casePaymentService, IPaymentNudgeService nudgeService)
+        public CaseDetailModel(ICaseManagement caseManagementService, IOrderService orderService, ICaseUpdateService caseUpdateService, IClienteleServices clienteleServices,
+             ICasePaymentReleaseService casePaymentService, INudgeService nudgeService)
         {
             this.caseManagementService = caseManagementService;
             this.orderService = orderService;
             this.caseUpdateService = caseUpdateService;
-            this.userManager = userManager;
-            this.signInManager = signInManager;
+            this.clienteleServices = clienteleServices;
+
             this.casePaymentService = casePaymentService;
             this.nudgeService = nudgeService;
         }
@@ -79,11 +85,16 @@ namespace PaperWorks
             //Task<Case> GetcurrentCaseTask;
             Task<List<CaseUpdate>> GetAllUpdatesTask;
             Task<List<string>> GetAllFilesTask;
+            Task<NudgeType> FindActiveNudget;
 
             Receipt = rct;
 
             var customGetcurrentCaseTask = await caseManagementService.GetCaseByReceipt(rct);
+            var cM = await clienteleServices.GetUserByIds(new List<ObjectId>() { customGetcurrentCaseTask.CaseManagerId });
+            CaseManager = cM[0];
             var caseId = customGetcurrentCaseTask.CaseId.ToString();
+
+
 
             CurrentOrderTask = orderService.GetOrderByReceipt(rct);
             tasks.Add(CurrentOrderTask);
@@ -111,6 +122,9 @@ namespace PaperWorks
             //}, TaskContinuationOptions.OnlyOnRanToCompletion);
             tasks.Add(PayInfoTask);
 
+            FindActiveNudget = nudgeService.IsNudgeOn(Receipt);
+            tasks.Add(FindActiveNudget);
+
             await Task.WhenAll(tasks.ToArray());
 
 
@@ -118,6 +132,8 @@ namespace PaperWorks
             AllUpdates = GetAllUpdatesTask.Result;
             if (AllUpdates == null) AllUpdates = new List<CaseUpdate>();
 
+            InputForNudge = new NudgeInput();
+            InputForNudge.TypeOfNudge = FindActiveNudget.Result;
 
             AllFileNames = await store.List(caseId);
             ConsultantPay = PayInfoTask.Result;
@@ -132,7 +148,7 @@ namespace PaperWorks
             CurrentCase = await caseManagementService.GetCaseByReceipt(Receipt);
 
             CaseUpdate update = new CaseUpdate();
-            var currentUser = userManager.GetUserAsync(User).Result;
+            var currentUser = clienteleServices.GetUserAsync(User).Result;
             
             update.UpdatedBy = new AbridgedUser() { Email = currentUser.Email, FullName = currentUser.FullName, PhoneNumber = currentUser.PhoneNumber };
             update.Comment = UserUpdate.Comment;
@@ -151,17 +167,6 @@ namespace PaperWorks
 
         public async Task<IActionResult> OnPostDeleteUpdate()
         {
-            //CurrentCase = await caseManagementService.GetCaseByReceipt(Receipt);
-
-            //CaseUpdate update = new CaseUpdate();
-            //var currentUser = userManager.GetUserAsync(User).Result;
-
-            //update.UpdatedBy = new AbridgedUser() { Email = currentUser.Email, FullName = currentUser.FullName, PhoneNumber = currentUser.PhoneNumber };
-            //update.Comment = UserUpdate.Comment;
-            //update.ShareWithConsultantEmail = UserUpdate.ConsultantEmail;
-            //update.CaseId = CurrentCase.CaseId;
-            //update.UpdatedDate = DateTime.UtcNow;
-
             var caseUpdate = await caseUpdateService.RemoveUpdate(Request.Form["UpdateId"]);
 
             AllUpdates = await caseUpdateService.GetAllUpdates(caseUpdate.CaseId.ToString(), User.IsFounder() ? true : false);
@@ -237,12 +242,14 @@ namespace PaperWorks
             return fileStreamResult;
         }
 
+
         public async Task<IActionResult> OnPostNudge()
         {
-            bool isNudgeOn = await nudgeService.IsNudgeOn(Receipt);
-            if (!isNudgeOn)
+            NudgeType isNudgeOn = await nudgeService.IsNudgeOn(Receipt);
+            if (isNudgeOn == NudgeType.None)
             {
-                await nudgeService.MakeANudge(User, Receipt, NudgeAmount);
+                await caseManagementService.ChangeStatus(Receipt, InputForNudge.TypeOfNudge == NudgeType.RequestCaseClosure ?  CaseStatus.CaseManagerClosed : CaseStatus.InProgress);
+                await nudgeService.MakeANudge(User, Receipt, InputForNudge.TypeOfNudge, InputForNudge.NudgeAmount);
             }
             return RedirectToPage("/Case/CaseListing");
         }

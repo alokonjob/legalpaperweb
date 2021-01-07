@@ -2,18 +2,24 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
 using Newtonsoft.Json.Linq;
 using Razorpay.Api;
+using RestSharp;
+using RestSharp.Authenticators;
+
 namespace OrderAndPayments
 {
     public class PaymentService : IPaymentService
     {
         private readonly IPaymentRepository PaymentRepository;
+        private readonly ILogger<PaymentService> logger;
 
-        public PaymentService(IPaymentRepository PaymentRepository)
+        public PaymentService(IPaymentRepository PaymentRepository,ILogger<PaymentService> logger)
         {
             this.PaymentRepository = PaymentRepository;
+            this.logger = logger;
         }
         public void VerifyPayment(IGateWaysPaymentInfo paymentDetailsByGateWay)
         {
@@ -31,6 +37,11 @@ namespace OrderAndPayments
             return await PaymentRepository.SavePaymentAsync(clientsPayment);
         }
 
+        public async Task<ClientelePayment> UpdatePaymentLinkAsync(ClientelePayment clientPayment)
+        {
+            return await PaymentRepository.UpdatePaymentLinkAsync(clientPayment);
+        }
+
         public async Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId orderId, ObjectId caseId, string status)
         {
             return await PaymentRepository.UpdatePayment(paymentId, orderId, caseId,status);
@@ -39,6 +50,29 @@ namespace OrderAndPayments
         public async Task<ClientelePayment> GetPaymentByOrderId(string OrderId)
         {
             return await PaymentRepository.GetPaymentByOrderId(OrderId);
+        }
+
+        public async Task<Dictionary<string, string>> GeneratePaymentLink(Dictionary<string, string> paymentData)
+        {
+            try
+            {
+                var client = new RestSharp.RestClient("https://api.razorpay.com/v1/payment_links/");
+
+                client.Authenticator = new HttpBasicAuthenticator("rzp_test_ju6u0OTTuolb5J", "mUb1k41FXOvU9qrCFAyqQAY4");
+                var request = new RestRequest(Method.POST);
+                request.AddHeader("Content-Type", "application/json");
+                client.Execute(request);
+                foreach (var key in paymentData.Keys)
+                {
+                    request.AddHeader(key, paymentData[key]);
+                }
+                var response = await client.ExecuteAsync(request);
+            }
+            catch (Exception)
+            {
+
+            }
+            return paymentData;
         }
 
 
@@ -54,19 +88,27 @@ namespace OrderAndPayments
 
         public string GetPaymentStatusFromPaymentGateWay(ClientelePayment clientsPayment)
         {
-            string paymentId = clientsPayment.GateWayDetails.PaymentGateWay_PayId;
-            Payment payInfoAtRazor = new Razorpay.Api.Payment((string)paymentId).Fetch(paymentId);
-            string paymentStatus = string.Empty;
-            foreach (var child in payInfoAtRazor.Attributes)
+            try
             {
-                if (child.Type == JTokenType.Property)
+                string paymentId = clientsPayment.GateWayDetails.PaymentGateWay_PayId;
+                logger.LogInformation($"Fetch Payment for Payment.{clientsPayment.PaymentId}.GateWayPayment.{paymentId}");
+                Payment payInfoAtRazor = new Razorpay.Api.Payment((string)paymentId).Fetch(paymentId);
+                string paymentStatus = string.Empty;
+                foreach (var child in payInfoAtRazor.Attributes)
                 {
-                    var property = child as Newtonsoft.Json.Linq.JProperty;
-                    if (property.Name == "status")
+                    if (child.Type == JTokenType.Property)
                     {
-                        return property.Value.ToString();
+                        var property = child as Newtonsoft.Json.Linq.JProperty;
+                        if (property.Name == "status")
+                        {
+                            return property.Value.ToString();
+                        }
                     }
                 }
+            }
+            catch (Exception error)
+            {
+                logger.LogError($"Unable To Fetch Payment Status - {error.Message}");
             }
             return string.Empty;
         }

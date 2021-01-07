@@ -36,6 +36,8 @@ namespace User
         Task SaveAddress(Clientele endUser, UserAddress address);
         Task<List<Clientele>> GetUserByIds(List<ObjectId> UserIds);
         Task<Clientele> GetByEmail(string Email);
+        Task<IList<string>> GetRoles(Clientele user);
+        List<IdentityUserClaim<string>> GetClaims(Clientele user);
     }
 
     public interface IClienteleStaffServices
@@ -43,6 +45,7 @@ namespace User
         Task<IList<Clientele>> GetUserByRoles(string Role);
         Task<List<Clientele>> GetUserByClaims(string claim);
         Clientele FindAvailableCaseManager();
+
     }
 
 
@@ -174,7 +177,7 @@ namespace User
 
         public async Task<List<Clientele>> GetUserByClaims(string claim)
         {
-            return await (userRepository as IClienteleStaffRepository).GetUserByRoles(claim);
+            return await (userRepository as IClienteleStaffRepository).GetUserByClaims(claim);
         }
 
         public Clientele FindAvailableCaseManager()
@@ -187,6 +190,16 @@ namespace User
         public bool IsSignedIn(ClaimsPrincipal User)
         {
             return signInManager.IsSignedIn(User);
+        }
+
+        public async Task<IList<string>> GetRoles(Clientele user)
+        {
+            return await userManager.GetRolesAsync(user);
+        }
+
+        public List<IdentityUserClaim<string>> GetClaims(Clientele user)
+        {
+            return user.Claims;
         }
     }
 

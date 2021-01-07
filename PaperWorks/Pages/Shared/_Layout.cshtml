@@ -2,9 +2,9 @@
 @using Microsoft.AspNetCore.Identity
 @using  Users
 @using  User
+
 @inject SignInManager<Clientele> SignInManager
 @inject UserManager<Clientele> UserManager
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -26,16 +26,19 @@
     <link rel="stylesheet" href="~/dataTabless/DataTables-1.10.21/css/dataTables.bootstrap4.min.css" />
     <link rel="stylesheet" href="~/dataTabless/Responsive-2.2.5/css/responsive.bootstrap4.min.css" />
     <link rel="stylesheet" href="~/dataTabless/FixedColumns-3.3.1//css/fixedColumns.bootstrap4.min.css" />
-    <script src="~/assets/vendor/progresstep/progressStep.js"></script>
-    <script src="~/assets/vendor/progresstep/raphael.js"></script>
+    <link href="assets/vendor/icofont/icofont.min.css" rel="stylesheet">
+    @*<script src="~/assets/vendor/progresstep/progressStep.js"></script>
+        <script src="~/assets/vendor/progresstep/raphael.js"></script>*@
 </head>
 <body>
     <header id="main-header">
         @*<nav class="navbar  navbar-expand-sm fixed-top justify-content-center navbar-lights bg-light" id="topnavbarbutnobeer">*@
+        @*<h1 class="text-light"><a href="index.html">unPaperWorkz</a></h1>*@
         <nav class="navbar  navbar-expand-sm fixed-top navbar-light bg-light" id="topnavbarbutnobeer">
             <a class="navbar-brand" href="/Index">
-                <img src="~/img/logocase.jpeg" width="70" height="50" class="d-none d-md-block" alt="" href="/Index" id="topnavbarbutnobeer">
+                <img src="~/img/logoabhishek.jpeg" width="150" height="50" class="d-none d-md-block" alt="" href="/Index" id="topnavbarbutnobeer">
             </a>
+            @*<h1 class="navbar-brand text-light"><a href="index.html">unPaperWorkz</a></h1>*@
             <div class="container">
                 @*<a href="/Index" class="navbar-brand p-3">LegalPaperWorx .Net</a>*@
                 <button class="navbar-toggler"
@@ -165,13 +168,16 @@
                             </div>
                         </li>
                         @*<li class="nav-item">
-                                <a href="#whyus" class="nav-link">Why Us</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="#testimoni" class="nav-link">Testimonials</a>
-                            </li>*@
+            <a href="#whyus" class="nav-link">Why Us</a>
+        </li>
+        <li class="nav-item">
+            <a href="#testimoni" class="nav-link">Testimonials</a>
+        </li>*@
                         <li class="nav-item">
                             <a href="#footerservicelinks" class="nav-link">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a asp-page="/General/AboutUs" class="nav-link">About Us</a>
                         </li>
                     </ul>
                     <ul class="navbar-nav ml-auto">
@@ -192,6 +198,8 @@
                                     @if (User.IsCaseManager() || User.IsFounder() || User.IsFinanceUser())
                                     {
                                         <a href="/Case/CaseListing" class="dropdown-item">Case Listing</a>
+                                        <div class="dropdown-divider"></div>
+                                        <a href="/Order/CustomOrderList" class="dropdown-item">Custom Order</a>
                                         <div class="dropdown-divider"></div>
                                     }
                                     @if (User.IsWebAdmin() || User.IsFounder())
@@ -272,8 +280,8 @@
                     <div class="row">
                         <div class="col">
                             <p>
-                                Copyright &copy; <a asp-area="" asp-page="/Privacy">Privacys</a>
-                                <span id="year"></span> LegalWorkx
+                                Copyright &copy; <a  asp-page="/General/TermsAndConditions">Terms And Conditions</a>
+                                <span id="year"></span> unPaperWorkz
                             </p>
                         </div>
                     </div>
@@ -284,14 +292,14 @@
         <section class="text-center p-5 bg-dark text-white mt-3" id="footerservicelinks">
 
             <div class="row" id="footerservicecontainer">
-                <div class="col" id="individualServiceColummn">
+                <div class="col-md-6" id="individualServiceColummn">
                     <div class="row mb-2 text-left">
                         <div class="col">
                             <h6 class="lead"><strong>Individual Services</strong></h6>
                         </div>
                     </div>
                     <div class="row" id="footerIndividualService">
-                        <div class="col">
+                        <div class="col-md-4">
                             <a href="#" class="text-muted">
                                 <span class="text-left  d-block ">Property Delay RERA</span>
                             </a>
@@ -311,7 +319,7 @@
                                 <span class="text-left  d-block ">Legal Notice</span>
                             </a>
                         </div>
-                        <div class="col">
+                        <div class="col-md-4">
                             <a href="#" class="text-muted">
                                 <span class="text-left d-block ">Unpaid Salary</span>
                             </a>
@@ -331,7 +339,7 @@
                                 <span class="text-left d-block ">Property Delay RERA</span>
                             </a>
                         </div>
-                        <div class="col">
+                        <div class="col-md-4">
                             <a href="#" class="text-muted">
                                 <span class="text-left d-block ">Unpaid Salary</span>
                             </a>
@@ -354,14 +362,14 @@
                     </div>
 
                 </div>
-                <div class="col" id="corporateServiceColumn">
+                <div class="col-md-6" id="corporateServiceColumn">
                     <div class="row mb-2 text-left">
                         <div class="col">
                             <h6 class="lead"><strong>Corporate Servicex</strong></h6>
                         </div>
                     </div>
                     <div class="row" id="footerCorporateService">
-                        <div class="col">
+                        <div class="col-md-4">
                             <a href="#" class="text-muted">
                                 <span class="text-left  d-block ">Property Delay RERA</span>
                             </a>
@@ -381,7 +389,7 @@
                                 <span class="text-left  d-block ">Legal Notice</span>
                             </a>
                         </div>
-                        <div class="col">
+                        <div class="col-md-4">
                             <a href="#" class="text-muted">
                                 <span class="text-left d-block ">Unpaid Salary</span>
                             </a>
@@ -401,7 +409,7 @@
                                 <span class="text-left d-block ">Property Delay RERA</span>
                             </a>
                         </div>
-                        <div class="col">
+                        <div class="col-md-4">
                             <a href="#" class="text-muted">
                                 <span class="text-left d-block ">Unpaid Salary</span>
                             </a>
@@ -430,14 +438,69 @@
             <div class="row my-10">
                 <div class="col">
                     <p class="text-center">
-                        Copyright &copy; <a asp-area="" asp-page="/Privacy">Privacys</a>
-                        <span id="year"></span> LegalWorkx
+                        Copyright &copy; <a asp-area="" asp-page="/General/TermsAndConditions">Terms And Conditions</a>
+                        <span id="year"></span> unPaperWorkz
                     </p>
                 </div>
             </div>
 
 
         </section>
+        <section id="contact" class="contact bg-dark p-md-5 mt-md-3 mt-sm-1 text-white">
+            <div class="container">
+
+                <div class="section-title" data-aos="zoom-out">
+                    <h2 class="text-white">Contact Us</h2>
+                    <p class="text-white">By Email , Social Media or write to us</p>
+
+                </div>
+
+                <div class="row mt-5">
+
+                    <div class="col-md-4" data-aos="fade-right">
+                        <div class="info">
+                            <div class="address">
+                                <i class="icofont-google-map"></i>
+                                <h4>Location:</h4>
+                                <p>A108 Adam Street, New York, NY 535022</p>
+                            </div>
+
+                            <div class="email">
+                                <i class="icofont-envelope"></i>
+                                <h4>Email:</h4>
+                                <p>info@example.com</p>
+                            </div>
+
+                            <div class="phone">
+                                <i class="icofont-phone"></i>
+                                <h4>Call:</h4>
+                                <p>+1 5589 55488 55s</p>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="col-md-8 mt-md-5" >
+                        <div class="row">
+                            <div class="col-3 ml-sm-1 ">
+                                <a asp-page="/General/Contact"><i class="fas fa-lg fa-envelope-open-text"></i></a>
+                            </div>
+                            <div class="col-3 ml-sm-1">
+                                <a href="www.twitter.com"><i class="fab fa-lg fa-twitter"></i></a>
+                            </div>
+                            <div class="col-3 ml-sm-1">
+                                <a href="www.facebook.com"><i class="fab fa-facebook"></i></a>
+                            </div>
+                        </div>
+                        
+
+                    </div>
+
+                </div>
+
+            </div>
+        </section><!-- End Contact Section -->
 
     </footer>
 
@@ -502,6 +565,22 @@
             x = 1;
         }
     </script>
+    @*<script type="text/javascript">
+        $(document).ready(function () {
+            $("#contactUsBtn").click(function () {
+
+                // disable button
+                
+                $("#contactUsForm").submit();
+                $(this).prop("disabled", true);
+                // add spinner to button
+                $(this).html(
+                    `<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Loading...`
+                );
+            });
+        });
+    </script>*@
+
     @RenderSection("Scripts", required: false)
 </body>
 </html>

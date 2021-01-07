@@ -25,8 +25,8 @@ namespace CaseManagement
             PayToConsultant consultantPayment = new PayToConsultant();
 
             var filterToCheckExisting = Builders<PayToConsultant>.Filter.Where(x => x.CaseId == CaseObjectId && x.CurrentConsultantId == ConsultantObjectId);
-            var paymnetInfo = await _casePaymentCollection.FindAsync<PayToConsultant>(filterToCheckExisting);
-            if (paymnetInfo.FirstOrDefault() == null)
+            var paymnetInfo = _casePaymentCollection.FindAsync<PayToConsultant>(filterToCheckExisting).Result.FirstOrDefault();
+            if (paymnetInfo == null)
             {
                 consultantPayment.CurrentConsultantId = ConsultantObjectId;
                 consultantPayment.CaseId = CaseObjectId;
@@ -46,7 +46,7 @@ namespace CaseManagement
                 consultantPayment.CurrentConsultantId = ConsultantObjectId;
                 consultantPayment.CaseId = CaseObjectId;
                 consultantPayment.FinalizedCost = FinalizedCost;
-                consultantPayment.PaymentReleased = paymnetInfo.FirstOrDefault().PaymentReleased;
+                consultantPayment.PaymentReleased = paymnetInfo.PaymentReleased;
 
 
                 var updatedPaymentInfo = await _casePaymentCollection.FindOneAndUpdateAsync<PayToConsultant>(

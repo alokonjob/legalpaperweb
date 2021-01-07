@@ -6,6 +6,7 @@ using Fundamentals.Managers;
 using Fundamentals.Unit;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace PaperWorks
 {
@@ -15,6 +16,8 @@ namespace PaperWorks
         [BindProperty(SupportsGet = true)]
         public EnabledServices EnabledService { get; set; }
 
+        public List<SelectListItem> ServiceTypes;
+
         public EditEnabledServiceModel(IEnabledServices enableServiceManager)
         {
             this.enableServiceManager = enableServiceManager;
@@ -22,6 +25,7 @@ namespace PaperWorks
         public void OnGet(string es)
         {
             EnabledService = enableServiceManager.GetEnabledServiceById(es);
+            ServiceTypes = new List<SelectListItem>() { new SelectListItem(EnableServiceType.Individual.ToString(), EnableServiceType.Individual.ToString()), new SelectListItem(EnableServiceType.Corporate.ToString(), EnableServiceType.Corporate.ToString()) };
         }
 
         public async Task<IActionResult> OnPostAsync()

@@ -1,5 +1,6 @@
 ﻿using Emailer;
 using Fundamentals.Events;
+using Messaging;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Logging;
 using MongoDB.Bson;
@@ -20,14 +21,16 @@ namespace CaseManagementSpace
         private readonly IClienteleServices clienteleServices;
         private readonly IClienteleStaffServices staffServices;
         private readonly IEmailer emailSender;
+        private readonly IMessaging smsService;
         private readonly ILogger<CaseManagement> logger;
 
-        public CaseManagement(ICaseRepository caseRepository, IClienteleServices clienteleServices, IClienteleStaffServices staffServices, IEmailer emailSender,ILogger<CaseManagement> logger)
+        public CaseManagement(ICaseRepository caseRepository, IClienteleServices clienteleServices, IClienteleStaffServices staffServices, IEmailer emailSender,IMessaging smsService, ILogger<CaseManagement> logger)
         {
             this.caseRepository = caseRepository;
             this.clienteleServices = clienteleServices;
             this.staffServices = staffServices;
             this.emailSender = emailSender;
+            this.smsService = smsService;
             this.logger = logger;
         }
         public async Task<ObjectId> GenerateCase(Case customerCase, Dictionary<string, string> caseDictionary)
@@ -48,15 +51,15 @@ namespace CaseManagementSpace
             return caseId.Result;
         }
 
-        public async Task<List<Case>> GetAllCases()
+        public async Task<List<Case>> GetAllCases(Filters filter = null)
         {
-            return await caseRepository.GetAll();
+            return await caseRepository.GetAll(filter);
         }
 
-        public async Task<List<Case>> GetAllCasesOfCaseManager(string userEmail)
+        public async Task<List<Case>> GetAllCasesOfCaseManager(string userEmail, Filters filters)
         {
             var user = await clienteleServices.GetByEmail(userEmail);
-            return await (caseRepository as ICaseManagerCaseRepository).GetCasesOfCaseManager(user.Id.ToString());
+            return await (caseRepository as ICaseManagerCaseRepository).GetCasesOfCaseManager(user.Id.ToString(), filters);
 
         }
 
@@ -83,6 +86,21 @@ namespace CaseManagementSpace
         public async Task<Case> UpdateConsultant(Case caseToUpdate)
         {
             return await caseRepository.UpdateConsultant(caseToUpdate);
+        }
+
+        public async Task<Case> UpdateCaseManager(Case caseToUpdate)
+        {
+            return await caseRepository.UpdateCaseManager(caseToUpdate);
+        }
+
+        public async Task<Case> AcceptCase(Case caseToUpdate, string Email)
+        {
+            return await caseRepository.AcceptCase(caseToUpdate, Email);
+        }
+
+        public async Task<Case> ChangeStatus(string receipt, CaseStatus caseStatus)
+        {
+            return await caseRepository.ChangeStatus(receipt, caseStatus);
         }
 
         public async Task SendEmailToCaseManager(Case newCase, string Email)
@@ -137,7 +155,7 @@ namespace CaseManagementSpace
             StringBuilder sb = new StringBuilder();
             sb.Append(template.Replace("##Name", newCase.Order.CustomerName).Replace("##Phone", newCase.Order.CustomerPhone).Replace("##Email", newCase.Order.CustomerEmail).Replace("##Service", newCase.Order.ServiceName).Replace("##City", newCase.Order.City)
             );
-            await emailSender.SendEmailAsync(Email, $"[New Case] {newCase.Order.ServiceName} in {newCase.Order.City} - Receipt {newCase.Order.Receipt}", sb.ToString());
+            await emailSender.SendEmailAsync(Email, $"[New Case] {newCase.Order.ServiceDisplayName} in {newCase.Order.City} - Receipt {newCase.Order.Receipt}", sb.ToString());
         }
 
         public async Task SendEmailToCustomer(Case customerCase, Dictionary<string,string> TemplateFillers)
@@ -145,6 +163,14 @@ namespace CaseManagementSpace
             //image is linked, got a publicly embedding link of an image which i uploaded to onedrive
 
             await emailSender.SendNewOrderMail(TemplateFillers, customerCase.Order.CustomerEmail);
+            var text = $"Thank You ! We have received your OnJob orderNo- {TemplateFillers["##ORDERNO"]}  for {TemplateFillers["##SERVICE"]} in city {TemplateFillers["##CITY"]}";
+            smsService.SendSMS(customerCase.Order.CustomerPhone, text);
         }
+        //itemDictionary.Add("##SERVICE",localizer[clientCase.Order.ServiceName]);
+        //            itemDictionary.Add("##ORDERNO", clientCase.Order.Receipt);
+        //            itemDictionary.Add("##CITY", clientCase.Order.City.ToUpper());
+        //            itemDictionary.Add("##NAME", clientCase.Order.CustomerName);
+        //            itemDictionary.Add("##PHONE", clientCase.Order.CustomerPhone);
+        //            itemDictionary.Add("##URL", HtmlEncoder.Default.Encode(confirmcallbackUrl));
     }
 }

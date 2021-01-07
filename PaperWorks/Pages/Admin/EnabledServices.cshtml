@@ -32,6 +32,9 @@
                 @Html.DisplayNameFor(model => Model.AllEnabledServices[0].IsActive)
             </th>
             <th>
+                @Html.DisplayNameFor(model => Model.AllEnabledServices[0].KindofService)
+            </th>
+            <th>
                 Edit
             </th>
 
@@ -50,6 +53,7 @@
             <td>@service.CostToCustomer</td>
             <td>@service.CostToConsultant</td>
             <td>@service.IsActive</td>
+            <td>@service.KindofService</td>
             <td>
                 <a asp-page="/Admin/EditEnabledService" class="btn btn-success btn-block" asp-route-es="@service.EnableId">Details</a>
             </td>

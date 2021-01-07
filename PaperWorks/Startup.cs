@@ -190,8 +190,8 @@ namespace PaperWorks
 
             services.AddScoped<IOrderAuditService, OrderAuditService>();
             services.AddScoped<IOrderAuditRepository, OrderAuditRepository>();
-            services.AddScoped<IPaymentNudgeService, PaymentNudgeService>();
-            services.AddScoped<IPaymentNudgeRepository, PaymentNudgeRepository>();
+            services.AddScoped<INudgeService, NudgeService>();
+            services.AddScoped<INudgeRepository, NudgeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

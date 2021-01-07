@@ -20,6 +20,7 @@ namespace Fundamentals.Unit
         public bool IsActive { get; set; }
         public double CostToCustomer { get; set; }
         public double CostToConsultant { get; set; }
+        public EnableServiceType KindofService { get; set; }
     }
 
     public class ServiceStep
@@ -27,5 +28,12 @@ namespace Fundamentals.Unit
         public string Name { get; set; }
         public string Description { get; set; }
         public int Status { get; set; }
+    }
+
+    public enum EnableServiceType  
+    { 
+        None = -1,
+        Individual = 0 ,
+        Corporate = 1
     }
 }

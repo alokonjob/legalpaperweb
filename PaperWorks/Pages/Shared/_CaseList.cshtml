@@ -1,0 +1,136 @@
+﻿@model List<CaseFullInfo>
+@using Fundamentals.Extensions
+@inject IStringLocalizer<CaseListingModel> localizer
+@*FullCaseInfo{get;set;}*@
+@*
+    For more information on enabling MVC for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<table class="table table-striped table-bordered dt-responsive nowrap" id="caseListTable" style="width:100%">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.ServiceName)*@
+                <small><strong>Service</strong></small>
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.Order.City)
+                </th>*@
+            <th>
+                <small><strong>Type</strong></small>
+            </th>
+            <th>
+                <small><strong>Client</strong></small>
+            </th>
+
+            <th>
+                <small><strong> @Html.DisplayNameFor(model => model[0].ClientCase.Order.Receipt)</strong></small>
+            </th>
+            <th>
+                <small><strong>Agent</strong></small>
+            </th>
+            @*<th>
+                    <small><strong> Client Fee</strong></small>
+                </th>*@
+            <th>
+                <small><strong>@Html.DisplayNameFor(model => model[0].ClientCase.CurrentStatus)</strong></small>
+            </th>
+            @*<th>
+                    @Html.DisplayNameFor(model => model.FullCaseInfo[0].ClientCase.EscalationStatus)
+                </th>*@
+            <th>
+                <small><strong> @Html.DisplayNameFor(model => model[0].ClientCase.CreatedDate)</strong></small>
+            </th>
+            @*<th>
+                    <small><strong>Agent Fee</strong></small>
+                </th>*@
+            <th>
+                <small><strong>Agent Paid</strong></small>
+            </th>
+
+            <th>
+                <small><strong>Details</strong></small>
+            </th>
+            <th>
+                <small><strong>Pay Info</strong></small>
+            </th>
+            <th>
+                <small><strong>@Html.DisplayNameFor(model => model[0].Nudge)</strong></small>
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var customerCase in Model)
+        {
+            <tr>
+                <td>
+                    <ul class="list-unstyled">
+                        <li> <small>@Html.DisplayFor(model => localizer[customerCase.ClientCase.Order.ServiceDisplayName].Value)</small></li>
+                        <li> <small>@Html.DisplayFor(model => customerCase.ClientCase.Order.City)</small></li>
+                        @*<li class="list-group-item list-group-item-warning">Third item</li>
+                            <li class="list-group-item list-group-item-danger">Fourth item</li>*@
+                    </ul>
+                </td>
+                @*<td>
+                        @Html.DisplayFor(model => customerCase.ClientCase.Order.City)
+                    </td>*@
+                <td>
+                    <small>  @Html.DisplayFor(model => customerCase.ClientCase.Order.CallbackType)</small>
+                </td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li> <small>@Html.DisplayFor(model => customerCase.ClientCase.Order.CustomerEmail)</small></li>
+                        <li> <small> @Html.DisplayFor(model => customerCase.ClientCase.Order.CustomerPhone)</small></li>
+                        <li><small>@Html.DisplayFor(model => customerCase.ClientCase.Order.CostToCustomer)</small></li>
+                        @*<li class="list-group-item list-group-item-warning">Third item</li>
+                            <li class="list-group-item list-group-item-danger">Fourth item</li>*@
+                    </ul>
+                </td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li><small> @Html.DisplayFor(model => customerCase.ClientCase.Order.Receipt)</small></li>
+                        <li><small> @Html.DisplayFor(model => customerCase.ClientCase.Order.Link)</small></li>
+                    </ul>
+                    
+                </td>
+                <td>
+                    <ul class="list-unstyled">
+                        <li> <small>@Html.DisplayFor(model => customerCase.ClientCase.Order.ConsultantEmail)</small></li>
+                        <li> <small>@Html.DisplayFor(model => customerCase.ClientCase.Order.ConsultantPhone)</small></li>
+                        <li> <small>@Html.DisplayFor(model => customerCase.Payment.FinalizedCost)</small></li>
+                    </ul>
+                </td>
+                @*<td>
+                        <small>@Html.DisplayFor(model => customerCase.ClientCase.Order.CostToCustomer)</small>
+                    </td>*@
+                <td>
+                    <small>@customerCase.ClientCase.CurrentStatus.GetDescription()</small>
+                </td>
+                @*<td>
+                        @Html.DisplayFor(model => customerCase.ClientCase.EscalationStatus)
+                    </td>*@
+                <td>
+                    <small>@Html.DisplayFor(model => customerCase.ClientCase.CreatedDate)</small>
+                </td>
+                @*<td>
+                        <small></small>
+                    </td>*@
+                <td>
+                    <small>@Html.DisplayFor(model => customerCase.Payment.PaymentReleased)</small>
+                </td>
+
+                <td>
+                    <a asp-page="/Case/CaseDetail" class="btn btn-success btn-sm" asp-route-rct="@customerCase.ClientCase.Order.Receipt"><small>@customerCase.ClientCase.Order.Receipt</small></a>
+                </td>
+                <td>
+                    <a asp-page="/Case/Fin" class="btn btn-success btn-sm" asp-route-rct="@customerCase.ClientCase.Order.Receipt"><small>Finance</small></a>
+                </td>
+                <td>
+                    <small>@Html.DisplayFor(model => customerCase.Nudge)</small>
+                </td>
+            </tr>
+
+        }
+    </tbody>
+</table>

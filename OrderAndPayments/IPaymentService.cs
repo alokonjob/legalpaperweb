@@ -14,7 +14,8 @@ namespace OrderAndPayments
         void VerifyPayment(IGateWaysPaymentInfo GateWayPaymentDetails);
         Task<ClientelePayment> UpdatePayment(ObjectId paymentId, ObjectId orderId, ObjectId caseId, string status);
         string GetPaymentStatusFromPaymentGateWay(ClientelePayment clientsPayment);
-
+        Task<Dictionary<string, string>> GeneratePaymentLink(Dictionary<string, string> paymentData);
+        Task<ClientelePayment> UpdatePaymentLinkAsync(ClientelePayment clientPayment);
 
     }
 }
