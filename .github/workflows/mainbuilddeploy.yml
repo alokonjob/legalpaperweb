@@ -21,7 +21,7 @@ env:
 
 jobs:
   build-and-deploy:
-    runs-on: windows-latest
+    runs-on: ubuntu-18.04
     steps:
 
       # Checkout the repo
