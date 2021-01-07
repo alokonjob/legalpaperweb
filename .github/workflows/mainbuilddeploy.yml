@@ -1,6 +1,8 @@
 name: "unPaperWorkz Build And Deploy"
 
-on:[push]
+on:
+  push:
+    branches: [ master ]
 
 env:
   AZURE_WEBAPP_NAME: onjob-webapp-dev-001
