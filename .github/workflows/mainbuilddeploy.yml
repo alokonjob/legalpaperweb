@@ -49,7 +49,7 @@ jobs:
        
           
       - name: PUBLISH
-        run: dotnet publish -c Release  --no-build -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/PaperWorks'
+        run: dotnet publish -c Release  --no-build -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}' ./PaperWorks
           
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
