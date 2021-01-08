@@ -45,7 +45,7 @@ jobs:
           dotnet restore ./PaperWorks
           dotnet build --configuration Release ./PaperWorks
           ls
-          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp'
+          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/myapp' ./PaperWorks
 
           
       # Deploy to Azure Web apps
