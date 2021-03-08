@@ -16,7 +16,7 @@ on:
 # 2. Change these variables for your configuration:
 env:
   AZURE_WEBAPP_NAME: onjob-webapp-dev-001    # set this to your application's name
-  AZURE_WEBAPP_PACKAGE_PATH: './published'      # set this to the path to your web app project, defaults to the repository root
+  AZURE_WEBAPP_PACKAGE_PATH: '.'      # set this to the path to your web app project, defaults to the repository root
   DOTNET_VERSION: '3.1.301'           # set this to the dot net version to use
 
 jobs:
@@ -40,16 +40,13 @@ jobs:
         run: pwd
       - name: list all
         run: ls
-      
-      - name: RESTORE
-        run: dotnet restore ./PaperWorks
-        
-      - name: BUILD
-        run: dotnet build --no-restore --configuration Release ./PaperWorks
-       
-          
-      - name: PUBLISH
-        run: dotnet publish -c Release  --no-build -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/PaperWorks'
+      - name: dotnet build and publish
+        run: |
+          dotnet restore ./PaperWorks
+          dotnet build --configuration Release ./PaperWorks
+          ls
+          dotnet publish -c Release -o '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}' ./PaperWorks
+
           
       # Deploy to Azure Web apps
       - name: 'Run Azure webapp deploy action using publish profile credentials'
@@ -57,6 +54,6 @@ jobs:
         with: 
           app-name: ${{ env.AZURE_WEBAPP_NAME }} # Replace with your app name
           publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE  }} # Define secret variable in repository settings as per action documentation
-          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}/PaperWorks'
+          package: '${{ env.AZURE_WEBAPP_PACKAGE_PATH }}' 
 
 # For more samples to get started with GitHub Action workflows to deploy to Azure, refer to https://github.com/Azure/actions-workflow-samples
