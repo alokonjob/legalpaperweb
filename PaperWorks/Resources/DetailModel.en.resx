@@ -327,6 +327,132 @@ your driving license will be awarded on the spot or will be sent to your registe
   <data name="drivinglicenseServiceName" xml:space="preserve">
     <value>Driving License</value>
   </data>
+  <data name="marriagecertificateAnswer0" xml:space="preserve">
+    <value>&lt;p class="card-text text-muted"&gt;
+                    Marriage Certificate is a vital document and conclusive proof of your marriage that helps
+                &lt;/p&gt;
+
+                &lt;ol&gt;
+                    &lt;li&gt;&lt;p class="card-text text-muted"&gt;as evidence if you want to change name post marriage,&lt;/p&gt;&lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            on issues of legitimacy of a child,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            during divorce proceedings,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            claim property of spouse in case you are not a nominee,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            to claim life insurance in the event of a mishap
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            as part of a genealogical history, besides other purposes.
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;p class="card-text text-muted"&gt;
+                    Just like every marriage, marriage registration is also unique. The set of documents may vary based on your and your spouse’ religion, place of marriage and place of stay. Our team of experts, having handled more than 800 cases, have been successful in getting a marriage certificate  in all the cases and are well equipped to place in order your application for marriage registration within a day.
+                &lt;/p&gt;
+
+
+                &lt;p&gt;
+                    The two-layer verification process minimizes the chances of rejection and second visit.
+                &lt;/p&gt;</value>
+  </data>
+  <data name="marriagecertificateAnswer1" xml:space="preserve">
+    <value>&lt;p class="card-text text-muted"&gt;
+                    Marriage Certificate is a vital document and conclusive proof of your marriage that helps
+                &lt;/p&gt;
+
+                &lt;ol&gt;
+                    &lt;li&gt;&lt;p class="card-text text-muted"&gt;as evidence if you want to change name post marriage,&lt;/p&gt;&lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            on issues of legitimacy of a child,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            during divorce proceedings,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            claim property of spouse in case you are not a nominee,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            to claim life insurance in the event of a mishap
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            as part of a genealogical history, besides other purposes.
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;p class="card-text text-muted"&gt;
+                    Just like every marriage, marriage registration is also unique. The set of documents may vary based on your and your spouse’ religion, place of marriage and place of stay. Our team of experts, having handled more than 800 cases, have been successful in getting a marriage certificate  in all the cases and are well equipped to place in order your application for marriage registration within a day.
+                &lt;/p&gt;
+
+
+                &lt;p&gt;
+                    The two-layer verification process minimizes the chances of rejection and second visit.
+                &lt;/p&gt;</value>
+  </data>
+  <data name="marriagecertificateAnswer2" xml:space="preserve">
+    <value>&lt;p class="card-text text-muted"&gt;
+                    Marriage Certificate is a vital document and conclusive proof of your marriage that helps
+                &lt;/p&gt;
+
+                &lt;ol&gt;
+                    &lt;li&gt;&lt;p class="card-text text-muted"&gt;as evidence if you want to change name post marriage,&lt;/p&gt;&lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            on issues of legitimacy of a child,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            during divorce proceedings,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            claim property of spouse in case you are not a nominee,
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            to claim life insurance in the event of a mishap
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                    &lt;li&gt;
+                        &lt;p class="card-text text-muted"&gt;
+                            as part of a genealogical history, besides other purposes.
+                        &lt;/p&gt;
+                    &lt;/li&gt;
+                &lt;/ol&gt;
+                &lt;p class="card-text text-muted"&gt;
+                    Just like every marriage, marriage registration is also unique. The set of documents may vary based on your and your spouse’ religion, place of marriage and place of stay. Our team of experts, having handled more than 800 cases, have been successful in getting a marriage certificate  in all the cases and are well equipped to place in order your application for marriage registration within a day.
+                &lt;/p&gt;
+
+
+                &lt;p&gt;
+                    The two-layer verification process minimizes the chances of rejection and second visit.
+                &lt;/p&gt;</value>
+  </data>
   <data name="marriagecertificatedocumentsText" xml:space="preserve">
     <value>&lt;strong&gt;Here is the list&lt;/strong&gt;&lt;br&gt;
                     Step 1: Approach the office of the Sub Divisional Magistrate, under whose locale the marriage occurred or where both the partners resided for somewhere around a half year before the marriage took place
@@ -420,6 +546,15 @@ your driving license will be awarded on the spot or will be sent to your registe
   </data>
   <data name="marriagecertificateprocessTitle" xml:space="preserve">
     <value>Marriage Registration Procedure</value>
+  </data>
+  <data name="marriagecertificateQuestion0" xml:space="preserve">
+    <value>Very Good Question and it is important</value>
+  </data>
+  <data name="marriagecertificateQuestion1" xml:space="preserve">
+    <value>Very Good Question and it is important 2</value>
+  </data>
+  <data name="marriagecertificateQuestion2" xml:space="preserve">
+    <value>Very Good Question and it is important 3</value>
   </data>
   <data name="marriagecertificateServiceName" xml:space="preserve">
     <value>Marriage Registration and Certificate</value>

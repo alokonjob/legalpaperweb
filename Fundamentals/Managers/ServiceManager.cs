@@ -29,6 +29,11 @@ namespace Fundamentals.Managers
                 service.DetailedDisplayInfo.Documents = new ServiceInnerInformation();
                 service.DetailedDisplayInfo.Documents.Title = $"{service.Name}documentsTitle";
                 service.DetailedDisplayInfo.Documents.Text = $"{service.Name}documentsText";
+                service.DetailedDisplayInfo.Faqs = new List<FAQ>();
+                for (int i = 0; i < 3; i++)
+                {
+                    service.DetailedDisplayInfo.Faqs.Add(new FAQ() { Question = $"{service.Name}Question{i}", Answer = $"{service.Name}Answer{i}" });
+                }
             }
 
             serviceRepository.Add(service);
