@@ -123,7 +123,7 @@ namespace Fundamentals.Managers
             _enabledServicesCollection.InsertOne(service);
         }
 
-        public void Update(EnabledServices service)
+        public void Update(EnabledServices service )
         {
             var filter = Builders<EnabledServices>.Filter.Eq(t => t.EnableId, service.EnableId);
             _enabledServicesCollection.UpdateOne(filter,
