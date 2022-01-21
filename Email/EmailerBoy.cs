@@ -21,7 +21,7 @@ namespace Emailer
         }
         public async Task SendEmailAsync(string toEmail, string subject, string htmlMessage)
         {
-            var apiKey = GateKeeper.GetSecretValue("SendGridApiKey");
+            var apiKey = "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";// GateKeeper.GetSecretValue("SendGridApiKey");
             var client = new SendGridClient(apiKey);
             //var msg = new SendGridMessage()
             //{

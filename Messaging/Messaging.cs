@@ -24,7 +24,7 @@ namespace Messaging
         }
         public static void Init(IHeimdall gateKeeper)
         {
-            TwilioClient.Init(gateKeeper.GetSecretValue("TwilioAccountSID"), gateKeeper.GetSecretValue("TwilioAuthToken"));
+            TwilioClient.Init("AC41867891b4af8cd9ae66c2d5f52fcab1", "09f82b53e5f5dd7cd49defca847f5c4e");
         }
 
         public void SendSMS(string phoneNumber, string textSms)

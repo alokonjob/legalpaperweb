@@ -14,7 +14,7 @@ namespace PaperWorks
 {
     public class Program
     {
-        private static string GetKeyVaultEndpoint() => "https://onjob-jv-dev-01.vault.azure.net/";
+        private static string GetKeyVaultEndpoint() => "";//"https://onjob-jv-dev-01.vault.azure.net/";
         public static void Main(string[] args)
         {
             CreateHostBuilder(args).Build().Run();
@@ -28,16 +28,16 @@ namespace PaperWorks
         Host.CreateDefaultBuilder(args)
             .ConfigureAppConfiguration((ctx, builder) =>
                   {
-                      var keyVaultEndpoint = GetKeyVaultEndpoint();
-                      if (!string.IsNullOrEmpty(keyVaultEndpoint))
-                      {
-                          var azureServiceTokenProvider = new AzureServiceTokenProvider();
-                          var keyVaultClient = new KeyVaultClient(
-                             new KeyVaultClient.AuthenticationCallback(
-                                azureServiceTokenProvider.KeyVaultTokenCallback));
-                          builder.AddAzureKeyVault(
-                             keyVaultEndpoint, keyVaultClient, new DefaultKeyVaultSecretManager());
-                      }
+                      //var keyVaultEndpoint = GetKeyVaultEndpoint();
+                      //if (!string.IsNullOrEmpty(keyVaultEndpoint))
+                      //{
+                      //    var azureServiceTokenProvider = new AzureServiceTokenProvider();
+                      //    var keyVaultClient = new KeyVaultClient(
+                      //       new KeyVaultClient.AuthenticationCallback(
+                      //          azureServiceTokenProvider.KeyVaultTokenCallback));
+                      //    builder.AddAzureKeyVault(
+                      //       keyVaultEndpoint, keyVaultClient, new DefaultKeyVaultSecretManager());
+                      //}
                   }
                 )
            .ConfigureWebHostDefaults(webBuilder =>

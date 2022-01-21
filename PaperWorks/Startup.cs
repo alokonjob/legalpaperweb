@@ -73,7 +73,7 @@ namespace PaperWorks
 
             }, mongoIdentityOptions =>
             {
-                mongoIdentityOptions.ConnectionString = gateKeeper.GetSecretValue("MongoConnection");
+                mongoIdentityOptions.ConnectionString = "mongodb+srv://alok:Host123456@mflix.cxpea.azure.mongodb.net/onjob2?authSource=admin&replicaSet=atlas-x3ev7x-shard-0&readPreference=primary&appname=MongoDB%20Compass&ssl=true";// gateKeeper.GetSecretValue("MongoConnection");
             });
             services.AddAuthorization(options =>
             {
@@ -108,12 +108,12 @@ namespace PaperWorks
             //https://docs.microsoft.com/en-us/azure/key-vault/general/vs-key-vault-add-connected-service#:~:text=Go%20to%20the%20Azure%20portal,from%20the%20All%20account%20section.
             services.AddRazorPages();
 
-            services.AddAuthentication()
-                .AddGoogle(options =>
-                {
-                    options.ClientId = gateKeeper.GetSecretValue("GooglClientId");// Configuration["GooglClientId"]; ;
-                    options.ClientSecret = gateKeeper.GetSecretValue("GoogleClientSecret");// Configuration["GoogleClientSecret"];
-                });
+            services.AddAuthentication();
+                //.AddGoogle(options =>
+                //{
+                //    options.ClientId = gateKeeper.GetSecretValue("GooglClientId");// Configuration["GooglClientId"]; ;
+                //    options.ClientSecret = gateKeeper.GetSecretValue("GoogleClientSecret");// Configuration["GoogleClientSecret"];
+                //});
                 //.AddFacebook(facebookOptions =>
                 //{
                 //    facebookOptions.AppId = gateKeeper.GetSecretValue("FacebookAppId");

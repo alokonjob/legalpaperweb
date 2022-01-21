@@ -49,7 +49,7 @@ namespace Phone
             var verification = await VerificationCheckResource.CreateAsync(
                     to: phoneNumber,
                     code: verificationCode,
-                    pathServiceSid: gateKeeper.GetSecretValue("TwilioVerificationServiceSID")
+                    pathServiceSid: "VAb9da8bbdb3e209c82df8e40e644b1e37"//gateKeeper.GetSecretValue("TwilioVerificationServiceSID")
                 );
             phoneNumberDetails.VerificationStatusText = verification.Status;
             return phoneNumberDetails;
@@ -62,7 +62,7 @@ namespace Phone
             var verification = await VerificationResource.CreateAsync(
                     to: PhoneNumber,
                     channel: "sms",
-                    pathServiceSid: gateKeeper.GetSecretValue("TwilioVerificationServiceSID")
+                    pathServiceSid: "VAb9da8bbdb3e209c82df8e40e644b1e37"//gateKeeper.GetSecretValue("TwilioVerificationServiceSID")
                 );
              phoneDetails.VerificationStatusText = verification.Status;
             return phoneDetails;
